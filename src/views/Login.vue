@@ -1,6 +1,6 @@
 <template>
     <div class="bg">
-        <div style="padding-top: 200px"><login></login></div>
+        <div style="padding-top: 180px"><login></login></div>
     </div>
 </template>
 
