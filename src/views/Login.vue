@@ -5,16 +5,16 @@
 </template>
 
 <script>
-import Login from '../components/login/Login.vue'
+import Login from '../components/login/Login.vue';
 export default {
-    components:{
-        Login
-    }
-}
+    components: {
+        Login,
+    },
+};
 </script>
 
 <style lang="scss" scoped>
-.bg{
+.bg {
     background-image: url('../assets/background.png');
     background-position: center;
     background-size: cover;
