@@ -57,3 +57,5 @@ a {
   color: #42b983;
 }
 </style>
+
+<style lang="scss" scoped></style>

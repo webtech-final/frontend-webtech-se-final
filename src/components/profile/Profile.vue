@@ -41,3 +41,5 @@ export default {
     background-blend-mode: multiply;
 }
 </style>
+
+<style lang='scss' scoped></style>

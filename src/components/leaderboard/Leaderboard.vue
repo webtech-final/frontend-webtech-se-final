@@ -62,7 +62,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang='scss' scoped>
 table,tr{
     color: black;
     margin-right: auto;

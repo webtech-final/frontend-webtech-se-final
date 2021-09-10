@@ -13,12 +13,14 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .bg{
     background-image: url('../assets/background.png');
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
     min-height: 100vh;
+    text-align: center;
 }
+
 </style>

@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import EnterRoom from '../components/EnterRoom.vue'
+import EnterRoom from '../components/home/EnterRoom.vue'
 export default {
     name: 'Home',
     components: {

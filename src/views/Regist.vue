@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Regist from '../components/Regist/Regist.vue'
+import Regist from '../components/regist/Regist.vue'
 export default {
     components:{
         Regist
@@ -13,11 +13,13 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .bg{
     background-image: url('../assets/background.png');
     background-position: center;
     background-size: cover;
     min-height: 100vh;
+    text-align: center;
+    color: white
 }
 </style>
