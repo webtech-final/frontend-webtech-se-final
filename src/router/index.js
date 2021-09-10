@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Profile from '@/views/Profile.vue'
 import Leaderboard from '../views/Leaderboard'
+import Regist from '../views/Regist.vue'
 
 Vue.use(VueRouter)
 
@@ -39,6 +40,11 @@ const routes = [
     name: 'Leaderboard',
     component: Leaderboard
   },
+  {
+    path: '/regist',
+    name: 'Regist',
+    component: Regist
+  }
 ]
 
 const router = new VueRouter({
