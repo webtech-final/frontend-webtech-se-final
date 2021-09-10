@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Profile from '@/views/Profile.vue'
+import Leaderboard from '../views/Leaderboard'
 
 Vue.use(VueRouter)
 
@@ -20,16 +21,24 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
+
   {
     path: '/login',
     name: 'Login',
     component: Login
   },
+
   {
     path: '/profile',
     name: 'Profile',
     component: Profile
-  }
+  },
+
+  {
+    path: '/leaderboard',
+    name: 'Leaderboard',
+    component: Leaderboard
+  },
 ]
 
 const router = new VueRouter({
