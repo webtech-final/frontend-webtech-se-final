@@ -15,7 +15,7 @@ export default {
 
 <style lang="scss" scoped>
 .bg{
-    background-image: url('../assets/background.png');
+    background-image: url('../assets/background-default.jpg');
     background-position: center;
     background-size: cover;
     background-attachment: fixed;

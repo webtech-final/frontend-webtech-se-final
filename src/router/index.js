@@ -5,37 +5,49 @@ import Login from '../views/Login.vue'
 import Profile from '@/views/Profile.vue'
 import Leaderboard from '../views/Leaderboard'
 import Regist from '../views/Regist.vue'
+import Inventory from "../views/Inventory.vue";
+import Shop from "../views/Shop.vue";
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: "/",
+    name: "Home",
+    component: Home,
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: Login
+    path: "/login",
+    name: "Login",
+    component: Login,
   },
   {
-    path: '/profile',
-    name: 'Profile',
-    component: Profile
+    path: "/profile",
+    name: "Profile",
+    component: Profile,
   },
 
   {
-    path: '/leaderboard',
-    name: 'Leaderboard',
-    component: Leaderboard
+    path: "/leaderboard",
+    name: "Leaderboard",
+    component: Leaderboard,
   },
   {
-    path: '/regist',
-    name: 'Regist',
-    component: Regist
-  }
-]
+    path: "/regist",
+    name: "Regist",
+    component: Regist,
+  },
+  {
+    path: "/inventory",
+    name: "Inventory",
+    component: Inventory,
+  },
+  {
+    path: "/shop",
+    name: "Shop",
+    component: Shop,
+  },
+];
 
 const router = new VueRouter({
   mode: 'history',
