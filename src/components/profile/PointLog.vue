@@ -7,20 +7,24 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-900">
                             <tr>
-                                <th colspan="2" class="px-6 py-3 text-center text-md font-medium text-white uppercase tracking-wider">POINT LOG</th>
+                                <th colspan="3" class="px-6 py-3 text-center text-md font-medium text-white uppercase tracking-wider">POINT LOG</th>
                             </tr>
                         </thead>
                         <thead class="bg-gray-200">
                             <tr>
-                                <th scope="col" class="w-1/2 px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">DATE</th>
-                                <th scope="col" class="w-1/2 px-6 py-3 text-right text-xs font-medium text-black uppercase tracking-wider">POINT</th>
+                                <th scope="col" class="w-1/3 px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">DATE</th>
+                                <th scope="col" class="w-1/3 px-6 py-3 text-center text-xs font-medium text-black uppercase tracking-wider">TYPE</th>
+                                <th scope="col" class="w-1/3 px-6 py-3 text-right text-xs font-medium text-black uppercase tracking-wider">POINT</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <tr v-for="(log, index) in logs" :key="index">
                                 <td class="text-left px-6 py-4 whitespace-nowrap">
-                                    <div class="text-md font-medium text-gray-900">{{ log.date }}</div>
+                                    <span class="text-md font-medium text-gray-900">{{ log.date }}</span>
                                 </td>
+                                <td class="text-center px-6 py-4 whitespace-nowrap">
+                                    <span class="text-md font-medium text-gray-900">{{ log.type }}</span>
+                                </td>      
                                 <td class="text-right px-6 py-4 whitespace-nowrap">
                                     <span class="text-md font-medium text-gray-900">{{ log.point }}</span>
                                 </td>
@@ -40,30 +44,37 @@ export default {
             logs: [
                 {
                     date: '01/09/2021',
+                    type: 'Play Game',
                     point: 200
                 },
                 {
                     date: '01/09/2021',
+                    type: 'Shopping',
                     point: -100
                 },
                 {
                     date: '02/09/2021',
+                    type: 'Play Game',
                     point: 400
                 },
                 {
                     date: '03/09/2021',
+                    type: 'Play Game',
                     point: 600
                 },
                 {
                     date: '03/09/2021',
+                    type: 'Shopping',
                     point: -1000
                 },
                 {
                     date: '04/09/2021',
+                    type: 'Play Game',
                     point: 800
                 },
                 {
                     date: '05/09/2021',
+                    type: 'Play Game',
                     point: 1000
                 },           
             ]
