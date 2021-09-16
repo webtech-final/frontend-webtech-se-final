@@ -42,8 +42,9 @@
             <div class="my-5 flex justify-center">
                 <div class="space-x-10">
                     <label for="1P">1 PLAYER</label>
-                    <button
-                        class="
+                    <router-link to="/single">
+                        <button
+                            class="
                             py-3
                             px-6
                             text-white
@@ -53,9 +54,10 @@
                             block
                             md:inline-block
                         "
-                    >
-                        PLAY
-                    </button>
+                        >
+                            PLAY
+                        </button>
+                    </router-link>
                 </div>
             </div>
             <div class="my-5 flex justify-center">
@@ -99,13 +101,15 @@
 </template>
 
 <script>
-import EnterRoom from '../components/home/EnterRoom.vue'
+import EnterRoom from '../components/home/EnterRoom.vue';
 export default {
     name: 'Home',
     components: {
         EnterRoom,
     },
-}
+};
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

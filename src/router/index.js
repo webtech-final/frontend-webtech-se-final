@@ -7,6 +7,7 @@ import Leaderboard from '../views/Leaderboard'
 import Regist from '../views/Regist.vue'
 import Inventory from "../views/Inventory.vue";
 import Shop from "../views/Shop.vue";
+import Single from "../views/Singleplayer.vue"
 
 Vue.use(VueRouter)
 
@@ -47,6 +48,11 @@ const routes = [
     name: "Shop",
     component: Shop,
   },
+  {
+    path: "/single",
+    name: "Single",
+    component: Single
+  }
 ];
 
 const router = new VueRouter({
