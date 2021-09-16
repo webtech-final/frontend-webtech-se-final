@@ -16,4 +16,11 @@ export default {
 </script>
 
 <style lang="scss">
+#app {
+    background-image: url('./assets/background-default.jpg');
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100vh;
+} 
 </style>
