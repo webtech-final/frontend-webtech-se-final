@@ -1,11 +1,12 @@
 import Phaser from 'phaser';
+import Constants from '../constants';
 
-const BLOCK_HEIGHT = 30;
-const BLOCK_WIDTH = 30;
-const GAME_SCENE_HEIGHT = 600;
-const GAME_SCENE_WIDTH = 360;
-const HUD_WIDTH = 140;
-const ABOVE_GAP = 2;
+const BLOCK_HEIGHT = Constants.BLOCK_HEIGHT;
+const BLOCK_WIDTH = Constants.BLOCK_WIDTH;
+const GAME_SCENE_HEIGHT = Constants.GAME_SCENE_HEIGHT;
+const GAME_SCENE_WIDTH = Constants.GAME_SCENE_WIDTH;
+const HUD_WIDTH = Constants.HUD_WIDTH;
+const ABOVE_GAP = Constants.ABOVE_GAP;
 
 export default class Tetris extends Phaser.Scene {
     constructor() {
