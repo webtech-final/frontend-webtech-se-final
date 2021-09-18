@@ -11,7 +11,13 @@
 			"
 		>
 			<div class="text-center text-3xl m-2 mx-auto place-self-center">
-				<a class="text-center w-full">PLEASE ENTER ROOM PIN BELOW</a>
+				<a class="text-center w-full"
+					>{{
+						msg === "JOIN"
+							? "PLEASE ENTER ROOM PIN BELOW"
+							: "HERE IS YOUR ROOM PIN"
+					}}
+				</a>
 			</div>
 			<div class="my-7 relative">
 				<input
@@ -31,9 +37,11 @@
 						active:outline-none
 						active:border-indigo-600
 					"
+					:disabled="msg === 'CREATE' ? true : false"
 					id=""
 					type="text"
 					autofocus
+					v-model="roomData.pin"
 				/>
 				<label
 					for="email"
@@ -49,6 +57,7 @@
 						mt-2
 						cursor-text
 					"
+					:hidden="msg === 'CREATE' ? true : false"
 					>Room Pin</label
 				>
 			</div>
@@ -78,10 +87,26 @@
 	export default {
 		name: "EnterRoom",
 		props: ["msg"],
+		data() {
+			return {
+				roomData: {
+					mode: this.msg,
+					pin: "",
+				},
+			};
+		},
 		methods: {
 			handleBtn() {
 				this.$emit("onHome", this.msg);
 			},
+			pinGenerate() {
+				return this.msg === "CREATE"
+					? (this.roomData.pin = "1a2b3c")
+					: this.roomData.pin;
+			},
+		},
+		created() {
+			this.pinGenerate();
 		},
 	};
 </script>
