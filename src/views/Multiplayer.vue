@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import io from "socket.io-client";
 import Game from '../components/game/Game.vue';
 import GameStore from '../store/GameStore';
 
@@ -22,7 +21,7 @@ export default {
     name: 'Multiplayer',
     data: () => {
         return {
-            socket : io("http://localhost:3000")
+            socket : GameStore.getters.getSocket
         }
     },
     components: {
@@ -35,12 +34,12 @@ export default {
             this.$refs.join.style.display = 'none';
             this.$refs.game1.initializeGame();
             this.$refs.game2.initializeGame();
-            console.log("TEST")
         },
 
         test() {
-            const number = GameStore.getters.getClientNumber;
-            console.log(number);
+            // const number = GameStore.getters.getClientNumber;
+            // console.log(number);
+            this.socket.emit('test1');
         },
 
         init() {
@@ -51,10 +50,9 @@ export default {
         }
     },
     created() {
-        this.socket.on('init', (number) => {
-                console.log(number);
-                GameStore.commit('setClientNumber', number);
-            });
+        this.socket.on('test2', (data) => {
+            console.log(data);
+        })
     },
 };
 </script>
