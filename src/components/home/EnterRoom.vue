@@ -80,8 +80,6 @@
     </div>
 </template>
 <script>
-import GameStore from '../../store/GameStore';
-
 export default {
     name: 'EnterRoom',
     props: ['msg'],
@@ -92,6 +90,8 @@ export default {
                 pin: '',
             },
         };
+    },
+    sockets: {
     },
     methods: {
         handleBtn() {

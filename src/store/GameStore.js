@@ -7,12 +7,10 @@ export default new Vuex.Store({
     state: {
         clientNumber: '',
         gameCode: '',
-        socket : '',
     },
     getters: {
         getClientNumber: state => state.clientNumber,
         getGameCode: state => state.gameCode,
-        getSocket: state => state.socket
     },
     mutations: {
         setClientNumber(state, number) {
@@ -21,9 +19,6 @@ export default new Vuex.Store({
         setGameCode(state, code) {
             state.gameCode = code;
         },
-        setSocket(state, socket) {
-            state.socket = socket;
-        }
     },
     actions: {
     },

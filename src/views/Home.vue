@@ -144,8 +144,6 @@
     </div>
 </template>
 <script>
-
-import io from 'socket.io-client';
 import GameStore from '../store/GameStore';
 import EnterRoom from '../components/home/EnterRoom.vue';
 
@@ -154,10 +152,9 @@ export default {
     components: { EnterRoom },
     data() {
         return {
-			socket: GameStore.getters.getSocket,
             showDialog: false,
             msg: '',
-			pin: '',
+            pin: '',
         };
     },
     methods: {
@@ -167,18 +164,19 @@ export default {
         joinBtnOnclick() {
             this.msg = 'JOIN';
             this.toggleDialog();
+            this.$socket.emit('TEST');
         },
         createBtnOnclick() {
             this.msg = 'CREATE';
-            this.socket.emit('genGameCode');
+            this.$socket.emit('genGameCode');
             this.toggleDialog();
         },
-        handleBtn({event, pin}) {
+        handleBtn({ event, pin }) {
             if (event === 'JOIN') {
                 // redirect to join a room
                 alert('joining a room');
-				this.pin = pin
-				this.handleJoinGame();
+                this.pin = pin;
+                this.handleJoinGame();
             } else {
                 // redirect to create a room
                 alert('creating a room');
@@ -188,14 +186,14 @@ export default {
         },
 
         handleNewGame() {
-            this.socket.emit('newGame', this.pin);
+            this.$socket.emit('newGame', this.pin);
             this.$router.push('/multi');
         },
 
-		handleJoinGame() {
-			this.socket.emit('joinGame',  this.pin)
-			this.$router.push('/multi')
-		},
+        handleJoinGame() {
+            this.$socket.emit('joinGame', this.pin);
+            this.$router.push('/multi');
+        },
 
         reset() {
             this.pin = '';
@@ -204,34 +202,50 @@ export default {
         },
 
         socketInit() {
-            this.socket.on('init', clientNumber => {
+            this.$socket.on('init', clientNumber => {
                 GameStore.commit('setClientNumber', clientNumber);
             });
 
-            this.socket.on('gameCode', gameCode => {
+            this.$socket.on('gameCode', gameCode => {
                 console.log(gameCode);
                 this.pin = gameCode;
                 this.$refs.enterRoom.roomData.pin = gameCode;
                 GameStore.commit('setGameCode', gameCode);
             });
 
-            this.socket.on('unknownCode', () => {
-				this.reset();
-				alert('Unknown game code');
-				this.$router.push('/')
-			});
+            this.$socket.on('unknownCode', () => {
+                this.reset();
+                alert('Unknown game code');
+                this.$router.push('/');
+            });
 
-            this.socket.on('tooManyPlayers', () => {
-				this.reset();
-				alert('This game is already in progress')
-				this.$router.push('/')
-			});
+            this.$socket.on('tooManyPlayers', () => {
+                this.reset();
+                alert('This game is already in progress');
+                this.$router.push('/');
+            });
         },
     },
-    created() {
-		this.socket = io("http://localhost:3000")
-        this.socketInit();
-		GameStore.commit('setSocket', this.socket);
+    sockets: {
+        tooManyPlayers: function() {
+            this.reset();
+            alert('This game is already in progress');
+            this.$router.push('/');
+        },
+        unknownCode: function() {
+            this.reset();
+            alert('Unknown game code');
+            this.$router.push('/');
+        },
+        gameCode: function(gameCode) {
+            console.log(gameCode);
+            this.pin = gameCode;
+            this.$refs.enterRoom.roomData.pin = gameCode;
+            GameStore.commit('setGameCode', gameCode);
+        },
+		init: function(clientNumber) {
+			GameStore.commit('setClientNumber', clientNumber);	
+		}
     },
 };
 </script>

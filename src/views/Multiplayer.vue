@@ -21,7 +21,6 @@ export default {
     name: 'Multiplayer',
     data: () => {
         return {
-            socket : GameStore.getters.getSocket
         }
     },
     components: {
@@ -35,24 +34,16 @@ export default {
             this.$refs.game1.initializeGame();
             this.$refs.game2.initializeGame();
         },
-
         test() {
-            // const number = GameStore.getters.getClientNumber;
-            // console.log(number);
-            this.socket.emit('test1');
-        },
-
-        init() {
-            this.socket.on('init', (number) => {
-                console.log(number);
-                GameStore.commit('setClientNumber', number);
-            })
+            this.$socket.emit('test1')
+        }
+    },
+    sockets: {
+        test2: function (data) {
+            console.log(data)
         }
     },
     created() {
-        this.socket.on('test2', (data) => {
-            console.log(data);
-        })
     },
 };
 </script>
