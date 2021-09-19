@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import io from 'socket.io-client';
 import Phaser from 'phaser';
 import Tetris from './scenes/Tetris.js';
 import GameOver from './scenes/GameOver.js';
@@ -13,6 +14,7 @@ import Constants from './constants.js';
 export default {
     data() {
         return {
+            socket: io('http://localhost:3000'),
             initialize: false,
             game: {
                 type: Phaser.AUTO,
@@ -29,7 +31,9 @@ export default {
         },
     },
     created() {
-        this.initializeGame();
+        // this.socket.on('init', data => {
+
+        // })
     },
 };
 </script>

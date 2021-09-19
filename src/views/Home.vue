@@ -63,8 +63,9 @@
             <div class="my-5 flex justify-center">
                 <div class="space-x-10">
                     <label for="2P">2 PLAYER</label>
-                    <button
-                        class="
+                    <router-link to="/multi">
+                        <button
+                            class="
                             py-3
                             px-6
                             text-white
@@ -74,9 +75,10 @@
                             block
                             md:inline-block
                         "
-                    >
-                        JOIN
-                    </button>
+                        >
+                            JOIN
+                        </button>
+                    </router-link>
                     <button
                         class="
                             py-3
@@ -101,12 +103,25 @@
 </template>
 
 <script>
+import io from 'socket.io-client';
 import EnterRoom from '../components/home/EnterRoom.vue';
+
 export default {
     name: 'Home',
     components: {
         EnterRoom,
     },
+    data() {
+        return {
+            socket: io('http://localhost:3000'),
+        };
+    },
+    methods: {
+        
+    },
+    created() {
+        this.socket.on('init', this.handleInit);
+    }
 };
 </script>
 
