@@ -1,5 +1,5 @@
 <template>
-    <ion-phaser v-bind:game.prop="Opponent" v-bind:initialize.prop="initialize" />
+    <ion-phaser v-bind:game.prop="game" v-bind:initialize.prop="initialize" />
 </template>
 
 <script>
@@ -8,7 +8,7 @@ import Tetris from './scenes/Tetris.js';
 import GameOver from './scenes/GameOver.js';
 import Start from './scenes/Start.js';
 import Constants from './constants.js';
-
+import Opponent from './scenes/Opponent.js';
 
 export default {
     data() {
@@ -17,9 +17,9 @@ export default {
             game: {
                 type: Phaser.AUTO,
                 backgroundColor: 0x000000,
-                width: Constants.GAME_SCENE_WIDTH + Constants.HUD_WIDTH,
+                width: Constants.GAME_SCENE_WIDTH,
                 height: Constants.GAME_SCENE_HEIGHT,
-                scene: [Tetris, GameOver],
+                scene: [ Opponent ],
             },
         };
     },
@@ -29,7 +29,8 @@ export default {
         },
     },
     created() {
-        this.initializeGame();
+        // this.socket.on('init', data => {
+        // })
     },
 };
 </script>

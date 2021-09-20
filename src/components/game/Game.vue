@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import io from 'socket.io-client';
 import Phaser from 'phaser';
 import Tetris from './scenes/Tetris.js';
 import GameOver from './scenes/GameOver.js';
@@ -11,17 +10,17 @@ import Start from './scenes/Start.js';
 import Constants from './constants.js';
 
 
+
 export default {
     data() {
         return {
-            socket: io('http://localhost:3000'),
             initialize: false,
             game: {
                 type: Phaser.AUTO,
                 backgroundColor: 0x000000,
                 width: Constants.GAME_SCENE_WIDTH + Constants.HUD_WIDTH,
                 height: Constants.GAME_SCENE_HEIGHT,
-                scene: [Start ,Tetris, GameOver],
+                scene: [Tetris, GameOver],
             },
         };
     },
@@ -31,9 +30,7 @@ export default {
         },
     },
     created() {
-        // this.socket.on('init', data => {
 
-        // })
     },
 };
 </script>

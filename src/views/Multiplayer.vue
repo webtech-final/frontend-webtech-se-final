@@ -5,7 +5,7 @@
         </div> -->
         <div id="gameScene" ref="gameScene" class="mt-8 flex">
             <game class="mr-8" ref='game1'></game>
-            <game ref='game2'></game>
+            <opponnect ref='game2'></opponnect>
         </div>
         <button @click="test" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             TEST
@@ -15,35 +15,36 @@
 
 <script>
 import Game from '../components/game/Game.vue';
+import Opponnect from '../components/game/Opponent.vue'
 import GameStore from '../store/GameStore';
 
 export default {
     name: 'Multiplayer',
     data: () => {
         return {
+            socket : GameStore.getters.getSocket,
         }
     },
     components: {
         Game,
+        Opponnect
     },
 
     methods: {
-        handleJoin() {
-            this.$refs.gameScene.style.display = 'flex';
-            this.$refs.join.style.display = 'none';
+        handleStart() {
             this.$refs.game1.initializeGame();
             this.$refs.game2.initializeGame();
         },
         test() {
-            this.$socket.emit('test1')
+            this.$refs.game1.initializeGame();
+            this.$refs.game2.initializeGame()
+            // this.socket.emit('test1')
         }
     },
-    sockets: {
-        test2: function (data) {
-            console.log(data)
-        }
-    },
-    created() {
+    mounted() {
+        // this.socket.on('test2', data => {
+        //     console.log(data)
+        // })
     },
 };
 </script>

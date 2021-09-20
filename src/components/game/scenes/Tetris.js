@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import Constants from '../constants';
+import GameStore from '../../../store/GameStore';
 
 const BLOCK_HEIGHT = Constants.BLOCK_HEIGHT;
 const BLOCK_WIDTH = Constants.BLOCK_WIDTH;
@@ -8,12 +9,24 @@ const GAME_SCENE_WIDTH = Constants.GAME_SCENE_WIDTH;
 const HUD_WIDTH = Constants.HUD_WIDTH;
 const ABOVE_GAP = Constants.ABOVE_GAP;
 
+const socket = GameStore.getters.getSocket;
+
 export default class Tetris extends Phaser.Scene {
     constructor() {
         super('tetris');
     }
 
     init() {
+        this.clientNumber = GameStore.getters.getClientNumber;
+        // if (this.clientNumber === 1) {
+        //     socket.on('state2', data => {
+        //         console.log(data);
+        //     })
+        // } else if (this.clientNumber === 2) {
+        //     socket.on('state1', data => {
+        //         console.log(data);
+        //     })
+        // }
         this.dcount = 0;
 
         this.countTime = 0;
@@ -99,7 +112,7 @@ export default class Tetris extends Phaser.Scene {
             pieceType: 0,
             color: 0,
             holdPiece: 0,
-            holdFlag: 0
+            holdFlag: 0,
         };
 
         this.field = (() => {
@@ -257,7 +270,7 @@ export default class Tetris extends Phaser.Scene {
         this.drawHUDHoldPiece = player => {
             this.drawedHoldPiece.forEach(block => {
                 block.destroy();
-            })
+            });
             const tmpPlayer = {};
             const ogPiece = JSON.parse(
                 JSON.stringify(
@@ -269,25 +282,25 @@ export default class Tetris extends Phaser.Scene {
             tmpPlayer.color = ogPiece.color;
             switch (tmpPlayer.pieceType) {
                 case 'S':
-                    tmpPlayer.pos = { x: GAME_SCENE_WIDTH + 25, y: 100 + 10};
+                    tmpPlayer.pos = { x: GAME_SCENE_WIDTH + 25, y: 100 + 10 };
                     break;
                 case 'Z':
-                    tmpPlayer.pos = { x: GAME_SCENE_WIDTH + 25, y:100 + 10};
+                    tmpPlayer.pos = { x: GAME_SCENE_WIDTH + 25, y: 100 + 10 };
                     break;
                 case 'L':
-                    tmpPlayer.pos = { x: GAME_SCENE_WIDTH + 25, y: 100 + 30};
+                    tmpPlayer.pos = { x: GAME_SCENE_WIDTH + 25, y: 100 + 30 };
                     break;
                 case 'J':
-                    tmpPlayer.pos = { x: GAME_SCENE_WIDTH + 25, y: 100 + 30};
+                    tmpPlayer.pos = { x: GAME_SCENE_WIDTH + 25, y: 100 + 30 };
                     break;
                 case 'T':
-                    tmpPlayer.pos = { x: GAME_SCENE_WIDTH + 25, y: 100};
+                    tmpPlayer.pos = { x: GAME_SCENE_WIDTH + 25, y: 100 };
                     break;
                 case 'O':
-                    tmpPlayer.pos = { x: GAME_SCENE_WIDTH + 40, y: 100 + 40};
+                    tmpPlayer.pos = { x: GAME_SCENE_WIDTH + 40, y: 100 + 40 };
                     break;
                 case 'I':
-                    tmpPlayer.pos = { x: GAME_SCENE_WIDTH + 10, y:100};
+                    tmpPlayer.pos = { x: GAME_SCENE_WIDTH + 10, y: 100 };
                     break;
             }
             this.drawedHoldPiece = this.drawHUDPiece(tmpPlayer);
@@ -483,7 +496,7 @@ export default class Tetris extends Phaser.Scene {
             });
 
             this.input.keyboard.on('keydown-Z', event => {
-                if (!this.player.holdPiece)  {
+                if (!this.player.holdPiece) {
                     this.player.holdPiece = {};
                     this.player.holdPiece.piece = this.player.piece;
                     this.player.holdPiece.pieceType = this.player.pieceType;
@@ -499,24 +512,23 @@ export default class Tetris extends Phaser.Scene {
                     this.drawHUDHoldPiece(this.player);
                 } else {
                     if (!this.player.holdFlag) {
-                        const tmpPlayer = JSON.parse(JSON.stringify(this.player.holdPiece))
-                        this.player.holdPiece.piece = this.player.piece
-                        this.player.holdPiece.pieceType = this.player.pieceType
-                        this.player.holdPiece.color = this.player.color
-                        this.player.piece = tmpPlayer.piece
-                        this.player.pieceType = tmpPlayer.pieceType
-                        this.player.color = tmpPlayer.color
+                        const tmpPlayer = JSON.parse(JSON.stringify(this.player.holdPiece));
+                        this.player.holdPiece.piece = this.player.piece;
+                        this.player.holdPiece.pieceType = this.player.pieceType;
+                        this.player.holdPiece.color = this.player.color;
+                        this.player.piece = tmpPlayer.piece;
+                        this.player.pieceType = tmpPlayer.pieceType;
+                        this.player.color = tmpPlayer.color;
                         this.activePiece.forEach(block => {
                             block.destroy();
                         });
                         this.guidePiece.forEach(block => {
                             block.destroy();
                         });
-                        this.player.pos = {x: 5, y: 0}
+                        this.player.pos = { x: 5, y: 0 };
                         this.activePiece = this.drawPiece(this.player);
                         this.drawHUDHoldPiece(this.player);
                         this.player.holdFlag = 1;
-                        
                     }
                 }
             });
@@ -554,6 +566,11 @@ export default class Tetris extends Phaser.Scene {
         if (this.checkGameOver(this.field)) {
             this.scene.start('game-over');
         } else if (this.dcount > this.gameTime) {
+            if (this.clientNumber == 1) {
+                socket.emit('player1', this.field);
+            } else if (this.clientNumber == 2) {
+                socket.emit('player2', this.field);
+            }
             if (Math.floor(this.countTime / 5000) >= 1) {
                 if (this.gameTime > 100) {
                     this.gameTime -= 10;
@@ -571,6 +588,6 @@ export default class Tetris extends Phaser.Scene {
             this.dcount = 0;
         }
         this.dcount += deltaTime;
-        this.countTime += deltaTime
+        this.countTime += deltaTime;
     }
 }
