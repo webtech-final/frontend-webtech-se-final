@@ -41,7 +41,7 @@
                         INVENTORY
                     </button>
                 </router-link>
-                <router-link class="flex" to="/reward">
+                <router-link class="flex" to="/shop">
                     <button
                         id="menu"
                         class="bg-transparent hover:bg-blue-700 text-white font-bold px-10"

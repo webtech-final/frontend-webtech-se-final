@@ -7,22 +7,26 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-900">
                             <tr>
-                                <th colspan="2" class="px-6 py-3 text-center text-md font-medium text-white uppercase tracking-wider">PLAY LOG</th>
+                                <th colspan="3" class="px-6 py-3 text-center text-md font-medium text-white uppercase tracking-wider">PLAY LOG</th>
                             </tr>
                         </thead>
                         <thead class="bg-gray-200">
                             <tr>
-                                <th scope="col" class="w-1/2 px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">DATE</th>
-                                <th scope="col" class="w-1/2 px-6 py-3 text-right text-xs font-medium text-black uppercase tracking-wider">POINT</th>
+                                <th scope="col" class="w-1/3 px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">DATE</th>
+                                <th scope="col" class="w-1/3 px-6 py-3 text-center text-xs font-medium text-black uppercase tracking-wider">MODE</th>
+                                <th scope="col" class="w-1/3 px-6 py-3 text-right text-xs font-medium text-black uppercase tracking-wider">SCORE</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr v-for="(log, index) in logs" :key="index">
+                            <tr v-for="(match, index) in matchs" :key="index">
                                 <td class="text-left px-6 py-4 whitespace-nowrap">
-                                    <div class="text-md font-medium text-gray-900">{{ log.date }}</div>
+                                    <span class="text-md font-medium text-gray-900">{{ match.date }}</span>
                                 </td>
+                                <td class="text-center px-6 py-4 whitespace-nowrap">
+                                    <span class="text-md font-medium text-gray-900">{{ match.mode }}</span>
+                                </td>                          
                                 <td class="text-right px-6 py-4 whitespace-nowrap">
-                                    <span class="text-md font-medium text-gray-900">{{ log.point }}</span>
+                                    <span class="text-md font-medium text-gray-900">{{ match.score }}</span>
                                 </td>
                             </tr>
                         </tbody>
@@ -37,26 +41,31 @@
 export default {
     data() {
         return {
-            logs: [
+            matchs: [
                 {
                     date: '01/09/2021',
-                    point: 200
+                    mode: 'Single',
+                    score: 10000
                 },
                 {
                     date: '02/09/2021',
-                    point: 400
+                    mode: 'Versus',
+                    score: 20000
                 },
                 {
                     date: '03/09/2021',
-                    point: 600
+                    mode: 'Versus',
+                    score: 30000
                 },
                 {
                     date: '04/09/2021',
-                    point: 800
+                    mode: 'Single',
+                    score: 40000
                 },
                 {
                     date: '05/09/2021',
-                    point: 1000
+                    mode: 'Versus',
+                    score: 50000
                 },           
             ]
         }
