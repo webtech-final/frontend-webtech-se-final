@@ -9,17 +9,15 @@
                     <thead>
                         <tr>
                             <th>RANK</th>
-                            <th></th>
                             <th>NAME</th>
-                            <th>POINT</th>
+                            <th>SCORE</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(info,index) in infos" :key="index">
+                        <tr v-for="(info,index) in single" :key="index">
                             <td>{{index+1}}</td>
-                            <td>{{info.image}}</td>
-                            <td>{{info.name}}</td>
-                            <td>{{info.point}}</td>
+                            <td>{{info.user.name}}</td>
+                            <td>{{info.score}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -34,17 +32,15 @@
                     <thead>
                         <tr>
                             <th>RANK</th>
-                            <th></th>
                             <th>NAME</th>
-                            <th>POINT</th>
+                            <th>SCORE</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(info,index) in infos" :key="index">
+                        <tr v-for="(info,index) in versus" :key="index">
                             <td>{{index+1}}</td>
-                            <td>{{info.image}}</td>
-                            <td>{{info.name}}</td>
-                            <td>{{info.point}}</td>
+                            <td>{{info.user.name}}</td>
+                            <td>{{info.score}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -54,37 +50,32 @@
 </template>
 
 <script>
+import PlayHistory from '../../store/playHistory'
+
 export default {
     data(){
         return{
-            infos:[
-                {
-                    image: '',
-                    name: 'Plume',
-                    point: 20000000
-                },
-                {
-                    image: '',
-                    name: 'Plume',
-                    point: 2000100
-                },
-                {
-                    image: '',
-                    name: 'Big',
-                    point: 2000000
-                },
-                {
-                    image: '',
-                    name: 'DOOM',
-                    point: 20000
-                },
-                {
-                    image: '',
-                    name: 'Aui',
-                    point: 2488
-                },
-            ]
+            // infos:[
+            //     {
+            //         image: '',
+            //         name: 'Plume',
+            //         point: 20000000
+            //     }
+            // ],
+            single:[],
+            versus:[]
         }
+    },
+    created(){
+        this.fetchHistories();
+    },
+    methods:{
+        async fetchHistories(){
+            await PlayHistory.dispatch('fetchTopSinglePlayHistory')
+            this.single = PlayHistory.getters.single
+            await PlayHistory.dispatch('fetchTopVersusPlayHistory')
+            this.versus = PlayHistory.getters.versus
+        },
     }
 }
 </script>
