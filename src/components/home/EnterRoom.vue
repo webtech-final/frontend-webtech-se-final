@@ -1,7 +1,7 @@
 <template>
-	<div class="flex shadow-md">
-		<div
-			class="
+    <div class="flex shadow-md">
+        <div
+            class="
 				grid-cols-1
 				p-10
 				border-2
@@ -9,19 +9,15 @@
 				from-indigo-50
 				to-purple-300
 			"
-		>
-			<div class="text-center text-3xl m-2 mx-auto place-self-center">
-				<a class="text-center w-full"
-					>{{
-						msg === "JOIN"
-							? "PLEASE ENTER ROOM PIN BELOW"
-							: "HERE IS YOUR ROOM PIN"
-					}}
-				</a>
-			</div>
-			<div class="my-7 relative">
-				<input
-					class="
+        >
+            <div class="text-center text-3xl m-2 mx-auto place-self-center">
+                <a class="text-center w-full"
+                    >{{ msg === 'JOIN' ? 'PLEASE ENTER ROOM PIN BELOW' : 'HERE IS YOUR ROOM PIN' }}
+                </a>
+            </div>
+            <div class="my-7 relative">
+                <input
+                    class="
 						input
 						border border-gray-400
 						appearance-none
@@ -37,15 +33,15 @@
 						active:outline-none
 						active:border-indigo-600
 					"
-					:disabled="msg === 'CREATE' ? true : false"
-					id=""
-					type="text"
-					autofocus
-					v-model="roomData.pin"
-				/>
-				<label
-					for="email"
-					class="
+                    :disabled="msg === 'CREATE' ? true : false"
+                    id=""
+                    type="text"
+                    autofocus
+                    v-model="roomData.pin"
+                />
+                <label
+                    for="email"
+                    class="
 						label
 						absolute
 						mb-0
@@ -57,13 +53,13 @@
 						mt-2
 						cursor-text
 					"
-					:hidden="msg === 'CREATE' ? true : false"
-					>Room Pin</label
-				>
-			</div>
-			<div class="flex justify-center">
-				<button
-					class="
+                    :hidden="msg === 'CREATE' ? true : false"
+                    >Room Pin</label
+                >
+            </div>
+            <div class="flex justify-center">
+                <button
+                    class="
 						items-center
 						justify-center
 						py-3
@@ -74,40 +70,53 @@
 						block
 						md:inline-block
 					"
-					:class="msg === 'JOIN' ? 'bg-blue-400' : 'bg-red-400'"
-					@click="handleBtn"
-				>
-					{{ msg }}
-				</button>
-			</div>
-		</div>
-	</div>
+                    :class="msg === 'JOIN' ? 'bg-blue-400' : 'bg-red-400'"
+                    @click="handleBtn"
+                >
+                    {{ msg }}
+                </button>
+            </div>
+        </div>
+    </div>
 </template>
 <script>
-	export default {
-		name: "EnterRoom",
-		props: ["msg"],
-		data() {
-			return {
-				roomData: {
-					mode: this.msg,
-					pin: "",
-				},
-			};
-		},
-		methods: {
-			handleBtn() {
-				this.$emit("onHome", this.msg);
-			},
-			pinGenerate() {
-				return this.msg === "CREATE"
-					? (this.roomData.pin = "1a2b3c")
-					: this.roomData.pin;
-			},
-		},
-		created() {
-			this.pinGenerate();
-		},
-	};
+import GameStore from '../../store/GameStore'
+
+export default {
+    name: 'EnterRoom',
+    props: ['msg', 'pin'],
+    data() {
+        return {
+            socket: GameStore.getters.getSocket,
+            roomData: {
+                mode: this.msg,
+                pin: this.pin,
+            },
+        };
+    },
+    methods: {
+        handleBtn() {
+            this.$emit('onHome', { event: this.msg, pin: this.roomData.pin });
+        },
+
+        socketInit() {
+            this.socket.on('gameCode', gameCode => {
+                this.roomData.pin = gameCode;
+                GameStore.commit('setGameCode', gameCode);
+                this.setPin();
+            });
+
+        },
+
+        setPin() {
+            this.msg === 'CREATE' ? this.roomData.pin : (this.roomData.pin = '');
+        },
+
+    },
+
+    created() {
+        this.socketInit();
+    },
+};
 </script>
 <style lang="scss" scoped></style>

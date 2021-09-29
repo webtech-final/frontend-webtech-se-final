@@ -8,6 +8,8 @@ import Regist from '../views/Regist.vue'
 import Inventory from "../views/Inventory.vue";
 import Shop from "../views/Shop.vue";
 import Single from "../views/Singleplayer.vue"
+import Multi from "../views/Multiplayer.vue"
+import Test from "../views/Test.vue";
 
 Vue.use(VueRouter)
 
@@ -52,6 +54,16 @@ const routes = [
     path: "/single",
     name: "Single",
     component: Single
+  },
+  {
+    path: "/multi",
+    name: "Multi",
+    component: Multi 
+  },
+  {
+    path: "/test",
+    name: "Test",
+    component: Test 
   }
 ];
 
