@@ -182,13 +182,15 @@ export default {
             if (event === 'JOIN') {
                 // redirect to join a room
                 this.pin = pin;
-                alert('joining a room');
-                this.handleJoinGame();
+                this.$swal('joining a room').then(() => {
+                    this.handleJoinGame();
+                });
             } else {
                 // redirect to create a room
                 this.pin = pin;
-                alert('creating a room');
-                this.handleNewGame();
+                this.$swal('creating a room').then(() => {
+                    this.handleNewGame();
+                });
             }
             this.toggleDialog();
         },
@@ -205,8 +207,9 @@ export default {
 
         reset() {
             this.pin = '';
-            GameStore.commit('setGameCode', '');
             GameStore.commit('setClientNumber', '');
+            GameStore.commit('setGameCode', '');
+            GameStore.commit('setGameScore', '');
         },
 
         socketInit() {
@@ -215,19 +218,20 @@ export default {
             });
 
             this.socket.once('unknownCode', () => {
-                this.$router.push('/');
-                alert('Unknown game code');
                 this.reset();
+                this.$router.push('/');
+                this.$swal('Unknown game code', '', 'error');
             });
 
             this.socket.once('tooManyPlayers', () => {
                 this.$router.push('/');
-                alert('This game is already in progress');
+                this.$swal('This game is already in progress', '', 'error');
                 this.reset();
             });
         },
     },
     mounted() {
+        this.reset();
         this.socket.removeAllListeners();
         this.socketInit();
     },

@@ -47,7 +47,6 @@ export default {
     methods: {
         socketInit() {
             this.socket.once('gameOver', clientNumber => {
-                console.log(GameStore.getters.getGameScore);
                 let msg = '';
                 let type = '';
                 clientNumber != GameStore.getters.getClientNumber
@@ -59,6 +58,7 @@ export default {
                     type ? 'success' : 'warning',
                 ).then(() => {
                     this.$router.push('/');
+                    this.reset();
                 });
             });
 
