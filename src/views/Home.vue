@@ -128,7 +128,14 @@
 			"
             v-if="showDialog"
         >
-            <EnterRoom style="z-index: 999" ref="enterRoom" :msg="msg" @onHome="handleBtn" />
+            <EnterRoom
+                style="z-index: 999"
+                ref="enterRoom"
+                :msg="msg"
+                :pin="pin"
+                @onHome="handleBtn"
+            />
+
             <button
                 class="
 					absolute
@@ -165,21 +172,21 @@ export default {
         joinBtnOnclick() {
             this.msg = 'JOIN';
             this.toggleDialog();
-            this.socket.emit('TEST');
         },
         createBtnOnclick() {
             this.msg = 'CREATE';
-            this.socket.emit('genGameCode');
             this.toggleDialog();
+            this.socket.emit('genGameCode');
         },
         handleBtn({ event, pin }) {
             if (event === 'JOIN') {
                 // redirect to join a room
-                alert('joining a room');
                 this.pin = pin;
+                alert('joining a room');
                 this.handleJoinGame();
             } else {
                 // redirect to create a room
+                this.pin = pin;
                 alert('creating a room');
                 this.handleNewGame();
             }
@@ -203,34 +210,26 @@ export default {
         },
 
         socketInit() {
-            this.socket.on('init', clientNumber => {
-                console.log("TEST100")
-                console.log(clientNumber)
+            this.socket.once('init', clientNumber => {
                 GameStore.commit('setClientNumber', clientNumber);
             });
 
-            this.socket.on('gameCode', gameCode => {
-                console.log(gameCode);
-                this.pin = gameCode;
-                this.$refs.enterRoom.roomData.pin = gameCode;
-                GameStore.commit('setGameCode', gameCode);
-            });
-
-            this.socket.on('unknownCode', () => {
-                this.reset();
+            this.socket.once('unknownCode', () => {
+                this.$router.push('/');
                 alert('Unknown game code');
-                this.$router.push('/');
+                this.reset();
             });
 
-            this.socket.on('tooManyPlayers', () => {
-                this.reset();
-                alert('This game is already in progress');
+            this.socket.once('tooManyPlayers', () => {
                 this.$router.push('/');
+                alert('This game is already in progress');
+                this.reset();
             });
         },
     },
-    created() {
-       this.socketInit();
+    mounted() {
+        this.socket.removeAllListeners();
+        this.socketInit();
     },
     // sockets: {
     //     tooManyPlayers: function() {
@@ -249,9 +248,9 @@ export default {
     //         this.$refs.enterRoom.roomData.pin = gameCode;
     //         GameStore.commit('setGameCode', gameCode);
     //     },
-	// 	init: function(clientNumber) {
-	// 		GameStore.commit('setClientNumber', clientNumber);	
-	// 	}
+    // 	init: function(clientNumber) {
+    // 		GameStore.commit('setClientNumber', clientNumber);
+    // 	}
     // },
 };
 </script>

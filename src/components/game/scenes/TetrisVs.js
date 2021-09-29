@@ -1,8 +1,6 @@
 import Phaser from 'phaser';
 import Constants from '../constants';
 import GameStore from '../../../store/GameStore';
-import Vue from 'vue';
-import router from '../../../router/index';
 
 const BLOCK_HEIGHT = Constants.BLOCK_HEIGHT;
 const BLOCK_WIDTH = Constants.BLOCK_WIDTH;
@@ -10,6 +8,8 @@ const GAME_SCENE_HEIGHT = Constants.GAME_SCENE_HEIGHT;
 const GAME_SCENE_WIDTH = Constants.GAME_SCENE_WIDTH;
 const HUD_WIDTH = Constants.HUD_WIDTH;
 const ABOVE_GAP = Constants.ABOVE_GAP;
+
+const socket = GameStore.getters.getSocket;
 
 export default class Tetris extends Phaser.Scene {
     constructor() {
@@ -366,6 +366,7 @@ export default class Tetris extends Phaser.Scene {
             });
             this.checkClearLine(field, this.fieldPiece);
             player.holdFlag = 0;
+            this.handleEmit();
             return this.drawNewPiece(player);
         };
 
@@ -438,6 +439,7 @@ export default class Tetris extends Phaser.Scene {
                     this.clearPieceLine(clear_y, fieldPiece);
                     this.score += 100;
                     this.scoreNumberText.text = this.score;
+                    GameStore.commit('setGameScore', this.score);
                 }
             });
         };
@@ -454,6 +456,16 @@ export default class Tetris extends Phaser.Scene {
             return checkFlag;
         };
 
+        this.handleEmit = () => {
+            const fieldState = JSON.parse(JSON.stringify(this.field));
+            this.joinState(this.player, fieldState);
+            if (this.clientNumber == 1) {
+                socket.emit('player1', fieldState);
+            } else if (this.clientNumber == 2) {
+                socket.emit('player2', fieldState);
+            }
+        };
+
         this.initInput = () => {
             this.input.keyboard.on('keydown-LEFT', event => {
                 event.preventDefault();
@@ -461,6 +473,7 @@ export default class Tetris extends Phaser.Scene {
                 this.collision(this.player, this.field)
                     ? (this.player.pos.x += 1)
                     : this.movePiece(this.activePiece, { x: -1, y: 0 });
+                this.handleEmit();
             });
 
             this.input.keyboard.on('keydown-RIGHT', event => {
@@ -469,6 +482,7 @@ export default class Tetris extends Phaser.Scene {
                 this.collision(this.player, this.field)
                     ? (this.player.pos.x += -1)
                     : this.movePiece(this.activePiece, { x: 1, y: 0 });
+                this.handleEmit();
             });
 
             this.input.keyboard.on('keydown-DOWN', event => {
@@ -481,11 +495,13 @@ export default class Tetris extends Phaser.Scene {
                           this.activePiece,
                       ))
                     : this.movePiece(this.activePiece, { x: 0, y: 1 });
+                this.handleEmit();
             });
 
             this.input.keyboard.on('keydown-UP', event => {
                 event.preventDefault();
                 this.activePiece = this.rotate(this.player, this.field, this.activePiece);
+                this.handleEmit();
             });
 
             this.input.keyboard.on('keydown-SPACE', event => {
@@ -503,6 +519,7 @@ export default class Tetris extends Phaser.Scene {
                     this.field,
                     this.activePiece,
                 );
+                this.handleEmit();
             });
 
             this.input.keyboard.on('keydown-Z', event => {
@@ -542,6 +559,7 @@ export default class Tetris extends Phaser.Scene {
                         this.player.holdFlag = 1;
                     }
                 }
+                this.handleEmit();
             });
         };
     }
@@ -571,17 +589,21 @@ export default class Tetris extends Phaser.Scene {
         this.drawField(this.field);
         this.initInput();
         this.gameTime = 500;
+        const self = this;
+        socket.once('gameOver', () => {
+            GameStore.commit('setGameScore', this.score);
+            self.scene.pause();
+        });
         GameStore.commit('setGameScore', 0);
     }
 
     update(time, deltaTime) {
         if (this.checkGameOver(this.field)) {
-            Vue.swal('Your Score is ' + this.score).then(() => {
-                router.push('/');
-            });
             GameStore.commit('setGameScore', this.score);
+            socket.emit('gameOver', this.clientNumber);
             this.scene.pause();
         } else if (this.dcount > this.gameTime) {
+            this.handleEmit();
             if (Math.floor(this.countTime / 5000) >= 1) {
                 if (this.gameTime > 100) {
                     this.gameTime -= 10;

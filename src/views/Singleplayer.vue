@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Game from '../components/game/Game.vue';
+import Game from '../components/game/GameSingle.vue';
 export default {
     name: 'Singleplayer',
     components: {

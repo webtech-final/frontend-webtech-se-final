@@ -80,33 +80,42 @@
     </div>
 </template>
 <script>
+import GameStore from '../../store/GameStore'
+
 export default {
     name: 'EnterRoom',
-    props: ['msg'],
+    props: ['msg', 'pin'],
     data() {
         return {
+            socket: GameStore.getters.getSocket,
             roomData: {
                 mode: this.msg,
-                pin: '',
+                pin: this.pin,
             },
         };
-    },
-    sockets: {
     },
     methods: {
         handleBtn() {
             this.$emit('onHome', { event: this.msg, pin: this.roomData.pin });
         },
-        pinGenerate() {
-            return this.msg === 'CREATE' ? this.roomData.pin : (this.roomData.pin = '');
+
+        socketInit() {
+            this.socket.on('gameCode', gameCode => {
+                this.roomData.pin = gameCode;
+                GameStore.commit('setGameCode', gameCode);
+                this.setPin();
+            });
+
         },
 
         setPin() {
-            this.$emit;
+            this.msg === 'CREATE' ? this.roomData.pin : (this.roomData.pin = '');
         },
+
     },
+
     created() {
-        this.pinGenerate();
+        this.socketInit();
     },
 };
 </script>

@@ -1,50 +1,76 @@
 <template>
     <div id="multi" class="flex justify-center">
-        <!-- <div ref='join' class="flex">
-            <enter-room @join="handleJoin" class="m-auto"></enter-room>
-        </div> -->
-        <div id="gameScene" ref="gameScene" class="mt-8 flex">
-            <game class="mr-8" ref='game1'></game>
-            <opponnect ref='game2'></opponnect>
+        <div id="wait" class="pt-10 text-3xl text-white text-center" v-if="showWait">
+            <h1>Waiting for another player ...</h1>
+            <h1 class="text-2xl pt-5">
+                YOUR ROOM PIN:<label class="font-bold">
+                    {{ roomPin ? roomPin : 'Fail to load game pin, Please recreate room' }}
+                </label>
+            </h1>
         </div>
-        <button @click="test" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <div id="gameScene" ref="gameScene" class="mt-8 flex justify-center items-center">
+            <game-multi ref="game1" class="mr-5"></game-multi>
+            <opponnect ref="game2"></opponnect>
+        </div>
+        <!-- <button
+            @click="test"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
             TEST
-        </button>
+        </button> -->
     </div>
 </template>
 
 <script>
-import Game from '../components/game/Game.vue';
-import Opponnect from '../components/game/Opponent.vue'
+import GameMulti from '../components/game/GameMulti.vue';
+import Opponnect from '../components/game/Opponent.vue';
 import GameStore from '../store/GameStore';
 
 export default {
     name: 'Multiplayer',
     data: () => {
         return {
-            socket : GameStore.getters.getSocket,
-        }
+            socket: GameStore.getters.getSocket,
+            roomPin: GameStore.getters.getGameCode,
+            showWait: true,
+        };
     },
     components: {
-        Game,
-        Opponnect
+        GameMulti,
+        Opponnect,
     },
 
     methods: {
-        handleStart() {
-            this.$refs.game1.initializeGame();
-            this.$refs.game2.initializeGame();
+        socketInit() {
+            this.socket.once('gameOver', clientNumber => {
+                console.log(GameStore.getters.getGameScore);
+                let msg = '';
+                let type = '';
+                clientNumber != GameStore.getters.getClientNumber
+                    ? ((msg = 'YOU WIN!!'), (type = 1))
+                    : ((msg = 'YOU LOSE'), (type = 0));
+                this.$swal(
+                    msg,
+                    'Your score is ' + GameStore.getters.getGameScore,
+                    type ? 'success' : 'warning',
+                ).then(() => {
+                    this.$router.push('/');
+                });
+            });
+
+            this.socket.once('startGame', () => {
+                this.showWait = false;
+            });
         },
-        test() {
-            this.$refs.game1.initializeGame();
-            this.$refs.game2.initializeGame()
-            // this.socket.emit('test1')
-        }
+
+        reset() {
+            GameStore.commit('setClientNumber', '');
+            GameStore.commit('setGameCode', '');
+            GameStore.commit('setGameScore', '');
+        },
     },
     mounted() {
-        // this.socket.on('test2', data => {
-        //     console.log(data)
-        // })
+        this.socketInit();
     },
 };
 </script>

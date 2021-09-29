@@ -1,19 +1,23 @@
 <template>
-    <ion-phaser v-bind:game.prop="game" v-bind:initialize.prop="initialize" />
+    <ion-phaser
+        class="border-2 border-white"
+        v-if="initialize"
+        v-bind:game.prop="game"
+        v-bind:initialize.prop="initialize"
+    />
 </template>
 
 <script>
 import Phaser from 'phaser';
 import Tetris from './scenes/Tetris.js';
 import GameOver from './scenes/GameOver.js';
-import Start from './scenes/Start.js';
 import Constants from './constants.js';
-
-
+import GameStore from '../../store/GameStore';
 
 export default {
     data() {
         return {
+            socket: GameStore.getters.getSocket,
             initialize: false,
             game: {
                 type: Phaser.AUTO,
@@ -26,11 +30,13 @@ export default {
     },
     methods: {
         initializeGame() {
-            this.initialize = true;
+            this.initialize = !this.initialize;
         },
     },
-    created() {
-
+    mounted() {
+        this.socket.once('startGame', () => {
+            this.initializeGame();
+        });
     },
 };
 </script>

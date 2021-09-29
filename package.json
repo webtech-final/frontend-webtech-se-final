@@ -16,7 +16,7 @@
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.14",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
-    "vue-socket.io": "^3.0.10",
+    "vue-sweetalert2": "^5.0.2",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
