@@ -1,9 +1,13 @@
 <template>
     <div id="multi" class="flex justify-center">
         <div id="wait" class="pt-10 text-3xl text-white text-center" v-if="showWait">
-            <h1>Waiting for another player ...</h1>
+            <h1 v-if="roomPin">
+                Waiting for another player
+                <div class="dot-flashing inline-flex ml-5"></div>
+            </h1>
             <h1 class="text-2xl pt-5">
-                YOUR ROOM PIN:<label class="font-bold">
+                {{ roomPin ? 'YOUR ROOM PIN:' : ' '
+                }}<label class="font-bold">
                     {{ roomPin ? roomPin : 'Fail to load game pin, Please recreate room' }}
                 </label>
             </h1>
@@ -43,7 +47,6 @@ export default {
     methods: {
         socketInit() {
             this.socket.once('gameOver', clientNumber => {
-                console.log(GameStore.getters.getGameScore);
                 let msg = '';
                 let type = '';
                 clientNumber != GameStore.getters.getClientNumber
@@ -55,6 +58,7 @@ export default {
                     type ? 'success' : 'warning',
                 ).then(() => {
                     this.$router.push('/');
+                    this.reset();
                 });
             });
 
@@ -76,11 +80,54 @@ export default {
 </script>
 
 <style scoped>
-/* #gameScene {
-    display: none;
+.dot-flashing {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: #9880ff;
+    color: #9880ff;
+    animation: dotFlashing 1s infinite linear alternate;
+    animation-delay: 0.5s;
 }
 
-#multi {
-    height: 90vh;
-} */
+.dot-flashing::before,
+.dot-flashing::after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 0;
+}
+
+.dot-flashing::before {
+    left: -15px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: #9880ff;
+    color: #9880ff;
+    animation: dotFlashing 1s infinite alternate;
+    animation-delay: 0s;
+}
+
+.dot-flashing::after {
+    left: 15px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: #9880ff;
+    color: #9880ff;
+    animation: dotFlashing 1s infinite alternate;
+    animation-delay: 1s;
+}
+
+@keyframes dotFlashing {
+    0% {
+        background-color: #9880ff;
+    }
+    50%,
+    100% {
+        background-color: #ebe6ff;
+    }
+}
 </style>
