@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1633073030542" clover="3.2.0">
+  <project timestamp="1633073030542" name="All files">
+    <metrics statements="58" coveredstatements="21" conditionals="6" coveredconditionals="2" methods="29" coveredmethods="8" elements="93" coveredelements="31" complexity="0" loc="58" ncloc="58" packages="3" files="3" classes="3"/>
+    <package name="components.home">
+      <metrics statements="9" coveredstatements="1" conditionals="2" coveredconditionals="0" methods="6" coveredmethods="0"/>
+      <file name="EnterRoom.vue" path="/home/nataset/workfolder/js/webtech/webtech-final/frontend/src/components/home/EnterRoom.vue">
+        <metrics statements="9" coveredstatements="1" conditionals="2" coveredconditionals="0" methods="6" coveredmethods="0"/>
+        <line num="83" count="1" type="stmt"/>
+        <line num="89" count="0" type="stmt"/>
+        <line num="99" count="0" type="stmt"/>
+        <line num="103" count="0" type="stmt"/>
+        <line num="104" count="0" type="stmt"/>
+        <line num="105" count="0" type="stmt"/>
+        <line num="106" count="0" type="stmt"/>
+        <line num="112" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="118" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="store">
+      <metrics statements="11" coveredstatements="7" conditionals="2" coveredconditionals="2" methods="8" coveredmethods="4"/>
+      <file name="GameStore.js" path="/home/nataset/workfolder/js/webtech/webtech-final/frontend/src/store/GameStore.js">
+        <metrics statements="11" coveredstatements="7" conditionals="2" coveredconditionals="2" methods="8" coveredmethods="4"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="7" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="views">
+      <metrics statements="38" coveredstatements="13" conditionals="2" coveredconditionals="0" methods="15" coveredmethods="4"/>
+      <file name="Home.vue" path="/home/nataset/workfolder/js/webtech/webtech-final/frontend/src/views/Home.vue">
+        <metrics statements="38" coveredstatements="13" conditionals="2" coveredconditionals="0" methods="15" coveredmethods="4"/>
+        <line num="154" count="1" type="stmt"/>
+        <line num="155" count="1" type="stmt"/>
+        <line num="161" count="1" type="stmt"/>
+        <line num="170" count="0" type="stmt"/>
+        <line num="173" count="0" type="stmt"/>
+        <line num="174" count="0" type="stmt"/>
+        <line num="177" count="0" type="stmt"/>
+        <line num="178" count="0" type="stmt"/>
+        <line num="179" count="0" type="stmt"/>
+        <line num="182" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="184" count="0" type="stmt"/>
+        <line num="185" count="0" type="stmt"/>
+        <line num="186" count="0" type="stmt"/>
+        <line num="190" count="0" type="stmt"/>
+        <line num="191" count="0" type="stmt"/>
+        <line num="192" count="0" type="stmt"/>
+        <line num="195" count="0" type="stmt"/>
+        <line num="199" count="0" type="stmt"/>
+        <line num="200" count="0" type="stmt"/>
+        <line num="204" count="0" type="stmt"/>
+        <line num="205" count="0" type="stmt"/>
+        <line num="209" count="1" type="stmt"/>
+        <line num="210" count="1" type="stmt"/>
+        <line num="211" count="1" type="stmt"/>
+        <line num="212" count="1" type="stmt"/>
+        <line num="216" count="1" type="stmt"/>
+        <line num="217" count="0" type="stmt"/>
+        <line num="220" count="1" type="stmt"/>
+        <line num="221" count="0" type="stmt"/>
+        <line num="222" count="0" type="stmt"/>
+        <line num="223" count="0" type="stmt"/>
+        <line num="226" count="1" type="stmt"/>
+        <line num="227" count="0" type="stmt"/>
+        <line num="228" count="0" type="stmt"/>
+        <line num="229" count="0" type="stmt"/>
+        <line num="234" count="1" type="stmt"/>
+        <line num="235" count="1" type="stmt"/>
+        <line num="236" count="1" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>
