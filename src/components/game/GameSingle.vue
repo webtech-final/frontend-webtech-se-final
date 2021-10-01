@@ -24,7 +24,7 @@ export default {
                 backgroundColor: 0x000000,
                 width: Constants.GAME_SCENE_WIDTH + Constants.HUD_WIDTH,
                 height: Constants.GAME_SCENE_HEIGHT,
-                scene: [Tetris, GameOver],
+                scene: [Tetris],
             },
         };
     },
