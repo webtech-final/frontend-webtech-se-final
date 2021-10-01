@@ -49,9 +49,15 @@ export default {
             this.socket.once('gameOver', clientNumber => {
                 let msg = '';
                 let type = '';
-                clientNumber != GameStore.getters.getClientNumber
-                    ? ((msg = 'YOU WIN!!'), (type = 1))
-                    : ((msg = 'YOU LOSE'), (type = 0));
+                if (clientNumber != GameStore.getters.getClientNumber) {
+                    // this player win
+                    msg = 'YOU WIN!!';
+                    type = 1;
+                } else {
+                    // this player lose
+                    msg = 'YOU LOSE';
+                    type = 0;
+                }
                 this.$swal(
                     msg,
                     'Your score is ' + GameStore.getters.getGameScore,
