@@ -1,68 +1,90 @@
 <template>
-    <div class="relative pt-16">
-        <div style="display: grid; grid template-columns: 100%" class="absolute top-0 mx-auto w-full">
-            <h1 class="h1">LEADERBOARD</h1>
+    <div class="bg">
+        <div class="relative pt-16">
+            <div style="display: grid; grid template-columns: 100%" class="absolute top-0 mx-auto w-full">
+                <h1 class="h1">LEADERBOARD(SINGLE)</h1>
+            </div>
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>RANK</th>
+                            <th>NAME</th>
+                            <th>SCORE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(info,index) in single" :key="index">
+                            <td>{{index+1}}</td>
+                            <td>{{info.user.name}}</td>
+                            <td>{{info.score}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>RANK</th>
-                        <th></th>
-                        <th>NAME</th>
-                        <th>POINT</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(info,index) in infos" :key="index">
-                        <td>{{index+1}}</td>
-                        <td>{{info.image}}</td>
-                        <td>{{info.name}}</td>
-                        <td>{{info.point}}</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="relative pt-16 ">
+            <div style="display: grid; grid template-columns: 100%" class="absolute top-0 mx-auto w-full">
+                <h1 class="h1">LEADERBOARD(VERSUS)</h1>
+            </div>
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>RANK</th>
+                            <th>NAME</th>
+                            <th>SCORE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(info,index) in versus" :key="index">
+                            <td>{{index+1}}</td>
+                            <td>{{info.user.name}}</td>
+                            <td>{{info.score}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import PlayHistory from '../../store/playHistory'
+
 export default {
     data(){
         return{
-            infos:[
-                {
-                    image: '',
-                    name: 'Plume',
-                    point: 20000000
-                },
-                {
-                    image: '',
-                    name: 'Plume',
-                    point: 2000100
-                },
-                {
-                    image: '',
-                    name: 'Big',
-                    point: 2000000
-                },
-                {
-                    image: '',
-                    name: 'DOOM',
-                    point: 20000
-                },
-                {
-                    image: '',
-                    name: 'Aui',
-                    point: 2488
-                },
-            ]
+            // infos:[
+            //     {
+            //         image: '',
+            //         name: 'Plume',
+            //         point: 20000000
+            //     }
+            // ],
+            single:[],
+            versus:[]
         }
+    },
+    created(){
+        this.fetchHistories();
+    },
+    methods:{
+        async fetchHistories(){
+            await PlayHistory.dispatch('fetchTopSinglePlayHistory')
+            this.single = PlayHistory.getters.single
+            await PlayHistory.dispatch('fetchTopVersusPlayHistory')
+            this.versus = PlayHistory.getters.versus
+        },
     }
 }
 </script>
 
 <style lang='scss' scoped>
+.bg{
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
 table,tr{
     color: black;
     margin-right: auto;
