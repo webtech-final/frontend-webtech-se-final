@@ -4,7 +4,8 @@ import io from 'socket.io-client';
 
 Vue.use(Vuex);
 
-const socket = io('http://localhost:3000');
+const websocket_endpoint = process.env.VUE_APP_WEBSOCKET_ENDPOINT || 'http://localhost:3000';
+const socket = io(websocket_endpoint);
 
 export default new Vuex.Store({
     state: {
