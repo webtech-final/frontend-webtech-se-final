@@ -30,6 +30,11 @@ export default {
                 confirmPassword: ''
             }
         }
+    },
+    methods:{
+        async signup(){
+            //
+        }
     }
 }
 </script>

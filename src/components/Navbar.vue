@@ -67,6 +67,14 @@
                         Sign Up
                     </button>
                 </router-link>
+                <router-link class="flex" to="/logout">
+                    <button
+                        id="round"
+                        class="bg-white hover:bg-gray-600 text-black content-center my-4 mx-3 px-3"
+                    >
+                        Logout
+                    </button>
+                </router-link>
             </div>
         </div>
     </div>
