@@ -575,6 +575,7 @@ export default class Tetris extends Phaser.Scene {
     }
 
     update(time, deltaTime) {
+        //เกมจบ
         if (this.checkGameOver(this.field)) {
             Vue.swal('Your Score is ' + this.score).then(() => {
                 router.push('/');

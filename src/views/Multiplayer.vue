@@ -53,6 +53,13 @@ export default {
                     // this player win
                     msg = 'YOU WIN!!';
                     type = 1;
+                    let payload = {
+                        user_id: '',
+                        score: this.socket.getters.getGameScore,
+                        mode: "versus",
+                        opponent: '',
+                        result: "WIN"
+                    }
                 } else {
                     // this player lose
                     msg = 'YOU LOSE';
