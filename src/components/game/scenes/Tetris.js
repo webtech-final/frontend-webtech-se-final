@@ -625,6 +625,7 @@ export default class Tetris extends Phaser.Scene {
         let rate = await PointRate.dispatch('getLastRate')
         let point = score/rate
         point = Math.floor(point)
+        
     }
 
 }
