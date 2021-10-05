@@ -11,6 +11,7 @@ const GAME_SCENE_WIDTH = Constants.GAME_SCENE_WIDTH;
 const HUD_WIDTH = Constants.HUD_WIDTH;
 const ABOVE_GAP = Constants.ABOVE_GAP;
 
+import PlayHistory from '../../../store/playHistory'
 export default class Tetris extends Phaser.Scene {
     constructor() {
         super('tetris');
@@ -574,7 +575,7 @@ export default class Tetris extends Phaser.Scene {
         GameStore.commit('setGameScore', 0);
     }
 
-    update(time, deltaTime) {
+    async update(time, deltaTime) {
         //เกมจบ
         if (this.checkGameOver(this.field)) {
             Vue.swal('Your Score is ' + this.score).then(() => {
@@ -602,4 +603,12 @@ export default class Tetris extends Phaser.Scene {
         this.dcount += deltaTime;
         this.countTime += deltaTime;
     }
+    
+    async saveHistory(score, id){
+        let payload = {
+            
+        }
+        await PlayHistory.dispatch('addHistory', payload)
+    }
+
 }

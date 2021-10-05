@@ -9,14 +9,18 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         single: [],
-        versus: []
+        versus: [],
+        data: []
     },
     mutations: {
       fetchSingle(state, {res} ){
           state.single = res.data
       },
       fetchVersus(state, {res} ){
-        state.versus = res.data
+          state.versus = res.data
+      },
+      addHistory(state, {res}){
+          state.data = res.data
       }
     },
     actions: {
@@ -29,6 +33,17 @@ export default new Vuex.Store({
             let url = `${api_endpoint}/api/playHistories/versus/top10`
             let res = await axios.get(url)
             commit('fetchVersus', {res})
+        },
+        async addHistory({ commit }, payload){
+            let url = `${api_endpoint}/api/playHistories`
+            let body = {
+
+            }
+            let header = {
+                headers:{
+                    Authorization: `Bearer `
+                }
+            } 
         }
     },
     modules: {
