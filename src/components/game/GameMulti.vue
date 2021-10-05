@@ -10,7 +10,6 @@
 <script>
 import Phaser from 'phaser';
 import TetrisVs from './scenes/TetrisVs.js';
-import GameOver from './scenes/GameOver.js';
 import Constants from './constants.js';
 import GameStore from '../../store/GameStore';
 
