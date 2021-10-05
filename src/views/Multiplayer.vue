@@ -1,21 +1,28 @@
 <template>
     <div id="multi" class="flex justify-center">
-        <div id="wait" class="pt-10 text-3xl text-white text-center" v-if="showWait">
-            <h1 v-if="roomPin">
-                Waiting for another player
-                <div class="dot-flashing inline-flex ml-5"></div>
-            </h1>
-            <h1 class="text-2xl pt-5">
-                {{ roomPin ? 'YOUR ROOM PIN:' : ' '
-                }}<label class="font-bold">
-                    {{ roomPin ? roomPin : 'Fail to load game pin, Please recreate room' }}
-                </label>
-            </h1>
+        <div>
+            <div class="pt-10 text-3xl text-white text-center">
+                Your User Name: {{ playerName }}
+            </div>
+
+            <div id="wait" class="pt-10 text-3xl text-white text-center" v-if="showWait">
+                <h1 v-if="roomPin">
+                    Waiting for another player
+                    <div class="dot-flashing inline-flex ml-5"></div>
+                </h1>
+                <h1 class="text-2xl pt-5">
+                    {{ roomPin ? 'YOUR ROOM PIN:' : ' '
+                    }}<label class="font-bold">
+                        {{ roomPin ? roomPin : 'Fail to load game pin, Please recreate room' }}
+                    </label>
+                </h1>
+            </div>
+            <div id="gameScene" ref="gameScene" class="mt-8 flex justify-center items-center">
+                <game-multi ref="game1" class="mr-5"></game-multi>
+                <opponnect ref="game2"></opponnect>
+            </div>
         </div>
-        <div id="gameScene" ref="gameScene" class="mt-8 flex justify-center items-center">
-            <game-multi ref="game1" class="mr-5"></game-multi>
-            <opponnect ref="game2"></opponnect>
-        </div>
+
         <!-- <button
             @click="test"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -29,6 +36,7 @@
 import GameMulti from '../components/game/GameMulti.vue';
 import Opponnect from '../components/game/Opponent.vue';
 import GameStore from '../store/GameStore';
+import authUser from '../store/authUser';
 
 export default {
     name: 'Multiplayer',
@@ -36,6 +44,7 @@ export default {
         return {
             socket: GameStore.getters.getSocket,
             roomPin: GameStore.getters.getGameCode,
+            playerName: '',
             showWait: true,
         };
     },
@@ -46,15 +55,18 @@ export default {
 
     methods: {
         socketInit() {
-            this.socket.once('gameOver', clientNumber => {
+            this.socket.once('gameOver', ({ loserNumber, loserName, winnerName }) => {
                 let msg = '';
                 let type = '';
-                if (clientNumber != GameStore.getters.getClientNumber) {
+                let opponentName = '';
+                if (loserNumber != GameStore.getters.getClientNumber) {
                     // this player win
+                    opponentName = loserName;
                     msg = 'YOU WIN!!';
                     type = 1;
                 } else {
                     // this player lose
+                    opponentName = winnerName;
                     msg = 'YOU LOSE';
                     type = 0;
                 }
@@ -73,14 +85,28 @@ export default {
             });
         },
 
+        isAuthen() {
+            return authUser.getters.isAuthen;
+        },
+
         reset() {
             GameStore.commit('setClientNumber', '');
             GameStore.commit('setGameCode', '');
             GameStore.commit('setGameScore', '');
         },
+
+        setPlayerName() {
+            this.playerName = authUser.getters.user.name;
+        },
     },
-    mounted() {
-        this.socketInit();
+    created() {
+        if (!this.isAuthen()) {
+            this.$swal('You are not logged in.', 'Please login and go to this page again', 'error');
+            this.$router.push('/login');
+        } else {
+            this.socketInit();
+            this.setPlayerName();
+        }
     },
 };
 </script>

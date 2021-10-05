@@ -153,6 +153,7 @@
 <script>
 import GameStore from '../store/GameStore';
 import EnterRoom from '../components/home/EnterRoom.vue';
+import authUser from '../store/authUser';
 
 export default {
     name: 'Home',
@@ -196,12 +197,12 @@ export default {
         },
 
         handleNewGame() {
-            this.socket.emit('newGame', this.pin);
+            this.socket.emit('newGame', { roomName: this.pin, playerName: this.playerName });
             this.$router.push('/multi');
         },
 
         handleJoinGame() {
-            this.socket.emit('joinGame', this.pin);
+            this.socket.emit('joinGame', { roomName: this.pin, playerName: this.playerName });
             this.$router.push('/multi');
         },
 
@@ -229,10 +230,15 @@ export default {
                 this.reset();
             });
         },
+
+        setPlayerName() {
+            this.playerName = authUser.getters.user.name ? authUser.getters.user.name : false;
+        },
     },
     mounted() {
         this.reset();
         this.socket.removeAllListeners();
+        this.setPlayerName();
         this.socketInit();
     },
     // sockets: {

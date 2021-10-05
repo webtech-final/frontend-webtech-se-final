@@ -1,71 +1,68 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import axios from 'axios'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import axios from 'axios';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
-let auth_key = "auth_user"
-let auth = JSON.parse(localStorage.getItem(auth_key))
-let api_endpoint = process.env.VUE_APP_ENDPOINT || "http://localhost:8000"
-
-const initialState = {
-    user: auth ? auth.user : "",
-    jwt: auth? auth.jwt : "",
-    isAuthen: auth ? true : false
-}
+let auth_key = 'auth_user';
+let auth = JSON.parse(localStorage.getItem(auth_key));
+let api_endpoint = process.env.VUE_APP_ENDPOINT || 'http://localhost:8000';
 
 export default new Vuex.Store({
-  state: {
-    state: initialState
-  },
-  mutations: {
-    loginSuccess(state, res){
-        state.user = res.user
-        state.jwt = res.access_token
-        state.isAuthen = true
+    state: {
+        user: auth ? auth.data.user : '',
+        jwt: auth ? auth.data.access_token : '',
+        isAuthen: auth ? true : false,
     },
-    logoutSuccess(state){
-        state.user = ""
-        state.jwt = ""
-        state.isAuthen = false
-    }
-  },
-  actions: {
-    async login({commit}, {email, password}){
-        let url = `${api_endpoint}/api/auth/login`
-        let body = {
-            email: email,
-            password: password
-        }
-        let res = await axios.post(url, body)
-        commit("loginSuccess", res.data)
-        localStorage.setItem(auth_key, JSON.stringify(res))
-        return res.data
+    mutations: {
+        loginSuccess(state, res) {
+            state.user = res.user;
+            state.jwt = res.access_token;
+            state.isAuthen = true;
+        },
+        logoutSuccess(state) {
+            state.user = '';
+            state.jwt = '';
+            state.isAuthen = false;
+        },
     },
-    // รอดูว่าตอนสมัครเสร็จได้ jwt ไหม
-    async register({commit}, payload){
-        let url = `${api_endpoint}/api/auth/register`
-        let body = payload
-        let res = await axios.post(url, body)
-        commit("loginSuccess", res.data)
-        return res.data
+    actions: {
+        async login({ commit }, { email, password }) {
+            let url = `${api_endpoint}/api/auth/login`;
+            let body = {
+                email: email,
+                password: password,
+            };
+            let res = await axios.post(url, body);
+            commit('loginSuccess', res.data);
+            localStorage.setItem(auth_key, JSON.stringify(res));
+            return res.data;
+        },
+        // รอดูว่าตอนสมัครเสร็จได้ jwt ไหม
+        async register({ commit }, payload) {
+            let url = `${api_endpoint}/api/auth/register`;
+            let body = payload;
+            let res = await axios.post(url, body);
+            commit('loginSuccess', res.data);
+            return res.data;
+        },
+        async logout({ commit }) {
+            let url = `${api_endpoint}/api/auth/logout`;
+            localStorage.removeItem(auth_key);
+            let header = {
+                headers: {
+                    Authorization: `Bearer ${this.state.jwt}`,
+                },
+            };
+            let res = await axios.post(url, null, header);
+            commit('logoutSuccess');
+            return res;
+        },
     },
-    async logout({commit}){
-        let url  = `${api_endpoint}/api/auth/logout`
-        localStorage.removeItem(auth_key)
-        let header = {headers: {
-            Authorization: `Bearer ${this.state.jwt}`,
-          }}
-        let res = await axios.post(url, null, header)
-        commit("logoutSuccess")
-        return res
-    }
-  },
-  modules: {
-  },
-  getters:{
-      user: (state) => state.user,
-      jwt: (state) => state.jwt,
-      isAuthen: (state) => state.isAuthen
-  }
-})
+    modules: {},
+    getters: {
+        user: state => state.user,
+        jwt: state => state.jwt,
+        isAuthen: state => state.isAuthen,
+    },
+});

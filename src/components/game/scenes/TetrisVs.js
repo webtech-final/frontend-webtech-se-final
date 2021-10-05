@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import Constants from '../constants';
 import GameStore from '../../../store/GameStore';
+import authUser from '../../../store/authUser';
 
 const BLOCK_HEIGHT = Constants.BLOCK_HEIGHT;
 const BLOCK_WIDTH = Constants.BLOCK_WIDTH;
@@ -18,6 +19,8 @@ export default class Tetris extends Phaser.Scene {
 
     init() {
         this.clientNumber = GameStore.getters.getClientNumber;
+
+        this.clientName = authUser.getters.user.name;
 
         this.score = 0;
 
@@ -600,7 +603,9 @@ export default class Tetris extends Phaser.Scene {
     update(time, deltaTime) {
         if (this.checkGameOver(this.field)) {
             GameStore.commit('setGameScore', this.score);
-            socket.emit('gameOver', this.clientNumber);
+            socket.emit('gameOver', {
+                loserNumber: this.clientNumber,
+            });
             this.scene.pause();
         } else if (this.dcount > this.gameTime) {
             this.handleEmit();

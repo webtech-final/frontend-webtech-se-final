@@ -51,37 +51,65 @@
                 </router-link>
             </div>
             <div class="flex">
-                <router-link class="flex" to="/login">
-                    <button
-                        id="round"
-                        class="bg-white hover:bg-gray-600 text-black content-center my-4 mx-3 px-3"
-                    >
-                        Login
-                    </button>
-                </router-link>
-                <router-link class="flex" to="/regist">
-                    <button
-                        id="round"
-                        class="bg-white hover:bg-gray-600 text-black content-center my-4 mx-3 px-3"
-                    >
-                        Sign Up
-                    </button>
-                </router-link>
-                <router-link class="flex" to="/logout">
-                    <button
-                        id="round"
-                        class="bg-white hover:bg-gray-600 text-black content-center my-4 mx-3 px-3"
-                    >
-                        Logout
-                    </button>
-                </router-link>
+                <div class="flex" v-if="!isAuthen()">
+                    <router-link class="flex" to="/login">
+                        <button
+                            id="round"
+                            class="bg-white hover:bg-gray-600 text-black content-center my-4 mx-3 px-3"
+                        >
+                            Login
+                        </button>
+                    </router-link>
+                    <router-link class="flex" to="/regist">
+                        <button
+                            id="round"
+                            class="bg-white hover:bg-gray-600 text-black content-center my-4 mx-3 px-3"
+                        >
+                            Sign Up
+                        </button>
+                    </router-link>
+                </div>
+
+                <div class="flex items-center" v-if="isAuthen()">
+                    <p class="mr-5 text-xl font-light">
+                        <label class="text-xl font-normal">username: </label> {{ currentUser.name }}
+                    </p>
+                    <router-link class="flex" to="/logout">
+                        <button
+                            id="round"
+                            class="bg-white hover:bg-gray-600 text-black content-center my-4 mx-3 px-3"
+                        >
+                            Logout
+                        </button>
+                    </router-link>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-export default {};
+import authUser from '../store/authUser';
+export default {
+    data() {
+        return {
+            currentUser: {},
+        };
+    },
+    created() {
+        this.currentUser = authUser.getters.user;
+    },
+    methods: {
+        setUser() {
+            this.currentUser = authUser.getters.user;
+        },
+
+        isAuthen() {
+            this.setUser();
+            return authUser.getters.isAuthen;
+        },
+    },
+};
 </script>
 
 <style lang="scss" scoped>
