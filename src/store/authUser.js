@@ -67,5 +67,13 @@ export default new Vuex.Store({
       user: (state) => state.user,
       jwt: (state) => state.jwt,
       isAuthen: (state) => state.isAuthen
+  },
+  getApiHeader(){
+      let jwt = JSON.parse(localStorage.getItem(auth_key))
+      return{
+            headers:{
+                Authorization: `Bearer ${jwt}`
+            }
+      }
   }
 })
