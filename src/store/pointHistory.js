@@ -15,7 +15,7 @@ export default new Vuex.Store({
       async addPoint({commit}, payload){
           let url = `${api_endpoint}/api/pointHistories`
           let body = payload
-          await axios.post(url, body)
+          await axios.post(url,body)
       }
   },
   modules: {

@@ -14,6 +14,7 @@ const ABOVE_GAP = Constants.ABOVE_GAP;
 import PlayHistory from '../../../store/playHistory'
 import AuthUser from '../../../store/authUser'
 import PointRate from '../../../store/pointRate'
+import PointHistory from '../../../store/pointHistory'
 export default class Tetris extends Phaser.Scene {
     constructor() {
         super('tetris');
@@ -586,6 +587,7 @@ export default class Tetris extends Phaser.Scene {
             GameStore.commit('setGameScore', this.score);
             if(AuthUser.getters.isAuthen){
                 this.saveHistory(this.score)
+                this.addPoint(this.score)
             }
             this.scene.pause();
         } else if (this.dcount > this.gameTime) {
@@ -625,7 +627,17 @@ export default class Tetris extends Phaser.Scene {
         let rate = await PointRate.dispatch('getLastRate')
         let point = score/rate
         point = Math.floor(point)
-        
+        let payload = {
+            id: AuthUser.getters.user.id,
+            point: point
+        }
+        await AuthUser.dispatch('getPoint', payload)
+        let payload1 = {
+            user_id: AuthUser.getters.user.id,
+            point: point,
+            type: "get"
+        }
+        await PointHistory.dispatch('addPoint', payload1)
     }
 
 }

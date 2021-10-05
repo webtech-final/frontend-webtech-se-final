@@ -58,6 +58,14 @@ export default new Vuex.Store({
             commit('logoutSuccess');
             return res;
         },
+        async getPoint({commit}, payload){
+            let url = `${api_endpoint}/api/auth/getPoint/${payload.id}`
+            let body = {
+                point: payload.point
+            }
+            let header = this.getApiHeader()
+            await axios.put(url, body, header)
+        }
     },
     modules: {},
     getters: {
