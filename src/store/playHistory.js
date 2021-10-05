@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import authUser from './authUser'
 
 let api_endpoint = process.env.VUE_APP_ENDPOINT || "http://localhost:8000"
 
@@ -20,7 +21,7 @@ export default new Vuex.Store({
           state.versus = res.data
       },
       addHistory(state, {res}){
-          state.data = res.data
+          state.data.push(res)
       }
     },
     actions: {
@@ -36,20 +37,17 @@ export default new Vuex.Store({
         },
         async addHistory({ commit }, payload){
             let url = `${api_endpoint}/api/playHistories`
-            let body = {
-
-            }
-            let header = {
-                headers:{
-                    Authorization: `Bearer `
-                }
-            } 
+            let body = payload
+            // let header = authUser.getApiHeader()
+            let res = await axios.post(url,body)
+            commit('addHistory', res.data)
         }
     },
     modules: {
     },
     getters:{
       single: (state) => state.single,
-      versus: (state) => state.versus
+      versus: (state) => state.versus,
+      data: (state) => state.data
     }
 })

@@ -12,6 +12,8 @@ const HUD_WIDTH = Constants.HUD_WIDTH;
 const ABOVE_GAP = Constants.ABOVE_GAP;
 
 import PlayHistory from '../../../store/playHistory'
+import AuthUser from '../../../store/authUser'
+import PointRate from '../../../store/pointRate'
 export default class Tetris extends Phaser.Scene {
     constructor() {
         super('tetris');
@@ -582,6 +584,9 @@ export default class Tetris extends Phaser.Scene {
                 router.push('/');
             });
             GameStore.commit('setGameScore', this.score);
+            if(AuthUser.getters.isAuthen){
+                this.saveHistory(this.score)
+            }
             this.scene.pause();
         } else if (this.dcount > this.gameTime) {
             if (Math.floor(this.countTime / 5000) >= 1) {
@@ -604,11 +609,22 @@ export default class Tetris extends Phaser.Scene {
         this.countTime += deltaTime;
     }
     
-    async saveHistory(score, id){
+    async saveHistory(score){
         let payload = {
-            
+            user_id: AuthUser.getters.user.id,
+            score: score,
+            mode: 'single',
+            opponent: '',
+            result: 'WIN'
         }
         await PlayHistory.dispatch('addHistory', payload)
+    }
+
+    async addPoint(score){
+        //คำนวณ point ที่ได้ (score/pointrate) แล้วสร้างประวัติพร้อมเพิ่ม point
+        let rate = await PointRate.dispatch('getLastRate')
+        let point = score/rate
+        point = Math.floor(point)
     }
 
 }
