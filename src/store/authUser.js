@@ -74,6 +74,6 @@ export default new Vuex.Store({
             headers:{
                 Authorization: `Bearer ${jwt}`
             }
-      }
+      };
   }
 })
