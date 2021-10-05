@@ -15,7 +15,7 @@ export default new Vuex.Store({
       async getLastRate({commit}){
           let url = `${api_endpoint}/api/pointRate/last`
           let res = await axios.get(url)
-          return res.data
+          return res.data.rate
       }
   },
   modules: {

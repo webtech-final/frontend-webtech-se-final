@@ -63,7 +63,7 @@ export default new Vuex.Store({
             let body = {
                 point: payload.point
             }
-            let header = this.getApiHeader()
+            let header = getApiHeader()
             await axios.put(url, body, header)
         }
     },
@@ -73,12 +73,13 @@ export default new Vuex.Store({
         jwt: state => state.jwt,
         isAuthen: state => state.isAuthen,
     },
-    getApiHeader(){
+    
+})
+function getApiHeader(){
         let jwt = JSON.parse(localStorage.getItem(auth_key))
         return{
                 headers:{
-                    Authorization: `Bearer ${jwt}`
+                    Authorization: `Bearer ${jwt.data.access_token}`
                 }
         };
-    }
-})
+}

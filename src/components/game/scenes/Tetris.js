@@ -625,6 +625,7 @@ export default class Tetris extends Phaser.Scene {
     async addPoint(score){
         //คำนวณ point ที่ได้ (score/pointrate) แล้วสร้างประวัติพร้อมเพิ่ม point
         let rate = await PointRate.dispatch('getLastRate')
+        rate = parseInt(rate)
         let point = score/rate
         point = Math.floor(point)
         let payload = {
