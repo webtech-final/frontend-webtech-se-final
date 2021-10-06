@@ -13,17 +13,20 @@ export default new Vuex.Store({
         user: auth ? auth.data.user : '',
         jwt: auth ? auth.data.access_token : '',
         isAuthen: auth ? true : false,
+        header: auth ? {headers:{Authorization: `Bearer ${auth.data.access_token}`}}:''
     },
     mutations: {
         loginSuccess(state, res) {
             state.user = res.user;
             state.jwt = res.access_token;
             state.isAuthen = true;
+            state.header = {headers:{Authorization: `Bearer ${res.access_token}`}}
         },
         logoutSuccess(state) {
             state.user = '';
             state.jwt = '';
             state.isAuthen = false;
+            state.header = ''
         },
     },
     actions: {
@@ -49,11 +52,8 @@ export default new Vuex.Store({
         async logout({ commit }) {
             let url = `${api_endpoint}/api/auth/logout`;
             localStorage.removeItem(auth_key);
-            let header = {
-                headers: {
-                    Authorization: `Bearer ${this.state.jwt}`,
-                },
-            };
+            let header = this.state.header
+            console.log(header);
             let res = await axios.post(url, null, header);
             commit('logoutSuccess');
             return res;
@@ -63,7 +63,7 @@ export default new Vuex.Store({
             let body = {
                 point: payload.point
             }
-            let header = getApiHeader()
+            let header = this.state.header
             await axios.put(url, body, header)
         }
     },
@@ -72,14 +72,7 @@ export default new Vuex.Store({
         user: state => state.user,
         jwt: state => state.jwt,
         isAuthen: state => state.isAuthen,
+        header: state => state.header
     },
     
 })
-function getApiHeader(){
-        let jwt = JSON.parse(localStorage.getItem(auth_key))
-        return{
-                headers:{
-                    Authorization: `Bearer ${jwt.data.access_token}`
-                }
-        };
-}
