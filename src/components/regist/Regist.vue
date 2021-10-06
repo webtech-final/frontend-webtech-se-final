@@ -3,15 +3,27 @@
         <h1 style="font-size: 70px; padding-top: 100px">SIGNUP</h1>
         <div style="margin-top: 50px">
             <input type="text" name="username" placeholder="name" v-model="form.name" style="color:black;">
+            <div style="margin-top: 10px;">
+                <label for="name error" style="color:red;text-shadow: 2px 1px white;" v-if="error.name">{{ error.name }}</label>
+            </div>
         </div>
         <div style="margin-top: 50px">
             <input type="email" name="email" placeholder="email" v-model="form.email" style="color:black;">
+            <div style="margin-top: 10px;">
+                <label for="email error" style="color:red;text-shadow: 2px 1px white;" v-if="error.email">{{ error.email }}</label>
+            </div>
         </div>
         <div style="margin-top: 50px">
             <input type="password" name="password" placeholder="password" v-model="form.password" style="color:black;">
+            <div style="margin-top: 10px;">
+                <label for="password error" style="color:red;text-shadow: 2px 1px white;" v-if="error.password">{{ error.password }}</label>
+            </div>
         </div>
         <div style="margin-top: 50px">
-            <input type="password" name="confirmPassword" placeholder="confirm password" v-model="form.confirmPassword" style="color:black">
+                <input type="password" name="confirmPassword" placeholder="confirm password" v-model="form.confirmPassword" style="color:black">
+            <div style="margin-top: 10px;">
+                <label for="confirm password error" style="color:red;text-shadow: 2px 1px white;" v-if="error.confirmPassword">{{ error.confirmPassword }}</label>
+            </div>
         </div>
         <div style="margin-top: 50px;color: black">
             <button style="background-color:white; padding: 3px 6px" @click="signup">SIGN UP</button>
@@ -29,6 +41,12 @@ export default {
                 email: '',
                 password: '',
                 confirmPassword: ''
+            },
+            error:{
+                name: '',
+                email: '',
+                password:'',
+                confirmPassword: ''
             }
         }
     },
@@ -41,8 +59,36 @@ export default {
                 password_confirmation: this.form.confirmPassword
             }
             let res = await AuthUser.dispatch('register', payload)
-            this.$swal('Log in Success!', `Welcome ${res.user.name}`,"success")
-            this.$router.push('/')
+            if(res.status===400){
+                //validation
+                if(typeof res.data.name === 'undefined'){
+                    this.error.name = ''
+                }else{
+                    this.error.name = res.data.name[0]
+                }
+                if(typeof res.data.email === 'undefined'){
+                    this.error.email = ''
+                }else{
+                    this.error.email = res.data.email[0]
+                }
+                if(typeof res.data.password === 'undefined'){
+                    this.error.password = ''
+                    this.error.confirmPassword = ''
+                }else{
+                    if(res.data.password[0].includes('match')){
+                        this.error.password = ''
+                        this.error.confirmPassword = res.data.password[0]
+                    }else{
+                        console.log(res.data.password[1])
+                        this.error.password = res.data.password[0]
+                        this.error.confirmPassword = res.data.password[1]
+                    }
+                }
+                this.$swal({title:'Register Failed', icon:'error'})
+            }else if(res.status===201){
+                this.$swal({title:'Register Success!', icon:"success"})
+                this.$router.push('/login')
+            }
         }
     }
 }

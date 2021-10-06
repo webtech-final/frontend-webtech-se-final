@@ -14,7 +14,6 @@ export default new Vuex.Store({
             let url = `${api_endpoint}/api/pointHistories`;
             let body = payload;
             let res = await axios.post(url, body);
-            console.log(res);
         },
     },
     modules: {},

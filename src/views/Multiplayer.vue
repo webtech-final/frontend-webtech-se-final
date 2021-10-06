@@ -59,8 +59,8 @@ export default {
     },
 
     methods: {
-        socketInit() {
-            this.socket.once('gameOver', async ({ loserNumber }) => {
+        async socketInit() {
+            this.socket.once('gameOver',({ loserNumber, loserName, winnerName }) => {
                 let msg = '';
                 let type = '';
 
@@ -76,8 +76,8 @@ export default {
 
                 // post score to server
                 if (AuthUser.getters.isAuthen) {
-                    await this.saveHistory(this.opponentName, type ? 'WIN' : 'LOSE');
-                    await this.getPoint();
+                    this.saveHistory(this.opponentName, type ? 'WIN' : 'LOSE');
+                    this.getPoint();
                 }
 
                 this.$swal(
@@ -111,7 +111,7 @@ export default {
             let rate = await PointRate.dispatch('getLastRate');
             rate = parseInt(rate);
             let score = GameStore.getters.getGameScore;
-            score = parseInt(point);
+            score = parseInt(score);
             let point = score / rate;
             point = Math.floor(point);
             let payload = {
