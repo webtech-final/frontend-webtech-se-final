@@ -34,6 +34,7 @@
                 id=""
                 type="text"
                 autofocus
+                v-model="inputPlayerName"
             />
             <label
                 class="
@@ -162,6 +163,7 @@ export default {
         return {
             socket: GameStore.getters.getSocket,
             showDialog: false,
+            inputPlayerName: '',
             msg: '',
             pin: '',
         };
@@ -197,20 +199,31 @@ export default {
         },
 
         handleNewGame() {
+            this.handleGuestName();
             this.socket.emit('newGame', { roomName: this.pin, playerName: this.playerName });
             this.$router.push('/multi');
         },
 
         handleJoinGame() {
+            this.handleGuestName();
             this.socket.emit('joinGame', { roomName: this.pin, playerName: this.playerName });
             this.$router.push('/multi');
         },
 
+        handleGuestName() {
+            if (this.inputPlayerName == '') {
+                this.inputPlayerName = 'GUEST';
+            }
+            GameStore.commit('setGuestName', this.inputPlayerName);
+        },
+
         reset() {
             this.pin = '';
+            this.inputPlayerName = '';
             GameStore.commit('setClientNumber', '');
             GameStore.commit('setGameCode', '');
             GameStore.commit('setGameScore', '');
+            GameStore.commit('setGuestName', '');
         },
 
         socketInit() {
@@ -225,14 +238,14 @@ export default {
             });
 
             this.socket.once('tooManyPlayers', () => {
+                this.reset();
                 this.$router.push('/');
                 this.$swal('This game is already in progress', '', 'error');
-                this.reset();
             });
         },
 
         setPlayerName() {
-            this.playerName = authUser.getters.user.name ? authUser.getters.user.name : false;
+            this.playerName = authUser.getters.isAuthen ? authUser.getters.user.name : 'GUEST';
         },
     },
     mounted() {
@@ -241,27 +254,6 @@ export default {
         this.setPlayerName();
         this.socketInit();
     },
-    // sockets: {
-    //     tooManyPlayers: function() {
-    //         this.reset();
-    //         alert('This game is already in progress');
-    //         this.$router.push('/');
-    //     },
-    //     unknownCode: function() {
-    //         this.reset();
-    //         alert('Unknown game code');
-    //         this.$router.push('/');
-    //     },
-    //     gameCode: function(gameCode) {
-    //         console.log(gameCode);
-    //         this.pin = gameCode;
-    //         this.$refs.enterRoom.roomData.pin = gameCode;
-    //         GameStore.commit('setGameCode', gameCode);
-    //     },
-    // 	init: function(clientNumber) {
-    // 		GameStore.commit('setClientNumber', clientNumber);
-    // 	}
-    // },
 };
 </script>
 <style scoped></style>

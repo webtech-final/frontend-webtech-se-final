@@ -10,6 +10,7 @@ const socket = io(websocket_endpoint);
 export default new Vuex.Store({
     state: {
         clientNumber: '',
+        guestName: '',
         gameCode: '',
         gameScore: '',
         socket: socket,
@@ -19,6 +20,7 @@ export default new Vuex.Store({
         getGameCode: state => state.gameCode,
         getSocket: state => state.socket,
         getGameScore: state => state.gameScore,
+        getGuestName: state => state.guestName,
     },
     mutations: {
         setClientNumber(state, number) {
@@ -32,6 +34,9 @@ export default new Vuex.Store({
         },
         setSocket(state, socket) {
             state.socket = socket;
+        },
+        setGuestName(state, name) {
+            state.guestName = name;
         },
     },
     actions: {},

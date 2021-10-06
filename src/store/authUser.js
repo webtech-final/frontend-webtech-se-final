@@ -13,20 +13,20 @@ export default new Vuex.Store({
         user: auth ? auth.data.user : '',
         jwt: auth ? auth.data.access_token : '',
         isAuthen: auth ? true : false,
-        header: auth ? {headers:{Authorization: `Bearer ${auth.data.access_token}`}}:''
+        header: auth ? { headers: { Authorization: `Bearer ${auth.data.access_token}` } } : '',
     },
     mutations: {
         loginSuccess(state, res) {
             state.user = res.user;
             state.jwt = res.access_token;
             state.isAuthen = true;
-            state.header = {headers:{Authorization: `Bearer ${res.access_token}`}}
+            state.header = { headers: { Authorization: `Bearer ${res.access_token}` } };
         },
         logoutSuccess(state) {
             state.user = '';
             state.jwt = '';
             state.isAuthen = false;
-            state.header = ''
+            state.header = '';
         },
     },
     actions: {
@@ -52,27 +52,27 @@ export default new Vuex.Store({
         async logout({ commit }) {
             let url = `${api_endpoint}/api/auth/logout`;
             localStorage.removeItem(auth_key);
-            let header = this.state.header
+            let header = this.state.header;
             console.log(header);
             let res = await axios.post(url, null, header);
             commit('logoutSuccess');
             return res;
         },
-        async getPoint({commit}, payload){
-            let url = `${api_endpoint}/api/auth/getPoint/${payload.id}`
+        async getPoint({ commit }, payload) {
+            let url = `${api_endpoint}/api/auth/getPoint/${payload.id}`;
             let body = {
-                point: payload.point
-            }
-            let header = this.state.header
-            await axios.put(url, body, header)
-        }
+                point: payload.point,
+            };
+            let header = this.state.header;
+            console.log(header);
+            await axios.put(url, body, header);
+        },
     },
     modules: {},
     getters: {
         user: state => state.user,
         jwt: state => state.jwt,
         isAuthen: state => state.isAuthen,
-        header: state => state.header
+        header: state => state.header,
     },
-    
-})
+});

@@ -36,10 +36,10 @@
 import GameMulti from '../components/game/GameMulti.vue';
 import Opponnect from '../components/game/Opponent.vue';
 import GameStore from '../store/GameStore';
-import AuthUser from '../store/authUser'
-import PointRate from '../store/pointRate'
-import PlayHistory from '../store/playHistory'
-import PointHistory from '../store/pointHistory'
+import AuthUser from '../store/authUser';
+import PointRate from '../store/pointRate';
+import PlayHistory from '../store/playHistory';
+import PointHistory from '../store/pointHistory';
 
 export default {
     name: 'Multiplayer',
@@ -47,6 +47,8 @@ export default {
         return {
             socket: GameStore.getters.getSocket,
             roomPin: GameStore.getters.getGameCode,
+            playerNumber: '',
+            opponentName: '',
             playerName: '',
             showWait: true,
         };
@@ -57,26 +59,27 @@ export default {
     },
 
     methods: {
-        async socketInit() {
-            this.socket.once('gameOver', ({ loserNumber, loserName, winnerName }) => {
+        socketInit() {
+            this.socket.once('gameOver', async ({ loserNumber }) => {
                 let msg = '';
                 let type = '';
-                let opponentName = '';
-                if (loserNumber != GameStore.getters.getClientNumber) {
+
+                if (loserNumber != this.playerNumber) {
                     // this player win
-                    opponentName = loserName;
                     msg = 'YOU WIN!!';
                     type = 1;
-                    this.saveHistory(opponentName, 'WIN')
-                    this.getPoint()
                 } else {
                     // this player lose
-                    opponentName = winnerName;
                     msg = 'YOU LOSE';
                     type = 0;
-                    this.saveHistory(opponentName, 'LOSE')
-                    this.getPoint()
                 }
+
+                // post score to server
+                if (AuthUser.getters.isAuthen) {
+                    await this.saveHistory(this.opponentName, type ? 'WIN' : 'LOSE');
+                    await this.getPoint();
+                }
+
                 this.$swal(
                     msg,
                     'Your score is ' + GameStore.getters.getGameScore,
@@ -87,39 +90,41 @@ export default {
                 });
             });
 
-            this.socket.once('startGame', () => {
+            this.socket.once('startGame', ({ playerOneName, playerTwoName }) => {
+                this.playerNumber = GameStore.getters.getClientNumber;
+                this.opponentName = this.playerNumber == 1 ? playerOneName : playerTwoName;
                 this.showWait = false;
             });
         },
 
-        async saveHistory(opponentName, result){
+        async saveHistory(opponentName, result) {
             let payload = {
                 user_id: AuthUser.getters.user.id,
                 score: GameStore.getters.getGameScore,
                 mode: 'versus',
                 opponent: opponentName,
-                result: result
-            }
-            await PlayHistory.dispatch('addHistory', payload)
+                result: result,
+            };
+            await PlayHistory.dispatch('addHistory', payload);
         },
-         async getPoint(){
-            let rate = await PointRate.dispatch('getLastRate')
-            rate = parseInt(rate)
-            let score = GameStore.getters.getGameScore
-            score = parseInt(point)
-            let point = score/rate
-            point = Math.floor(point)
+        async getPoint() {
+            let rate = await PointRate.dispatch('getLastRate');
+            rate = parseInt(rate);
+            let score = GameStore.getters.getGameScore;
+            score = parseInt(point);
+            let point = score / rate;
+            point = Math.floor(point);
             let payload = {
                 id: AuthUser.getters.user.id,
-                point: point
-            }
-            await AuthUser.dispatch('getPoint', payload)
+                point: point,
+            };
+            await AuthUser.dispatch('getPoint', payload);
             let payload1 = {
                 user_id: AuthUser.getters.user.id,
                 point: point,
-                type: 'get'
-            }
-            await PointHistory.dispatch('addPoint', payload1)
+                type: 'get',
+            };
+            await PointHistory.dispatch('addPoint', payload1);
         },
 
         isAuthen() {
@@ -130,20 +135,18 @@ export default {
             GameStore.commit('setClientNumber', '');
             GameStore.commit('setGameCode', '');
             GameStore.commit('setGameScore', '');
+            GameStore.commit('setGuestName', '');
         },
 
         setPlayerName() {
-            this.playerName = AuthUser.getters.user.name;
+            this.playerName = AuthUser.getters.isAuthen
+                ? AuthUser.getters.user.name
+                : GameStore.getters.getGuestName;
         },
     },
     created() {
-        if (!this.isAuthen()) {
-            this.$swal('You are not logged in.', 'Please login and go to this page again', 'error');
-            this.$router.push('/login');
-        } else {
-            this.socketInit();
-            this.setPlayerName();
-        }
+        this.socketInit();
+        this.setPlayerName();
     },
 };
 </script>
