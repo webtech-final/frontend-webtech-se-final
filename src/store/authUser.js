@@ -36,24 +36,38 @@ export default new Vuex.Store({
                 email: email,
                 password: password,
             };
-            let res = await axios.post(url, body);
-            commit('loginSuccess', res.data);
-            localStorage.setItem(auth_key, JSON.stringify(res));
-            return res.data;
+            try{
+                let res = await axios.post(url, body);
+                if(res.data === "admin"){
+                    return res.data
+                }
+                commit('loginSuccess', res.data);
+                localStorage.setItem(auth_key, JSON.stringify(res));
+                return res.data;
+            }catch(e){
+                if(e.response.status === 401){
+                    return e.response.status
+                }
+            }
         },
         // รอดูว่าตอนสมัครเสร็จได้ jwt ไหม
         async register({ commit }, payload) {
-            let url = `${api_endpoint}/api/auth/register`;
-            let body = payload;
-            let res = await axios.post(url, body);
-            commit('loginSuccess', res.data);
-            return res.data;
+            try{
+                let url = `${api_endpoint}/api/auth/register`;
+                let body = payload;
+                let res = await axios.post(url, body);
+                commit('logoutSuccess');
+                return res;
+            }catch(e){
+                if(e.response.status===400){
+                    return e.response
+                }
+            }
         },
         async logout({ commit }) {
             let url = `${api_endpoint}/api/auth/logout`;
             localStorage.removeItem(auth_key);
             let header = this.state.header
-            console.log(header);
             let res = await axios.post(url, null, header);
             commit('logoutSuccess');
             return res;

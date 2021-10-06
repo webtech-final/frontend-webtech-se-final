@@ -58,7 +58,7 @@ export default {
 
     methods: {
         async socketInit() {
-            this.socket.once('gameOver', ({ loserNumber, loserName, winnerName }) => {
+            this.socket.once('gameOver',({ loserNumber, loserName, winnerName }) => {
                 let msg = '';
                 let type = '';
                 let opponentName = '';

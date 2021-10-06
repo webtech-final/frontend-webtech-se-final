@@ -31,8 +31,16 @@ export default {
                 password: this.form.password
             }
             let res = await AuthUser.dispatch('login', payload)
-            this.$swal('Log in Success!', `Welcome ${res.user.name}`, "success")
-            this.$router.push('/')
+            if(res==="admin"){
+                this.$swal({title: "You are admin", icon:"warning"})
+            }
+            else if(res === 401){
+                this.$swal("Login Failed","your email or password is incorrect","error")
+            }
+            else{
+                this.$swal('Log in Success!', `Welcome ${res.user.name}`, "success")
+                this.$router.push('/')
+            }
         }
     }
 }
