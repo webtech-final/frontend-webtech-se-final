@@ -106,7 +106,7 @@ export default {
             let rate = await PointRate.dispatch('getLastRate')
             rate = parseInt(rate)
             let score = GameStore.getters.getGameScore
-            score = parseInt(point)
+            score = parseInt(score)
             let point = score/rate
             point = Math.floor(point)
             let payload = {
