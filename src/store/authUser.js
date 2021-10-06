@@ -66,7 +66,6 @@ export default new Vuex.Store({
         },
         async logout({ commit }) {
             let url = `${api_endpoint}/api/auth/logout`;
-            localStorage.removeItem(auth_key);
             let header = this.state.header
             let res = await axios.post(url, null, header);
             commit('logoutSuccess');
