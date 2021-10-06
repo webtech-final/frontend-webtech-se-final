@@ -123,7 +123,7 @@ export default {
         },
 
         isAuthen() {
-            return authUser.getters.isAuthen;
+            return AuthUser.getters.isAuthen;
         },
 
         reset() {
@@ -133,7 +133,7 @@ export default {
         },
 
         setPlayerName() {
-            this.playerName = authUser.getters.user.name;
+            this.playerName = AuthUser.getters.user.name;
         },
     },
     created() {
