@@ -50,16 +50,13 @@ export default {
         this.fetchPointHistory();
     },
     methods: {
-        async fetchPointHistory(){
+        async fetchPointHistory() {
             await PointHistory.dispatch("fetchPointHistory");
             this.logs = PointHistory.getters.transactions
-          },
+        },
         dateFormater(timestamp) {
             let date = new Date(timestamp)
-            let options = {
-                year: 'numeric', month: 'numeric', day: 'numeric',
-                // hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false, timeZone: 'Asia/Bangkok'
-            };
+            let options = { year: 'numeric', month: 'numeric', day: 'numeric' };
             return new Intl.DateTimeFormat('en-GB', options).format(date)
         },
     }
