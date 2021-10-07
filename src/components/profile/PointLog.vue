@@ -20,10 +20,10 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             <tr v-for="(log, index) in logs" :key="index">
                                 <td class="text-left px-6 py-4 whitespace-nowrap">
-                                    <span class="text-md font-medium text-gray-900">{{ log.date }}</span>
+                                    <span class="text-md font-medium text-gray-900">{{ dateFormater(log.created_at) }}</span>
                                 </td>
                                 <td class="text-center px-6 py-4 whitespace-nowrap">
-                                    <span class="text-md font-medium text-gray-900">{{ log.type }}</span>
+                                    <span class="text-md font-medium text-gray-900">{{ log.type.toUpperCase() }}</span>
                                 </td>      
                                 <td class="text-right px-6 py-4 whitespace-nowrap">
                                     <span class="text-md font-medium text-gray-900">{{ log.point }}</span>
@@ -38,47 +38,30 @@
 </template>
 
 <script>
+import PointHistory from "../../store/pointHistory";
+
 export default {
     data() {
         return {
-            logs: [
-                {
-                    date: '01/09/2021',
-                    type: 'Play Game',
-                    point: 200
-                },
-                {
-                    date: '01/09/2021',
-                    type: 'Shopping',
-                    point: -100
-                },
-                {
-                    date: '02/09/2021',
-                    type: 'Play Game',
-                    point: 400
-                },
-                {
-                    date: '03/09/2021',
-                    type: 'Play Game',
-                    point: 600
-                },
-                {
-                    date: '03/09/2021',
-                    type: 'Shopping',
-                    point: -1000
-                },
-                {
-                    date: '04/09/2021',
-                    type: 'Play Game',
-                    point: 800
-                },
-                {
-                    date: '05/09/2021',
-                    type: 'Play Game',
-                    point: 1000
-                },           
-            ]
+            logs: []
         }
+    },
+    async created() {
+        this.fetchPointHistory();
+    },
+    methods: {
+        async fetchPointHistory(){
+            await PointHistory.dispatch("fetchPointHistory");
+            this.logs = PointHistory.getters.transactions
+          },
+        dateFormater(timestamp) {
+            let date = new Date(timestamp)
+            let options = {
+                year: 'numeric', month: 'numeric', day: 'numeric',
+                // hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false, timeZone: 'Asia/Bangkok'
+            };
+            return new Intl.DateTimeFormat('en-GB', options).format(date)
+        },
     }
 }
 </script>
