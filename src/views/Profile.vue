@@ -14,12 +14,24 @@ import Profile from '@/components/profile/Profile.vue'
 import PlayLog from '@/components/profile/PlayLog.vue'
 import VersusLog from '@/components/profile/VersusLog.vue'
 import PointLog from '@/components/profile/PointLog.vue'
+import AuthUser from '../store/authUser'
 export default {
     components: {
         Profile,
         PlayLog,
         VersusLog,
         PointLog
+    },
+    mounted(){
+        if(!this.isAuthen()){
+            this.$swal("Restricted Area", "You must login first", 'warning')
+            this.$router.push('/')
+        }
+    },
+    methods:{
+        isAuthen(){
+            return AuthUser.getters.isAuthen
+        }
     }
 }
 </script>

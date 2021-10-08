@@ -35,6 +35,7 @@
                 type="text"
                 autofocus
                 v-model="inputPlayerName"
+                v-if="!isAuthen()"
             />
             <label
                 class="
@@ -49,6 +50,7 @@
 					text-gray-400 text-base
 					cursor-text
 				"
+                v-if="!isAuthen()"
                 >Username</label
             >
             <div class="grid grid-cols-3 my-4">
@@ -114,6 +116,19 @@
                     </button>
                 </div>
             </div>
+            <div
+                class="
+                    justify-center
+                    items-center
+                    flex
+                    py-3
+                    px-6
+                    text-xl
+                    font-bold
+                    "
+            >
+                <label for="rate">{{ this.rate }} score/point</label>
+            </div>
         </div>
         <div
             class="
@@ -154,7 +169,8 @@
 <script>
 import GameStore from '../store/GameStore';
 import EnterRoom from '../components/home/EnterRoom.vue';
-import authUser from '../store/authUser';
+import AuthUser from '../store/authUser';
+import PointRate from '../store/pointRate'
 
 export default {
     name: 'Home',
@@ -166,6 +182,7 @@ export default {
             inputPlayerName: '',
             msg: '',
             pin: '',
+            rate: ''
         };
     },
     methods: {
@@ -245,14 +262,21 @@ export default {
         },
 
         setPlayerName() {
-            this.playerName = authUser.getters.isAuthen ? authUser.getters.user.name : 'GUEST';
+            this.playerName = AuthUser.getters.isAuthen ? AuthUser.getters.user.name : 'GUEST';
+        },
+        isAuthen(){
+            return AuthUser.getters.isAuthen
+        },
+        async getLastRate(){
+            this.rate = await PointRate.dispatch('getLastRate')
         },
     },
-    mounted() {
+    async mounted() {
         this.reset();
         this.socket.removeAllListeners();
         this.setPlayerName();
         this.socketInit();
+        this.getLastRate()
     },
 };
 </script>

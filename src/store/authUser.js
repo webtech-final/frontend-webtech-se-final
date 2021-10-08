@@ -13,7 +13,7 @@ export default new Vuex.Store({
         user: auth ? auth.data.user : '',
         jwt: auth ? auth.data.access_token : '',
         isAuthen: auth ? true : false,
-        header: auth ? { headers: { Authorization: `Bearer ${auth.data.access_token}` } } : '',
+        header: auth ? { headers: { Authorization: `Bearer ${auth.data.access_token}` } } : ''
     },
     mutations: {
         loginSuccess(state, res) {
@@ -83,13 +83,14 @@ export default new Vuex.Store({
             let header = this.state.header;
             let res = await axios.put(url, body, header);
             commit('getPoint', res.data );
-        },
+        }
     },
     modules: {},
     getters: {
         user: state => state.user,
         jwt: state => state.jwt,
         isAuthen: state => state.isAuthen,
-        header: state => state.header,
+        header: state => state.header
     },
+    
 });
