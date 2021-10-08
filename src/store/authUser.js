@@ -28,6 +28,9 @@ export default new Vuex.Store({
             state.isAuthen = false;
             state.header = '';
         },
+        getPoint(state, res) {
+            state.user.point = res;
+        }
     },
     actions: {
         async login({ commit }, { email, password }) {
@@ -78,7 +81,8 @@ export default new Vuex.Store({
                 point: payload.point,
             };
             let header = this.state.header;
-            await axios.put(url, body, header);
+            let res = await axios.put(url, body, header);
+            commit('getPoint', res.data );
         },
     },
     modules: {},
