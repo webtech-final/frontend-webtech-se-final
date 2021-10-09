@@ -31,6 +31,9 @@ export default new Vuex.Store({
         getPoint(state, res) {
             state.user.point = res;
         },
+        usePoint(state, res) {
+            state.user.point = res;
+        },
         updateProfilePic(state, res) {
             state.user.image = res;
         },
@@ -89,6 +92,15 @@ export default new Vuex.Store({
             let header = this.state.header;
             let res = await axios.put(url, body, header);
             commit('getPoint', res.data );
+        },
+        async usePoint({ commit }, payload) {
+            let url = `${api_endpoint}/api/auth/usePoint/${payload.user_id}`;
+            let body = {
+                point: payload.point,
+            };
+            let header = this.state.header;
+            let res = await axios.put(url, body, header);
+            commit('getPoint', res.data);
         },
         async updateProfilePic({ commit }, payload) {
             let url = `${api_endpoint}/api/auth/uploadProfile`;
