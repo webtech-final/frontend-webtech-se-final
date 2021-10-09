@@ -31,8 +31,13 @@ export default new Vuex.Store({
         getPoint(state, res) {
             state.user.point = res;
         },
+<<<<<<< HEAD
         usePoint(state, res) {
             state.user.point = res;
+=======
+        updateProfilePic(state, res) {
+            state.user.image = res;
+>>>>>>> b670020f0d42e33404e9fe1c9a09c6189ccdebee
         }
     },
     actions: {
@@ -94,8 +99,22 @@ export default new Vuex.Store({
             };
             let header = this.state.header;
             let res = await axios.put(url, body, header);
-            commit('getPoint', res.data );
-        }
+            commit('getPoint', res.data);
+        },
+        async updateProfilePic({ commit }, payload) {
+            let url = `${api_endpoint}/api/auth/uploadProfile`;
+            let formData = new FormData();
+            formData.append('selectedImage', payload.image);
+            formData.append('id', this.getters.user.id);
+            let header = this.state.header;
+            try {
+                let res = await axios.post(url, formData, header);
+                commit('updateProfilePic', res.data.path);
+                return res.data.status;
+            } catch (error) {
+                return error.response.data.status
+            }
+        },
     },
     modules: {},
     getters: {

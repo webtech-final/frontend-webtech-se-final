@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import Profile from '@/views/Profile.vue';
+import EditProfile from '@/views/EditProfile.vue';
 import Leaderboard from '../views/Leaderboard';
 import Regist from '../views/Regist.vue';
 import Inventory from '../views/Inventory.vue';
@@ -34,7 +35,11 @@ const routes = [
         name: 'Profile',
         component: Profile,
     },
-
+    {
+        path: '/profile/edit',
+        name: 'EditProfile',
+        component: EditProfile,
+    },
     {
         path: '/leaderboard',
         name: 'Leaderboard',
