@@ -33,6 +33,9 @@ export default new Vuex.Store({
         },
         updateProfilePic(state, res) {
             state.user.image = res;
+        },
+        updateName(state, res) {
+            state.user.name = res;
         }
     },
     actions: {
@@ -99,6 +102,21 @@ export default new Vuex.Store({
                 return res.data.status;
             } catch (error) {
                 return error.response.data.status
+            }
+        },
+        async updateName({ commit }, payload) {
+            let url = `${api_endpoint}/api/auth/updateName`;
+            let body = {
+                id: this.getters.user.id,
+                new_name: payload.new_name
+            };
+            let header = this.state.header;
+            try {
+                let res = await axios.put(url, body, header);
+                commit('updateName', res.data);
+                return "success";
+            } catch (error) {
+                return error.response.data.new_name[0]
             }
         }
     },
