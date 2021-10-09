@@ -1,50 +1,186 @@
 <template>
   <div class="inventory-page">
-    <div class="head">Your Inventory</div>
-    <div class="inventory-table">
+    <div class="head grid-cols-2 grid">
+      <h1>Your Inventory</h1>
+      <div class="mr-16 grid justify-items-end text-yellow-500">
+        {{ user_points }} points
+      </div>
+    </div>
+    <div class="inventory-table mt-3">
       <div class="table-head">
-        <div>
-          Block Theme >
+        Block Theme >
+        <div class="grid grid-cols-4">
           <div v-for="(block, index) in blocks" :key="index">
-          <div class="card">
-            
-            <div v-if="block.id=1" class="card-image">
-              <img
-                src="../../assets/theme-default.png"
-                alt="default-block"
-                class="img"
-              />
+            <div v-if="block.id == 1" class="card">
+              <div class="card-image">
+                <img
+                  src="../../assets/theme-default.png"
+                  alt="default-block"
+                  class="img"
+                />
+              </div>
+              <div class="card-text">
+                <h2>{{ block.name }}</h2>
+              </div>
+              <div v-if="block.id == equipped_block[0].id">
+                <button
+                  class="
+                    px-4
+                    py-2
+                    text-white
+                    rounded-lg
+                    bg-blue-300
+                    mt-1
+                    text-3xl
+                  "
+                >
+                  Equipped
+                </button>
+              </div>
+              <div v-if="block.id != equipped_block[0].id">
+                <button
+                  class="
+                    px-4
+                    py-2
+                    text-white
+                    rounded-lg
+                    bg-blue-500
+                    mt-1
+                    text-3xl
+                  "
+                  @click="equipItem(block)"
+                >
+                  Equip
+                </button>
+              </div>
             </div>
-            <div class="card-text">
-              <h2>{{block.name}}</h2>
-            </div>
-            <div class="card-text">
-              <h3>Equipped</h3>
+            <div v-if="block.id != 1" class="card">
+              <div class="card-image">
+                <img src="" alt="block" class="img" />
+              </div>
+              <div class="card-text">
+                <h2>{{ block.name }}</h2>
+              </div>
+              <div v-if="block.id == equipped_block[0].id">
+                <button
+                  class="
+                    px-4
+                    py-2
+                    text-white
+                    rounded-lg
+                    bg-blue-300
+                    mt-1
+                    text-3xl
+                  "
+                >
+                  Equipped
+                </button>
+              </div>
+              <div v-if="block.id != equipped_block[0].id">
+                <button
+                  class="
+                    px-4
+                    py-2
+                    text-white
+                    rounded-lg
+                    bg-blue-500
+                    mt-1
+                    text-3xl
+                  "
+                  @click="equipItem(block)"
+                >
+                  Equip
+                </button>
+              </div>
             </div>
           </div>
-          </div>
-        
         </div>
-
-        <div>
-          Background >
+        Background >
+        <div class="grid grid-cols-4">
           <div v-for="(background, index) in backgrounds" :key="index">
-          <div class="card">
-            <div v-if="background.id=2" class="card-image">
-              <img
-                src="../../assets/background-default.jpg"
-                alt="default-back"
-                class="img"
-              />
+            <div v-if="background.id == 2" class="card">
+              <div class="card-image">
+                <img
+                  src="../../assets/background-default.jpg"
+                  alt="default-back"
+                  class="img"
+                />
+              </div>
+              <div class="card-text">
+                <h2>{{ background.name }}</h2>
+              </div>
+              <div v-if="background.id == equipped_back[0].id">
+                <button
+                  class="
+                    px-4
+                    py-2
+                    text-white
+                    rounded-lg
+                    bg-blue-300
+                    mt-1
+                    text-3xl
+                  "
+                >
+                  Equipped
+                </button>
+              </div>
+              <div v-if="background.id != equipped_back[0].id">
+                <button
+                  class="
+                    px-4
+                    py-2
+                    text-white
+                    rounded-lg
+                    bg-blue-500
+                    mt-1
+                    text-3xl
+                  "
+                  @click="equipItem(block)"
+                >
+                  Equip
+                </button>
+              </div>
             </div>
-            <div class="card-text">
-              <h2>{{background.name}}</h2>
-            </div>
-            <div class="card-text">
-              <h3>Equipped</h3>
+            <div v-if="background.id != 2" class="card">
+              <div class="card-image">
+                <img src="" alt="back" class="img" />
+              </div>
+              <div class="card-text">
+                <h2>{{ background.name }}</h2>
+              </div>
+              <div v-if="background.id == equipped_back[0].id">
+                <button
+                  class="
+                    px-4
+                    py-2
+                    text-white
+                    rounded-lg
+                    bg-blue-300
+                    mt-1
+                    text-3xl
+                  "
+                >
+                  Equipped
+                </button>
+              </div>
+              <div v-if="background.id != equipped_back[0].id">
+                <button
+                  class="
+                    px-4
+                    py-2
+                    text-white
+                    rounded-lg
+                    bg-blue-500
+                    mt-1
+                    text-3xl
+                  "
+                  @click="equipItem(background)"
+                >
+                  Equip
+                </button>
+              </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
     </div>
@@ -53,53 +189,96 @@
 
 <script>
 import ItemStore from "../../store/itemStore";
-
-
+import AuthUser from "../../store/authUser";
 export default {
   data() {
-    return{
+    return {
       blocks: [],
       backgrounds: [],
-      
+      equipped_block: {},
+      equipped_back: {},
+      user_points: 0,
     };
   },
   async created() {
-    this.fetchBlockInventory();
-    this.fetchBackgroundInventory();
+    this.getUserPoints();
+    await this.fetchBlockEquipped();
+    await this.fetchBackgroundEquipped();
 
+    await this.fetchBlockInventory();
+    await this.fetchBackgroundInventory();
   },
   methods: {
-    async fetchBlockInventory(){
+    async fetchBlockEquipped() {
+      await ItemStore.dispatch("fetchBlockEquipped");
+      this.equipped_block = ItemStore.getters.block_equipped;
+    },
+    async fetchBackgroundEquipped() {
+      await ItemStore.dispatch("fetchBackEquipped");
+      this.equipped_back = ItemStore.getters.back_equipped;
+    },
+    async fetchBlockInventory() {
       await ItemStore.dispatch("fetchBlockInventory");
-      this.blocks = ItemStore.getters.block_inven
+      this.blocks = ItemStore.getters.block_inven;
     },
-    async fetchBackgroundInventory(){
-      await ItemStore.dispatch("fetchBackgroundInventory");
-      this.backgrounds = ItemStore.getters.back_inven
+    async fetchBackgroundInventory() {
+      await ItemStore.dispatch("fetchBackInventory");
+      this.backgrounds = ItemStore.getters.back_inven;
     },
-  }
+    getUserPoints() {
+      this.user_points = AuthUser.getters.user.point;
+    },
+    async equipItem(item) {
+      let payload = {
+        equipped_id: this.equipped_block[0].id,
+        equip_id: item.id,
+      };
+      await ItemStore.dispatch("equipItem", payload);
+      if(item.type == "block"){
+        await this.fetchBlockEquipped();
+        await this.fetchBlockInventory();
+      }
+      else{ 
+        await this.fetchBackgroundEquipped();
+        await this.fetchBackgroundInventory();}
+     
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .inventory-page {
   width: 100%;
-  height: 100vh;
   background-image: url("../../assets/background-default.jpg");
   background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .head {
   color: white;
   font-size: 60px;
   margin-left: 5%;
 }
+h1::after {
+  display: inline-block;
+  content: "";
+  width: 60px;
+  height: 60px;
+  margin-left: 20px;
+  background: url("../../assets/backpack.png");
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
 .inventory-table {
   margin-left: 5%;
   width: 90%;
-  height: 85%;
+
   border: 2px solid rgb(107, 107, 107);
   border-radius: 5px;
   background-color: rgb(107, 107, 107);
+  background-size: cover;
 }
 .table-head {
   color: white;
