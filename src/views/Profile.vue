@@ -2,8 +2,10 @@
     <div class="bg">
         <div class="container mx-auto py-10">
             <profile></profile><br>
-            <play-log></play-log><br>
-            <versus-log></versus-log><br>
+            <div class="flex space-x-4">
+                <div class="flex-1"><play-log></play-log></div>
+                <div class="flex-1"><versus-log></versus-log></div>
+            </div><br>
             <point-log></point-log>
         </div>
     </div>
