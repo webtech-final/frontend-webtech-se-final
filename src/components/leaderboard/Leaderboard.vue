@@ -140,26 +140,4 @@ export default {
     display: grid;
     grid-template-columns: 50% 50%;
 }
-// table,tr{
-//     color: black;
-//     margin-right: auto;
-//     margin-left: auto;
-//     font-size: 30px;
-//     border: 15px solid burlywood;
-//     width: 70%;
-// }
-// td{
-//     background-color: blanchedalmond;
-// }
-// th{
-//     background-color: burlywood;
-// }
-// .h1{
-//     font-size: 50px;
-//     margin-left: auto;
-//     margin-right: auto;
-//     background-color: blanchedalmond;
-//     color: black;
-//     padding: 3px 30px;
-// }
 </style>
