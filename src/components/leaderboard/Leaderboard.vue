@@ -18,7 +18,7 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y-8 divide-gray-900">
-                        <tr class="p-16 bg-yellow-100 hover:bg-yellow-200" v-for="(info,index) in single" :key="index">
+                        <tr class="cursor-pointer p-16 bg-yellow-100 hover:bg-yellow-200" v-for="(info,index) in single" :key="index" v-on:click="clickSingle(info)">
                             <td v-if="index < 3" class="font-serif text-3xl">{{index+1}}</td>
                             <td v-else class="font-serif text-2xl">{{index+1}}</td>
                             <td>
@@ -52,7 +52,7 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y-8 divide-gray-900">
-                        <tr class="p-16 bg-yellow-100 hover:bg-yellow-200" v-for="(info,index) in versus" :key="index">
+                        <tr class="cursor-pointer p-16 bg-yellow-100 hover:bg-yellow-200" v-for="(info,index) in versus" :key="index" v-on:click="clickVersus(info)">
                             <td v-if="index < 3" class="font-serif text-3xl">{{index+1}}</td>
                             <td v-else class="font-serif text-2xl">{{index+1}}</td>
                             <td>
@@ -67,7 +67,7 @@
                     </tbody>
                 </table>
             </div>
-        </div>        
+        </div>    
     </div>
 </template>
 
@@ -98,6 +98,38 @@ export default {
         },
         isProfilePicNull(imagePath) {
             return imagePath === null;
+        },
+        fullDateFormater(timestamp) {
+            let date = new Date(timestamp)
+            let options = {
+                year: 'numeric', month: 'numeric', day: 'numeric',
+                hour: 'numeric', minute: 'numeric', second: 'numeric',
+                hour12: false,
+                timeZone: 'Asia/Bangkok'
+            };
+            return new Intl.DateTimeFormat('en-GB', options).format(date)
+        },
+        clickSingle(match) {
+            this.$swal.fire({
+                icon: 'info',
+                title: "Score : " + "<b>" + match.score + "</b>",
+                html: "<span><i>Player</i> : </span>" + "<b>" + match.user.name + "</b>" + "<br /><br />" +
+                        "<span><i>Played at</i> : </span>" + "<b>" + this.fullDateFormater(match.created_at) + "</b>",
+                confirmButtonText: "Close", 
+                confirmButtonColor: "#DD6B55",
+            })
+        },
+        clickVersus(match) {
+            this.$swal.fire({
+                icon: 'info',
+                title: "Score : " + "<b>" + match.score + "</b>",
+                html: "<span><i>Result</i> : </span>" + "<b>" + match.result + "</b>" + "<br /><br />" +
+                        "<span><i>Player</i> : </span>" + "<b>" + match.user.name + "</b>" + "<br /><br />" +
+                        "<span><i>Opponent</i> : </span>" + "<b>" + match.opponent + "</b>" + "<br /><br />" +
+                        "<span><i>Played at</i> : </span>" + "<b>" + this.fullDateFormater(match.created_at) + "</b>",
+                confirmButtonText: "Close", 
+                confirmButtonColor: "#DD6B55",
+            })
         },
     }
 }
