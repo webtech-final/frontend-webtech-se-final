@@ -86,11 +86,10 @@ export default {
         click(match) {
             this.$swal.fire({
                 icon: 'info',
-                title: "Score : " + match.score,
-                html: "<span>Result : </span>" + match.result + "<br /><br />" +
-                        "<span>Opponent : </span>" + match.opponent + "<br /><br />" +
-                        
-                        "<span>Played at : </span>" + this.fullDateFormater(match.created_at),
+                title: "Score : " + "<b>" + match.score + "</b>",
+                html: "<span><i>Result</i> : </span>" + "<b>" + match.result + "</b>" + "<br /><br />" +
+                        "<span><i>Opponent</i> : </span>" + "<b>" + match.opponent + "</b>" + "<br /><br />" +
+                        "<span><i>Played at</i> : </span>" + "<b>" + this.fullDateFormater(match.created_at) + "</b>",
                 confirmButtonText: "Close", 
                 confirmButtonColor: "#DD6B55",
             })
