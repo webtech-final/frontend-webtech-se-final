@@ -6,7 +6,7 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-900">
                             <tr>
-                                <th colspan="3" class="px-6 py-3 text-center text-md font-medium text-white uppercase tracking-wider">VERSUS LOG</th>
+                                <th colspan="3" class="px-6 py-3 text-center text-md font-medium text-white uppercase tracking-wider">VERSUS HISTORY</th>
                             </tr>
                         </thead>
                         <thead class="bg-gray-200">

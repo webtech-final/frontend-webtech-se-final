@@ -26,7 +26,7 @@
             <div class="text-5xl">Change Name</div>
             <br /><br />
             <div>
-                <input class="text-3xl" type="text" v-model="new_name" />
+                <input class="text-3xl p-3" type="text" v-model="new_name" />
                 <div
                     class="text-2xl text-green-500"
                     v-if="isEditNameSuccess()"
