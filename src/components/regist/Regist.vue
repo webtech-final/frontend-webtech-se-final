@@ -1,32 +1,34 @@
 <template>
-    <div>
-        <h1 style="font-size: 70px; padding-top: 100px">SIGNUP</h1>
-        <div style="margin-top: 50px">
-            <input type="text" name="username" placeholder="name" v-model="form.name" style="color:black;">
-            <div style="margin-top: 10px;">
-                <label for="name error" style="color:red;text-shadow: 2px 1px white;" v-if="error.name">{{ error.name }}</label>
+    <div class="mx-96 pt-20">
+        <div class="bg-gray-900 mx-52 rounded-xl">
+            <h1 class="font-serif" style="font-size: 70px;">SIGN UP</h1>
+            <div style="margin-top: 40px">
+                <input class="p-3 w-96 rounded-xl" type="text" name="username" placeholder="name" v-model="form.name" style="color:black;">
+                <div style="margin-top: 10px;">
+                    <label for="name error" style="color:red" v-if="error.name">{{ error.name }}</label>
+                </div>
             </div>
-        </div>
-        <div style="margin-top: 50px">
-            <input type="email" name="email" placeholder="email" v-model="form.email" style="color:black;">
-            <div style="margin-top: 10px;">
-                <label for="email error" style="color:red;text-shadow: 2px 1px white;" v-if="error.email">{{ error.email }}</label>
+            <div style="margin-top: 40px">
+                <input class="p-3 w-96 rounded-xl" type="email" name="email" placeholder="email" v-model="form.email" style="color:black;">
+                <div style="margin-top: 10px;">
+                    <label for="email error" style="color:red" v-if="error.email">{{ error.email }}</label>
+                </div>
             </div>
-        </div>
-        <div style="margin-top: 50px">
-            <input type="password" name="password" placeholder="password" v-model="form.password" style="color:black;">
-            <div style="margin-top: 10px;">
-                <label for="password error" style="color:red;text-shadow: 2px 1px white;" v-if="error.password">{{ error.password }}</label>
+            <div style="margin-top: 40px">
+                <input class="p-3 w-96 rounded-xl" type="password" name="password" placeholder="password" v-model="form.password" style="color:black;">
+                <div style="margin-top: 10px;">
+                    <label for="password error" style="color:red" v-if="error.password">{{ error.password }}</label>
+                </div>
             </div>
-        </div>
-        <div style="margin-top: 50px">
-                <input type="password" name="confirmPassword" placeholder="confirm password" v-model="form.confirmPassword" style="color:black">
-            <div style="margin-top: 10px;">
-                <label for="confirm password error" style="color:red;text-shadow: 2px 1px white;" v-if="error.confirmPassword">{{ error.confirmPassword }}</label>
+            <div style="margin-top: 40px">
+                <input class="p-3 w-96 rounded-xl" type="password" name="confirmPassword" placeholder="confirm password" v-model="form.confirmPassword" style="color:black">
+                <div style="margin-top: 10px;">
+                    <label for="confirm password error" style="color:red" v-if="error.confirmPassword">{{ error.confirmPassword }}</label>
+                </div>
             </div>
-        </div>
-        <div style="margin-top: 50px;color: black">
-            <button style="background-color:white; padding: 3px 6px" @click="signup">SIGN UP</button>
+            <div class="mt-10 pb-10">
+                <button class="bg-blue-500 hover:bg-blue-600 text-xl w-96 rounded-xl p-3" @click="signup">SIGN UP</button>
+            </div>
         </div>
     </div>
 </template>

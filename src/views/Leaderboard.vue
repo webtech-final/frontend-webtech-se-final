@@ -1,5 +1,5 @@
 <template>
-    <div class="bg" style="padding-top: 100px; padding-bottom: 100px">
+    <div class="bg">
         <div><leaderboard></leaderboard></div>
     </div>
 </template>

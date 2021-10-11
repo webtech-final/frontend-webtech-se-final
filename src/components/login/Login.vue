@@ -1,14 +1,16 @@
 <template>
-    <div>
-        <h1 style="font-size: 70px">LOGIN</h1>
-        <div style="margin-top: 50px">
-            <input type="text" name="username" placeholder="email" v-model="form.email" style="color:black;">
-        </div>
-        <div style="margin-top: 50px;">
-            <input type="password" name="password" placeholder="password" v-model="form.password" style="color:black;">
-        </div>
-        <div style="color: black; margin-top: 50px;">
-            <button style="background-color:white; padding: 3px 6px" @click="login">LOGIN</button>
+    <div class="mx-96">
+        <div class="bg-gray-900 mx-52 rounded-xl">
+            <h1 class="font-serif" style="font-size: 70px">LOGIN</h1>
+            <div class="mt-10">
+                <input class="p-3 w-96 rounded-xl" type="text" name="username" placeholder="email" v-model="form.email" style="color:black;">
+            </div>
+            <div class="mt-10">
+                <input class="p-3 w-96 rounded-xl" type="password" name="password" placeholder="password" v-model="form.password" style="color:black;">
+            </div>
+            <div class="mt-10 pb-10">
+                <button class="bg-blue-500 hover:bg-blue-600 text-xl w-96 rounded-xl p-3" @click="login">LOGIN</button>
+            </div>
         </div>
     </div>
 </template>
@@ -26,6 +28,14 @@ export default {
     },
     methods:{
         async login(){
+            if (this.form.email === '') {
+                this.$swal("Login Failed","please enter email","error")
+                return;
+            } 
+            else if (this.form.password === '') {
+                this.$swal("Login Failed","please enter password","error")
+                return;         
+            }
             let payload = {
                 email: this.form.email,
                 password: this.form.password
