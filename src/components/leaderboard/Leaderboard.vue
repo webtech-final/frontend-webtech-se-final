@@ -7,7 +7,7 @@
                     <div class="font-mono text-xl">(SINGLEPLAYER)</div>
                 </div>
             </div>
-            <div class="mt-6 mx-24 bg-gray-900 rounded-lg pb-5 pt-10 px-5">
+            <div class="mt-6 mx-24 bg-gray-900 rounded-lg pb-5 pt-10 px-5 border-2 border-yellow-50">
                 <table class="min-w-full">
                     <thead>
                         <tr class="font-serif text-gray-200">
@@ -19,7 +19,7 @@
                     </thead>
                     <tbody class="divide-y-8 divide-gray-900">
                         <tr class="cursor-pointer p-16 bg-yellow-100 hover:bg-yellow-200" v-for="(info,index) in single" :key="index" v-on:click="clickSingle(info)">
-                            <td v-if="index < 3" class="font-serif text-3xl">{{index+1}}</td>
+                            <td v-if="index < 3" class="font-serif text-3xl text-yellow-800">{{index+1}}</td>
                             <td v-else class="font-serif text-2xl">{{index+1}}</td>
                             <td>
                                 <div class="py-1 px-8">
@@ -27,7 +27,7 @@
                                     <img v-else class="w-12 h-12 rounded-lg shadow-lg" v-bind:src="`${defaultPicture}`" alt="">
                                 </div>  
                             </td>
-                            <td class="text-2xl font-mono">{{info.user.name}}</td>
+                            <td class="text-2xl text-left font-mono">{{info.user.name}}</td>
                             <td class="text-3xl font-mono">{{info.score}}</td>
                         </tr>
                     </tbody>
@@ -41,7 +41,7 @@
                     <div class="font-mono text-xl">(VERSUS)</div>
                 </div>
             </div>
-            <div class="mt-6 mx-24 bg-gray-900 rounded-lg pb-5 pt-10 px-5">
+            <div class="mt-6 mx-24 bg-gray-900 rounded-lg pb-5 pt-10 px-5 border-2 border-yellow-50">
                 <table class="min-w-full">
                     <thead>
                         <tr class="font-serif text-gray-200">
@@ -53,7 +53,7 @@
                     </thead>
                     <tbody class="divide-y-8 divide-gray-900">
                         <tr class="cursor-pointer p-16 bg-yellow-100 hover:bg-yellow-200" v-for="(info,index) in versus" :key="index" v-on:click="clickVersus(info)">
-                            <td v-if="index < 3" class="font-serif text-3xl">{{index+1}}</td>
+                            <td v-if="index < 3" class="font-serif text-3xl text-yellow-800">{{index+1}}</td>
                             <td v-else class="font-serif text-2xl">{{index+1}}</td>
                             <td>
                                 <div class="py-1 px-8">
@@ -61,7 +61,7 @@
                                     <img v-else class="w-12 h-12 rounded-lg shadow-lg" v-bind:src="`${defaultPicture}`" alt="">
                                 </div>  
                             </td>
-                            <td class="text-2xl font-mono">{{info.user.name}}</td>
+                            <td class="text-2xl text-left font-mono">{{info.user.name}}</td>
                             <td class="text-3xl font-mono">{{info.score}}</td>
                         </tr>
                     </tbody>
