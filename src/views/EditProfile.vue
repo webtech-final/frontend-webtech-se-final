@@ -1,10 +1,10 @@
 <template>
-    <div>
-        <div class="mt-10 mx-80 p-10 justify-items-center bg-gray-300 rounded-lg">
-            <div class="text-5xl">Change Profile Picture</div>
+    <div style="text-align: center;">
+        <div class="mt-10 mx-80 p-10 bg-gray-300 rounded-2xl">
+            <div class="font-serif text-5xl">Change Profile Picture</div>
             <br /><br />
             <div>
-                <input class="text-3xl" type="file" name="image" @change="selectedFile($event)" />
+                <input class="font-mono text-3xl bg-white p-3 rounded-2xl" type="file" name="image" @change="selectedFile($event)" />
                 <div
                     v-if="isUploadSuccess()"
                     class="text-2xl text-green-500"
@@ -15,18 +15,18 @@
             <br />
             <div>
                 <button
-                    class="text-2xl bg-green-400 hover:bg-green-500 rounded-lg p-2"
+                    class="text-2xl bg-green-400 hover:bg-green-500 rounded-2xl p-3 w-96"
                     @click="upload"
                 >
                     Apply
                 </button>
             </div>
         </div>
-        <div class="mt-10 mx-80 p-10 justify-items-center bg-gray-300 rounded-lg">
-            <div class="text-5xl">Change Name</div>
+        <div class="mt-10 mx-80 p-10 justify-items-center bg-gray-300 rounded-2xl">
+            <div class="font-serif text-5xl">Change Name</div>
             <br /><br />
             <div>
-                <input class="text-3xl p-3" type="text" v-model="new_name" />
+                <input class="text-3xl p-3 w-96 rounded-2xl" type="text" v-model="new_name" />
                 <div
                     class="text-2xl text-green-500"
                     v-if="isEditNameSuccess()"
@@ -37,7 +37,7 @@
             <br />
             <div>
                 <button
-                    class="text-2xl bg-green-400 hover:bg-green-500 rounded-lg p-2"
+                    class="text-2xl bg-green-400 hover:bg-green-500 rounded-2xl p-3 w-96"
                     @click="editName"
                 >
                     Apply
@@ -60,7 +60,16 @@ export default {
             edit_result: null,
         };
     },
+    mounted(){
+        if (!this.isAuthen()) {
+            this.$swal("Restricted Area", "You must login first", 'warning')
+            this.$router.push('/')
+        }
+    },
     methods: {
+        isAuthen() {
+            return authUser.getters.isAuthen
+        },
         selectedFile(event) {
             this.image = event.target.files[0];
         },
