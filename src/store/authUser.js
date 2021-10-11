@@ -13,7 +13,7 @@ export default new Vuex.Store({
         user: auth ? auth.data.user : '',
         jwt: auth ? auth.data.access_token : '',
         isAuthen: auth ? true : false,
-        header: auth ? { headers: { Authorization: `Bearer ${auth.data.access_token}` } } : ''
+        header: auth ? { headers: { Authorization: `Bearer ${auth.data.access_token}` } } : '',
     },
     mutations: {
         loginSuccess(state, res) {
@@ -39,7 +39,7 @@ export default new Vuex.Store({
         },
         updateName(state, res) {
             state.user.name = res;
-        }
+        },
     },
     actions: {
         async login({ commit }, { email, password }) {
@@ -48,42 +48,49 @@ export default new Vuex.Store({
                 email: email,
                 password: password,
             };
-            try{
+            try {
                 let res = await axios.post(url, body);
-                if(res.data === "admin"){
-                    return res.data
+                if (res.data === 'admin') {
+                    return res.data;
                 }
                 commit('loginSuccess', res.data);
                 localStorage.setItem(auth_key, JSON.stringify(res));
                 return res.data;
-            }catch(e){
-                if(e.response.status === 401){
-                    return e.response.status
+            } catch (e) {
+                if (e.response.status === 401) {
+                    return e.response.status;
                 }
             }
         },
+
         // รอดูว่าตอนสมัครเสร็จได้ jwt ไหม
         async register({ commit }, payload) {
-            try{
+            try {
                 let url = `${api_endpoint}/api/auth/register`;
                 let body = payload;
                 let res = await axios.post(url, body);
                 commit('logoutSuccess');
                 return res;
-            }catch(e){
-                if(e.response.status===400){
-                    return e.response
+            } catch (e) {
+                if (e.response.status === 400) {
+                    return e.response;
                 }
             }
         },
         async logout({ commit }) {
             let url = `${api_endpoint}/api/auth/logout`;
-            let header = this.state.header
-            let res = await axios.post(url, null, header);
+            let header = this.state.header;
+            let res = null;
+            try {
+                res = await axios.post(url, null, header);
+            } catch (err) {
+                console.error(err);
+            }
             localStorage.removeItem(auth_key);
             commit('logoutSuccess');
             return res;
         },
+
         async getPoint({ commit }, payload) {
             let url = `${api_endpoint}/api/auth/getPoint/${payload.id}`;
             let body = {
@@ -91,8 +98,9 @@ export default new Vuex.Store({
             };
             let header = this.state.header;
             let res = await axios.put(url, body, header);
-            commit('getPoint', res.data );
+            commit('getPoint', res.data);
         },
+
         async usePoint({ commit }, payload) {
             let url = `${api_endpoint}/api/auth/usePoint/${payload.user_id}`;
             let body = {
@@ -109,35 +117,39 @@ export default new Vuex.Store({
             formData.append('id', this.getters.user.id);
             let header = this.state.header;
             try {
+                console.log('DEBUG');
+                console.log(url);
+                console.log(formData);
+                console.log(header);
                 let res = await axios.post(url, formData, header);
                 commit('updateProfilePic', res.data.path);
                 return res.data.status;
             } catch (error) {
-                return error.response.data.status
+                console.dir(error.response.data);
+                return error.response.data.status;
             }
         },
         async updateName({ commit }, payload) {
             let url = `${api_endpoint}/api/auth/updateName`;
             let body = {
                 id: this.getters.user.id,
-                new_name: payload.new_name
+                new_name: payload.new_name,
             };
             let header = this.state.header;
             try {
                 let res = await axios.put(url, body, header);
                 commit('updateName', res.data);
-                return "success";
+                return 'success';
             } catch (error) {
-                return error.response.data.new_name[0]
+                return error.response.data.new_name[0];
             }
-        }
+        },
     },
     modules: {},
     getters: {
         user: state => state.user,
         jwt: state => state.jwt,
         isAuthen: state => state.isAuthen,
-        header: state => state.header
+        header: state => state.header,
     },
-    
 });

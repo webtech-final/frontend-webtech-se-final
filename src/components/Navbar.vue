@@ -97,7 +97,7 @@ export default {
         };
     },
     created() {
-        this.currentUser = authUser.getters.user;
+        this.setUser();
     },
     methods: {
         setUser() {
