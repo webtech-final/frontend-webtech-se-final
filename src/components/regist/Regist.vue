@@ -1,7 +1,7 @@
 <template>
     <div class="mx-96 pt-20">
         <div class="bg-gray-900 mx-52 rounded-xl">
-            <h1 class="font-serif" style="font-size: 70px;">SIGN UP</h1>
+            <h1 class="font-mono" style="font-size: 70px;">SIGN UP</h1>
             <div style="margin-top: 40px">
                 <input class="p-3 w-96 rounded-xl" type="text" name="username" placeholder="name" v-model="form.name" style="color:black;">
                 <div style="margin-top: 10px;">
