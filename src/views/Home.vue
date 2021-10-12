@@ -11,7 +11,10 @@
 				items-end
 			"
         >
-            <a class="">TERTIS</a> <a class="text-5xl">.VS</a>
+            <div class="mb-3">
+                <a class="text-8xl" id="logo-p1">TERTIS</a>
+                <a class="text-5xl" id="logo-p2">.VS</a>
+            </div>
         </div>
         <div class="text-gray-300 my-4 relative w-1/4 mx-auto">
             <input
@@ -30,6 +33,7 @@
 					focus:outline-none
 					active:outline-none
 					active:border-indigo-600
+                    text-gray-600
 				"
                 id=""
                 type="text"
@@ -46,11 +50,10 @@
 					mb-0
 					pt-4
 					pl-3
-					leading-tighter
-					text-gray-400 text-base
-					cursor-text
+                    text-gray-300
+				t
 				"
-                v-if="!isAuthen()"
+                v-if="!isAuthen() && !inputPlayerName"
                 >Username</label
             >
             <div class="grid grid-cols-3 my-4">
@@ -170,7 +173,7 @@
 import GameStore from '../store/GameStore';
 import EnterRoom from '../components/home/EnterRoom.vue';
 import AuthUser from '../store/authUser';
-import PointRate from '../store/pointRate'
+import PointRate from '../store/pointRate';
 
 export default {
     name: 'Home',
@@ -182,7 +185,7 @@ export default {
             inputPlayerName: '',
             msg: '',
             pin: '',
-            rate: ''
+            rate: '',
         };
     },
     methods: {
@@ -264,11 +267,11 @@ export default {
         setPlayerName() {
             this.playerName = AuthUser.getters.isAuthen ? AuthUser.getters.user.name : 'GUEST';
         },
-        isAuthen(){
-            return AuthUser.getters.isAuthen
+        isAuthen() {
+            return AuthUser.getters.isAuthen;
         },
-        async getLastRate(){
-            this.rate = await PointRate.dispatch('getLastRate')
+        async getLastRate() {
+            this.rate = await PointRate.dispatch('getLastRate');
         },
     },
     async mounted() {
@@ -276,8 +279,21 @@ export default {
         this.socket.removeAllListeners();
         this.setPlayerName();
         this.socketInit();
-        this.getLastRate()
+        this.getLastRate();
     },
 };
 </script>
-<style scoped></style>
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+#logo-p1 {
+    font-family: 'PT Serif', serif;
+}
+
+#logo-p2 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    letter-spacing: -2px;
+}
+</style>
