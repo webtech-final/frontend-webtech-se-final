@@ -1,29 +1,29 @@
 <template>
     <div class="mx-96 pt-20">
         <div class="bg-gray-900 mx-52 rounded-xl">
-            <h1 class="font-serif" style="font-size: 70px;">SIGN UP</h1>
+            <h1 class="font-mono" style="font-size: 70px;">SIGN UP</h1>
             <div style="margin-top: 40px">
                 <input class="p-3 w-96 rounded-xl" type="text" name="username" placeholder="name" v-model="form.name" style="color:black;">
                 <div style="margin-top: 10px;">
-                    <label for="name error" style="color:red" v-if="error.name">{{ error.name }}</label>
+                    <label for="name error" style="color:red;" v-if="error.name">{{ error.name }}</label>
                 </div>
             </div>
             <div style="margin-top: 40px">
                 <input class="p-3 w-96 rounded-xl" type="email" name="email" placeholder="email" v-model="form.email" style="color:black;">
                 <div style="margin-top: 10px;">
-                    <label for="email error" style="color:red" v-if="error.email">{{ error.email }}</label>
+                    <label for="email error" style="color:red;" v-if="error.email">{{ error.email }}</label>
                 </div>
             </div>
             <div style="margin-top: 40px">
                 <input class="p-3 w-96 rounded-xl" type="password" name="password" placeholder="password" v-model="form.password" style="color:black;">
                 <div style="margin-top: 10px;">
-                    <label for="password error" style="color:red" v-if="error.password">{{ error.password }}</label>
+                    <label for="password error" style="color:red;" v-if="error.password">{{ error.password }}</label>
                 </div>
             </div>
             <div style="margin-top: 40px">
                 <input class="p-3 w-96 rounded-xl" type="password" name="confirmPassword" placeholder="confirm password" v-model="form.confirmPassword" style="color:black">
                 <div style="margin-top: 10px;">
-                    <label for="confirm password error" style="color:red" v-if="error.confirmPassword">{{ error.confirmPassword }}</label>
+                    <label for="confirm password error" style="color:red;" v-if="error.confirmPassword">{{ error.confirmPassword }}</label>
                 </div>
             </div>
             <div class="mt-10 pb-10">
@@ -81,7 +81,6 @@ export default {
                         this.error.password = ''
                         this.error.confirmPassword = res.data.password[0]
                     }else{
-                        console.log(res.data.password[1])
                         this.error.password = res.data.password[0]
                         this.error.confirmPassword = res.data.password[1]
                     }
