@@ -50,15 +50,17 @@ export default new Vuex.Store({
             };
             try {
                 let res = await axios.post(url, body);
-                if (res.data === 'admin') {
-                    return res.data;
+                if (res.data.user.role === 'admin') {
+                    return res.data.user.role;
                 }
                 commit('loginSuccess', res.data);
                 localStorage.setItem(auth_key, JSON.stringify(res));
-                return res.data;
+                return res;
             } catch (e) {
                 if (e.response.status === 401) {
-                    return e.response.status;
+                    return e.response;
+                }else if(e.response.status === 422){
+                    return e.response
                 }
             }
         },
@@ -84,7 +86,6 @@ export default new Vuex.Store({
             try {
                 res = await axios.post(url, null, header);
             } catch (err) {
-                console.error(err);
             }
             localStorage.removeItem(auth_key);
             commit('logoutSuccess');
@@ -117,15 +118,10 @@ export default new Vuex.Store({
             formData.append('id', this.getters.user.id);
             let header = this.state.header;
             try {
-                console.log('DEBUG');
-                console.log(url);
-                console.log(formData);
-                console.log(header);
                 let res = await axios.post(url, formData, header);
                 commit('updateProfilePic', res.data.path);
                 return res.data.status;
             } catch (error) {
-                console.dir(error.response.data);
                 return error.response.data.status;
             }
         },
