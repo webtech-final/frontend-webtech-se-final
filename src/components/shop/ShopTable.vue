@@ -119,7 +119,7 @@ export default {
         cancelButtonColor: "red",
       }).then(async (result) => {
         if (result.isConfirmed) {
-          if (this.user_points >= item.point) {
+          if (this.user.point >= item.point) {
             let payload = {
               item_id: item.id,
               point: item.point,
