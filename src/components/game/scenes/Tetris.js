@@ -171,8 +171,17 @@ export default class Tetris extends Phaser.Scene {
             player.piece.forEach((row, y) => {
                 row.forEach((col, x) => {
                     if (col !== 0) {
-                        activePiece.push(
-                            this.add
+                        let newPiece;
+                        if (player.color) {
+                            newPiece = this.add
+                                .image(
+                                    (x + player.pos.x) * BLOCK_WIDTH + BLOCK_WIDTH / 2,
+                                    (y + player.pos.y - 2) * BLOCK_HEIGHT + BLOCK_HEIGHT / 2,
+                                    player.pieceType,
+                                )
+                                .setScale(0.31);
+                        } else {
+                            newPiece = this.add
                                 .rectangle(
                                     (x + player.pos.x) * BLOCK_WIDTH + BLOCK_WIDTH / 2,
                                     (y + player.pos.y - 2) * BLOCK_HEIGHT + BLOCK_HEIGHT / 2,
@@ -180,11 +189,9 @@ export default class Tetris extends Phaser.Scene {
                                     BLOCK_HEIGHT,
                                     player.color,
                                 )
-                                .setStrokeStyle(
-                                    3,
-                                    player.colorBorder ? player.colorBorder : 0xffffff,
-                                ),
-                        );
+                                .setStrokeStyle(3, 0xffffff);
+                        }
+                        activePiece.push(newPiece);
                     }
                 });
             });
@@ -551,6 +558,8 @@ export default class Tetris extends Phaser.Scene {
     }
 
     preload() {
+        // this.load.setCORS('anonymous');
+        console.log(this.load.crossOrigin);
         let graphics = this.add.graphics();
         let line = new Phaser.Geom.Line(GAME_SCENE_WIDTH, 0, GAME_SCENE_WIDTH, GAME_SCENE_HEIGHT);
         graphics.lineStyle(5, 0xffffff);
@@ -567,9 +576,19 @@ export default class Tetris extends Phaser.Scene {
         this.nextText = this.add
             .text(GAME_SCENE_WIDTH + HUD_WIDTH / 2, 240, 'NEXT', { color: '#ffffff', fontSize: 24 })
             .setOrigin(0.5, 0);
+
+        this.load.image('S', 'http://localhost:8000/storage/newBlock/blockS.png');
+        this.load.image('Z', 'theme/theme1-darkblue.jpg');
+        this.load.image('L', 'theme/theme1-green.jpg');
+        this.load.image('J', 'theme/theme1-orange.jpg');
+        this.load.image('T', 'theme/theme1-purple.jpg');
+        this.load.image('O', 'theme/theme1-red.jpg');
+        this.load.image('I', 'theme/theme1-yellow.jpg');
     }
 
     create() {
+        this.add.image(100, 100, 'test').scale = 0.33;
+
         this.nextPieceInit();
         this.activePiece = this.drawNewPiece(this.player);
         this.drawField(this.field);
