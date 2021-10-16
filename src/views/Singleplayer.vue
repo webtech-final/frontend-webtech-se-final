@@ -11,12 +11,19 @@
 
 <script>
 import Game from '../components/game/GameSingle.vue';
+import authUser from '../store/authUser';
+import itemStore from '../store/itemStore';
+
 export default {
     name: 'Singleplayer',
     components: {
         Game,
     },
-    mounted() {
+    async mounted() {
+        if (authUser.getters.isAuthen) {
+            await itemStore.dispatch('fetchBlockEquipped');
+            await itemStore.dispatch('fetchBackEquipped');
+        }
         this.$refs.game.initializeGame();
     },
 };

@@ -50,6 +50,7 @@ import AuthUser from '../store/authUser';
 import PointRate from '../store/pointRate';
 import PlayHistory from '../store/playHistory';
 import PointHistory from '../store/pointHistory';
+import itemStore from '../store/itemStore';
 
 export default {
     name: 'Multiplayer',
@@ -154,9 +155,13 @@ export default {
                 : GameStore.getters.getGuestName;
         },
     },
-    created() {
-        this.socketInit();
+    async mounted() {
         this.setPlayerName();
+        this.socketInit();
+        if (AuthUser.getters.isAuthen) {
+            await itemStore.dispatch('fetchBlockEquipped');
+            await itemStore.dispatch('fetchBackEquipped');
+        }
     },
 };
 </script>

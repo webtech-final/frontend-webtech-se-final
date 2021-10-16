@@ -289,7 +289,6 @@ export default {
         this.socketInit();
         this.getLastRate();
         await this.getEquiped();
-        console.dir(itemStore.getters);
     },
 };
 </script>

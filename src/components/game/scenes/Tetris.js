@@ -1,8 +1,13 @@
 import Phaser from 'phaser';
+import Vue from 'vue';
 import Constants from '../constants';
 import GameStore from '../../../store/GameStore';
-import Vue from 'vue';
 import router from '../../../router/index';
+import PlayHistory from '../../../store/playHistory';
+import AuthUser from '../../../store/authUser';
+import PointRate from '../../../store/pointRate';
+import PointHistory from '../../../store/pointHistory';
+import itemStore from '../../../store/itemStore';
 
 const BLOCK_HEIGHT = Constants.BLOCK_HEIGHT;
 const BLOCK_WIDTH = Constants.BLOCK_WIDTH;
@@ -10,11 +15,8 @@ const GAME_SCENE_HEIGHT = Constants.GAME_SCENE_HEIGHT;
 const GAME_SCENE_WIDTH = Constants.GAME_SCENE_WIDTH;
 const HUD_WIDTH = Constants.HUD_WIDTH;
 const ABOVE_GAP = Constants.ABOVE_GAP;
+const api_endpoint = process.env.VUE_APP_ENDPOINT || 'http://localhost:8000';
 
-import PlayHistory from '../../../store/playHistory';
-import AuthUser from '../../../store/authUser';
-import PointRate from '../../../store/pointRate';
-import PointHistory from '../../../store/pointHistory';
 export default class Tetris extends Phaser.Scene {
     constructor() {
         super('tetris');
@@ -36,6 +38,12 @@ export default class Tetris extends Phaser.Scene {
         this.drawedNextPiece = [];
 
         this.drawedHoldPiece = [];
+
+        AuthUser.getters.isAuthen &&
+        itemStore.getters.block_equipped[0] !== undefined &&
+        itemStore.getters.block_equipped[0].name !== 'Default Block'
+            ? (this.useTexture = true)
+            : (this.useTexture = false);
 
         this.allPiece = [
             {
@@ -172,7 +180,7 @@ export default class Tetris extends Phaser.Scene {
                 row.forEach((col, x) => {
                     if (col !== 0) {
                         let newPiece;
-                        if (player.color) {
+                        if (player.color && this.useTexture) {
                             newPiece = this.add
                                 .image(
                                     (x + player.pos.x) * BLOCK_WIDTH + BLOCK_WIDTH / 2,
@@ -203,8 +211,17 @@ export default class Tetris extends Phaser.Scene {
             player.piece.forEach((row, y) => {
                 row.forEach((col, x) => {
                     if (col !== 0) {
-                        activePiece.push(
-                            this.add
+                        let newPiece;
+                        if (this.useTexture) {
+                            newPiece = this.add
+                                .image(
+                                    x * BLOCK_WIDTH + BLOCK_WIDTH / 2 + player.pos.x,
+                                    y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2 + player.pos.y,
+                                    player.pieceType,
+                                )
+                                .setScale(0.31);
+                        } else {
+                            newPiece = this.add
                                 .rectangle(
                                     x * BLOCK_WIDTH + BLOCK_WIDTH / 2 + player.pos.x,
                                     y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2 + player.pos.y,
@@ -212,11 +229,9 @@ export default class Tetris extends Phaser.Scene {
                                     BLOCK_HEIGHT,
                                     player.color,
                                 )
-                                .setStrokeStyle(
-                                    3,
-                                    player.colorBorder ? player.colorBorder : 0xffffff,
-                                ),
-                        );
+                                .setStrokeStyle(3, 0xffffff);
+                        }
+                        activePiece.push(newPiece);
                     }
                 });
             });
@@ -558,8 +573,7 @@ export default class Tetris extends Phaser.Scene {
     }
 
     preload() {
-        // this.load.setCORS('anonymous');
-        console.log(this.load.crossOrigin);
+        this.load.setCORS('anonymous');
         let graphics = this.add.graphics();
         let line = new Phaser.Geom.Line(GAME_SCENE_WIDTH, 0, GAME_SCENE_WIDTH, GAME_SCENE_HEIGHT);
         graphics.lineStyle(5, 0xffffff);
@@ -577,18 +591,20 @@ export default class Tetris extends Phaser.Scene {
             .text(GAME_SCENE_WIDTH + HUD_WIDTH / 2, 240, 'NEXT', { color: '#ffffff', fontSize: 24 })
             .setOrigin(0.5, 0);
 
-        this.load.image('S', 'http://localhost:8000/storage/newBlock/blockS.png');
-        this.load.image('Z', 'theme/theme1-darkblue.jpg');
-        this.load.image('L', 'theme/theme1-green.jpg');
-        this.load.image('J', 'theme/theme1-orange.jpg');
-        this.load.image('T', 'theme/theme1-purple.jpg');
-        this.load.image('O', 'theme/theme1-red.jpg');
-        this.load.image('I', 'theme/theme1-yellow.jpg');
+        if (this.useTexture) {
+            const texturePaths = itemStore.getters.block_equipped[0].item_details;
+
+            this.load.image('S', api_endpoint + '/' + texturePaths[0].image_path);
+            this.load.image('Z', api_endpoint + '/' + texturePaths[1].image_path);
+            this.load.image('L', api_endpoint + '/' + texturePaths[2].image_path);
+            this.load.image('J', api_endpoint + '/' + texturePaths[3].image_path);
+            this.load.image('T', api_endpoint + '/' + texturePaths[4].image_path);
+            this.load.image('O', api_endpoint + '/' + texturePaths[5].image_path);
+            this.load.image('I', api_endpoint + '/' + texturePaths[6].image_path);
+        }
     }
 
     create() {
-        this.add.image(100, 100, 'test').scale = 0.33;
-
         this.nextPieceInit();
         this.activePiece = this.drawNewPiece(this.player);
         this.drawField(this.field);
