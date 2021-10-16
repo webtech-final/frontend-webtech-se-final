@@ -584,6 +584,8 @@ export default class Tetris extends Phaser.Scene {
         this.nextText = this.add
             .text(GAME_SCENE_WIDTH + HUD_WIDTH / 2, 240, 'NEXT', { color: '#ffffff', fontSize: 24 })
             .setOrigin(0.5, 0);
+
+        // texture
     }
 
     create() {
