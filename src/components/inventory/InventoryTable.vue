@@ -1,15 +1,15 @@
 <template>
   <div class="inventory-page">
-    <div class="head grid-cols-2 grid">
-      <h1>Your Inventory</h1>
+    <div class="head grid-cols-2 grid font-serif">
+      <h1 class="font-semibold">Your Inventory</h1>
       <div class="mr-16 grid justify-items-end text-yellow-500">
         {{ user_points }} points
       </div>
     </div>
     <div class="inventory-table mt-3">
       <div class="table-head">
-        Block Theme >
-        <div class="grid grid-cols-4">
+        <div class="font-serif font-medium">Block Theme ></div>
+        <div class="grid grid-cols-4 font-mono">
           <div v-for="(block, index) in blocks" :key="index">
             <div v-if="block.id == 1" class="card">
               <div class="card-image">
@@ -37,6 +37,7 @@
                   Equipped
                 </button>
               </div>
+              <div class="py-2"></div>
               <div v-if="block.id != equipped_block[0].id">
                 <button
                   class="
@@ -53,10 +54,15 @@
                   Equip
                 </button>
               </div>
+              <div class="py-2"></div>
             </div>
             <div v-if="block.id != 1" class="card">
               <div class="card-image">
-                <img src="" alt="block" class="img" />
+                <img
+                  :src="getApi() + '/' + block.item_details[0].image_path"
+                  alt="block"
+                  class="img"
+                />
               </div>
               <div class="card-text">
                 <h2>{{ block.name }}</h2>
@@ -76,6 +82,7 @@
                   Equipped
                 </button>
               </div>
+              <div class="py-2"></div>
               <div v-if="block.id != equipped_block[0].id">
                 <button
                   class="
@@ -92,11 +99,12 @@
                   Equip
                 </button>
               </div>
+              <div class="py-2"></div>
             </div>
           </div>
         </div>
-        Background >
-        <div class="grid grid-cols-4">
+        <div class="font-serif font-medium">Background ></div>
+        <div class="grid grid-cols-4 font-mono">
           <div v-for="(background, index) in backgrounds" :key="index">
             <div v-if="background.id == 2" class="card">
               <div class="card-image">
@@ -124,6 +132,7 @@
                   Equipped
                 </button>
               </div>
+              <div class="py-2"></div>
               <div v-if="background.id != equipped_back[0].id">
                 <button
                   class="
@@ -140,10 +149,15 @@
                   Equip
                 </button>
               </div>
+              <div class="py-2"></div>
             </div>
             <div v-if="background.id != 2" class="card">
               <div class="card-image">
-                <img src="" alt="back" class="img" />
+                <img
+                  :src="getApi() + '/' + block.item_details[0].image_path"
+                  alt="back"
+                  class="img"
+                />
               </div>
               <div class="card-text">
                 <h2>{{ background.name }}</h2>
@@ -163,6 +177,7 @@
                   Equipped
                 </button>
               </div>
+              <div class="py-2"></div>
               <div v-if="background.id != equipped_back[0].id">
                 <button
                   class="
@@ -179,6 +194,7 @@
                   Equip
                 </button>
               </div>
+              <div class="py-2"></div>
             </div>
           </div>
         </div>
@@ -188,6 +204,7 @@
 </template>
 
 <script>
+let api_endpoint = process.env.VUE_APP_ENDPOINT || "http://localhost:8000";
 import ItemStore from "../../store/itemStore";
 import AuthUser from "../../store/authUser";
 export default {
@@ -209,6 +226,9 @@ export default {
     await this.fetchBackgroundInventory();
   },
   methods: {
+    getApi() {
+      return api_endpoint;
+    },
     async fetchBlockEquipped() {
       await ItemStore.dispatch("fetchBlockEquipped");
       this.equipped_block = ItemStore.getters.block_equipped;
@@ -234,14 +254,13 @@ export default {
         equip_id: item.id,
       };
       await ItemStore.dispatch("equipItem", payload);
-      if(item.type == "block"){
+      if (item.type == "block") {
         await this.fetchBlockEquipped();
         await this.fetchBlockInventory();
-      }
-      else{ 
+      } else {
         await this.fetchBackgroundEquipped();
-        await this.fetchBackgroundInventory();}
-     
+        await this.fetchBackgroundInventory();
+      }
     },
   },
 };
@@ -274,27 +293,24 @@ h1::after {
 .inventory-table {
   margin-left: 5%;
   width: 90%;
-
-  border: 2px solid rgb(107, 107, 107);
+  border: 5px solid rgb(255, 163, 59);
   border-radius: 5px;
   background-color: rgb(107, 107, 107);
   background-size: cover;
 }
 .table-head {
   color: white;
-  font-size: 30px;
+  font-size: 36px;
   margin-left: 2%;
   margin-top: 2%;
 }
 .img {
-  width: 140px;
-  height: 100px;
-  margin: 0.5rem;
+  padding: 1rem;
+  margin: 1rem;
   filter: drop-shadow(0 0 0.2em rgb(255, 255, 255));
 }
 .card {
-  width: 200px;
-  height: 250px;
+  background-size: cover;
   border-radius: 8px;
   background: rgb(255, 255, 255);
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.9);
@@ -311,13 +327,13 @@ h1::after {
   display: flex;
   align-items: center;
   justify-content: center;
+  
 }
 .card-text {
   display: flex;
   grid-area: text;
   align-items: center;
   justify-content: center;
-  margin-top: 12px;
 }
 
 .card-text h2 {
@@ -325,7 +341,7 @@ h1::after {
   color: black;
 }
 .card-text h3 {
-  font-size: 1em;
+  font-size: 0.8em;
   color: rgb(255, 255, 255);
   border-radius: 5px;
   border-color: rgb(0, 1, 87);
