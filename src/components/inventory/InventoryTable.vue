@@ -1,30 +1,28 @@
 <template>
-  <div class="inventory-page">
-    <div class="head grid-cols-2 grid font-serif">
-      <h1 class="font-semibold">Your Inventory</h1>
-      <div class="mr-16 grid justify-items-end text-blue-400">
-        {{ user.point }} points
-      </div>
-    </div>
-    <div class="inventory-table mt-3">
-      <div class="table-head">
-        <div class="font-serif font-medium">Block Theme ></div>
-        <div class="grid grid-cols-4 font-mono">
-          <div v-for="(block, index) in blocks" :key="index">
-            <div v-if="block.id == 1" class="card">
-              <div class="card-image">
-                <img
-                  src="../../assets/theme-default.png"
-                  alt="default-block"
-                  class="img"
-                />
-              </div>
-              <div class="card-text">
-                <h2>{{ block.name }}</h2>
-              </div>
-              <div v-if="block.id == equipped_block[0].id">
-                <button
-                  class="
+    <div class="inventory-page pb-16">
+        <div class="head grid-cols-2 grid font-serif">
+            <h1 class="font-semibold">Your Inventory</h1>
+            <div class="mr-16 grid justify-items-end text-blue-400">{{ user.point }} points</div>
+        </div>
+        <div class="inventory-table mt-3">
+            <div class="table-head">
+                <div class="font-serif font-medium">Block Theme ></div>
+                <div class="grid grid-cols-4 font-mono">
+                    <div v-for="(block, index) in blocks" :key="index">
+                        <div v-if="block.id == 1" class="card">
+                            <div class="card-image">
+                                <img
+                                    src="../../assets/theme-default.png"
+                                    alt="default-block"
+                                    class="img"
+                                />
+                            </div>
+                            <div class="card-text">
+                                <h2>{{ block.name }}</h2>
+                            </div>
+                            <div v-if="block.id == equipped_block[0].id">
+                                <button
+                                    class="
                     px-4
                     py-2
                     text-white
@@ -33,14 +31,14 @@
                     mt-1
                     text-3xl
                   "
-                >
-                  Equipped
-                </button>
-              </div>
-              <div class="py-2"></div>
-              <div v-if="block.id != equipped_block[0].id">
-                <button
-                  class="
+                                >
+                                    Equipped
+                                </button>
+                            </div>
+                            <div class="py-2"></div>
+                            <div v-if="block.id != equipped_block[0].id">
+                                <button
+                                    class="
                     px-4
                     py-2
                     text-white
@@ -78,14 +76,14 @@
                     mt-1
                     text-3xl
                   "
-                >
-                  Equipped
-                </button>
-              </div>
-              <div class="py-2"></div>
-              <div v-if="block.id != equipped_block[0].id">
-                <button
-                  class="
+                                >
+                                    Equipped
+                                </button>
+                            </div>
+                            <div class="py-2"></div>
+                            <div v-if="block.id != equipped_block[0].id">
+                                <button
+                                    class="
                     px-4
                     py-2
                     text-white
@@ -128,14 +126,14 @@
                     mt-1
                     text-3xl
                   "
-                >
-                  Equipped
-                </button>
-              </div>
-              <div class="py-2"></div>
-              <div v-if="background.id != equipped_back[0].id">
-                <button
-                  class="
+                                >
+                                    Equipped
+                                </button>
+                            </div>
+                            <div class="py-2"></div>
+                            <div v-if="background.id != equipped_back[0].id">
+                                <button
+                                    class="
                     px-4
                     py-2
                     text-white
@@ -173,14 +171,14 @@
                     mt-1
                     text-3xl
                   "
-                >
-                  Equipped
-                </button>
-              </div>
-              <div class="py-2"></div>
-              <div v-if="background.id != equipped_back[0].id">
-                <button
-                  class="
+                                >
+                                    Equipped
+                                </button>
+                            </div>
+                            <div class="py-2"></div>
+                            <div v-if="background.id != equipped_back[0].id">
+                                <button
+                                    class="
                     px-4
                     py-2
                     text-white
@@ -196,11 +194,8 @@
               </div>
               <div class="py-2"></div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -217,6 +212,7 @@ export default {
       user: {},
     };
   },
+
   async created() {
     this.getUser();
     await this.fetchBlockEquipped();
@@ -248,6 +244,7 @@ export default {
     getUser() {
       this.user = AuthUser.getters.user;
     },
+
     async equipBlock(item) {
       let payload = {
         equipped_id: this.equipped_block[0].id,
@@ -273,14 +270,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.inventory-page {
-  width: 100%;
-  background-image: url("../../assets/background-default.jpg");
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
 .head {
   color: white;
   font-size: 60px;
@@ -357,4 +346,5 @@ h1::after {
   transition: 0.25s;
   box-shadow: 5px 5px rgba(0, 0, 0, 0.6);
 }
-</style>>
+</style
+>>

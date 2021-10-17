@@ -1,31 +1,36 @@
 <template>
-  <div >
-   <inventory-table></inventory-table>
-  </div>
+    <div>
+        <inventory-table></inventory-table>
+    </div>
 </template>
 
 <script>
-import InventoryTable from '@/components/inventory/InventoryTable.vue'
-import AuthUser from '../store/authUser'
+import InventoryTable from '@/components/inventory/InventoryTable.vue';
+import AuthUser from '../store/authUser';
 
 export default {
-  name: 'Inventory',
-  components: {
-    InventoryTable
-  },
-  mounted(){
-    if(!this.isAuthen()){
-        this.$swal("Restricted Area", "You must login first", 'warning')
-        this.$router.push('/')
-    }
-  },
-  methods:{
-      isAuthen(){
-          return AuthUser.getters.isAuthen
-      }
-  }
-}
-</script>
-<style>
+    name: 'Inventory',
+    components: {
+        InventoryTable,
+    },
+    async mounted() {
+        if (!this.isAuthen()) {
+            this.$swal('Restricted Area', 'You must login first', 'warning');
+            this.$router.push('/');
+        }
+        await this.fetchUser();
+    },
 
-</style>
+    methods: {
+        isAuthen() {
+            return AuthUser.getters.isAuthen;
+        },
+        async fetchUser() {
+            if (this.isAuthen()) {
+                await AuthUser.dispatch('fetchUser');
+            }
+        },
+    },
+};
+</script>
+<style></style>

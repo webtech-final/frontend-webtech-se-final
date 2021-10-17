@@ -5,22 +5,12 @@
 </template>
 
 <script>
-import Leaderboard from '../components/leaderboard/Leaderboard.vue'
+import Leaderboard from '../components/leaderboard/Leaderboard.vue';
 export default {
-    components:{
-        Leaderboard
+    components: {
+        Leaderboard,
     },
-}
+};
 </script>
 
-<style lang="scss" scoped>
-.bg{
-    background-image: url('../assets/background-default.jpg');
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
-    min-height: 100vh;
-    text-align: center;
-}
-
-</style>
+<style lang="scss" scoped></style>
