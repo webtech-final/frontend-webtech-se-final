@@ -165,6 +165,7 @@ export default {
             await this.fetchBackgroundShop();
             this.getUserPoints();
             this.$swal("Buy Success", `You got ${item.name}`, "success");
+            this.$router.go()
           } else {
             this.$swal("Buy Failed", "Not enough points", "error");
           }

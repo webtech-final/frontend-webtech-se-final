@@ -2,8 +2,8 @@
   <div class="inventory-page">
     <div class="head grid-cols-2 grid font-serif">
       <h1 class="font-semibold">Your Inventory</h1>
-      <div class="mr-16 grid justify-items-end text-yellow-500">
-        {{ user_points }} points
+      <div class="mr-16 grid justify-items-end text-blue-400">
+        {{ user.point }} points
       </div>
     </div>
     <div class="inventory-table mt-3">
@@ -214,11 +214,11 @@ export default {
       backgrounds: [],
       equipped_block: {},
       equipped_back: {},
-      user_points: 0,
+      user: {},
     };
   },
   async created() {
-    this.getUserPoints();
+    this.getUser();
     await this.fetchBlockEquipped();
     await this.fetchBackgroundEquipped();
 
@@ -245,8 +245,8 @@ export default {
       await ItemStore.dispatch("fetchBackInventory");
       this.backgrounds = ItemStore.getters.back_inven;
     },
-    getUserPoints() {
-      this.user_points = AuthUser.getters.user.point;
+    getUser() {
+      this.user = AuthUser.getters.user;
     },
     async equipItem(item) {
       let payload = {
@@ -293,7 +293,7 @@ h1::after {
 .inventory-table {
   margin-left: 5%;
   width: 90%;
-  border: 5px solid rgb(255, 163, 59);
+  border: 5px solid rgb(96, 165, 250);
   border-radius: 5px;
   background-color: rgb(107, 107, 107);
   background-size: cover;
@@ -327,7 +327,6 @@ h1::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  
 }
 .card-text {
   display: flex;
