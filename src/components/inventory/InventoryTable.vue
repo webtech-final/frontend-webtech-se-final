@@ -1,5 +1,5 @@
 <template>
-    <div class="inventory-page">
+    <div class="inventory-page pb-16">
         <div class="head grid-cols-2 grid font-serif">
             <h1 class="font-semibold">Your Inventory</h1>
             <div class="mr-16 grid justify-items-end text-blue-400">{{ user.point }} points</div>
@@ -152,7 +152,7 @@
                         <div v-if="background.id != 2" class="card">
                             <div class="card-image">
                                 <img
-                                    :src="getApi() + '/' + block.item_details[0].image_path"
+                                    :src="getApi() + '/' + background.item_details[0].image_path"
                                     alt="back"
                                     class="img"
                                 />
@@ -265,13 +265,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.inventory-page {
-    width: 100%;
-    background-image: url('../../assets/background-default.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
 .head {
     color: white;
     font-size: 60px;

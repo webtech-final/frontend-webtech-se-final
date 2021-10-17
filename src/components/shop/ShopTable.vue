@@ -1,5 +1,5 @@
 <template>
-    <div class="shop-page">
+    <div class="shop-page pb-16">
         <div class="head grid-cols-2 grid font-serif">
             <h1 class="font-semibold">Shop</h1>
             <div class="mr-16 grid justify-items-end text-yellow-500">{{ user.point }} points</div>
@@ -63,7 +63,7 @@
                         <div class="card">
                             <div class="card-image">
                                 <img
-                                    :src="getApi() + '/' + block.item_details[0].image_path"
+                                    :src="getApi() + '/' + background.item_details[0].image_path"
                                     alt="default-back"
                                     class="img"
                                 />
@@ -116,6 +116,7 @@ let api_endpoint = process.env.VUE_APP_ENDPOINT || 'http://localhost:8000';
 import ItemStore from '../../store/itemStore';
 import AuthUser from '../../store/authUser';
 import PointHistory from '../../store/pointHistory';
+import itemStore from '../../store/itemStore';
 export default {
     data() {
         return {
@@ -169,7 +170,7 @@ export default {
 
                         await this.fetchBlockShop();
                         await this.fetchBackgroundShop();
-                        this.getUserPoints();
+                        this.getUser();
                         this.$swal('Buy Success', `You got ${item.name}`, 'success');
                         this.$router.go();
                     } else {
@@ -185,14 +186,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.shop-page {
-    width: 100%;
-    background-image: url('../../assets/background-default.jpg');
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
 .head {
     color: white;
     font-size: 60px;

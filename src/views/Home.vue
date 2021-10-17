@@ -238,6 +238,10 @@ export default {
             GameStore.commit('setGuestName', this.inputPlayerName);
         },
 
+        getApiEndpoint() {
+            return process.env.VUE_APP_ENDPOINT || 'http://localhost:8000';
+        },
+
         reset() {
             this.pin = '';
             this.inputPlayerName = '';
@@ -287,6 +291,31 @@ export default {
                 await AuthUser.dispatch('fetchUser');
             }
         },
+
+        async setBackgoundImage() {
+            let flag = true;
+            if (
+                this.isAuthen() &&
+                itemStore.getters.back_equipped[0].name == 'Default Background'
+            ) {
+                let image_path = itemStore.getters.back_equipped[0].item_details[0].image_path;
+                let imageUrl = this.getApiEndpoint() + '/' + image_path;
+                let test =
+                    'https://image.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg';
+                await fetch(imageUrl).catch(error => {
+                    flag = false;
+                });
+                if (flag) document.getElementById('app').style.backgroundImage = `url('${test}')`;
+                // } else {
+                //     let imageUrl =
+                //         this.getApiEndpoint() + '/' + 'storage/default/background-default.jpg';
+                //     await fetch(imageUrl).catch(error => {
+                //         flag = false;
+                //     });
+                //     if (flag)
+                //         document.getElementById('app').style.backgroundImage = `url('${imageUrl}')`;
+            }
+        },
     },
     async mounted() {
         this.reset();
@@ -296,6 +325,7 @@ export default {
         this.socketInit();
         this.getLastRate();
         await this.getEquiped();
+        await this.setBackgoundImage();
     },
 };
 </script>
