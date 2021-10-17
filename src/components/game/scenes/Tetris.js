@@ -593,14 +593,19 @@ export default class Tetris extends Phaser.Scene {
 
         if (this.useTexture) {
             const texturePaths = itemStore.getters.block_equipped[0].item_details;
-
-            this.load.image('S', api_endpoint + '/' + texturePaths[0].image_path);
-            this.load.image('Z', api_endpoint + '/' + texturePaths[1].image_path);
-            this.load.image('L', api_endpoint + '/' + texturePaths[2].image_path);
-            this.load.image('J', api_endpoint + '/' + texturePaths[3].image_path);
-            this.load.image('T', api_endpoint + '/' + texturePaths[4].image_path);
-            this.load.image('O', api_endpoint + '/' + texturePaths[5].image_path);
-            this.load.image('I', api_endpoint + '/' + texturePaths[6].image_path);
+            // can it fetch
+            fetch(api_endpoint + '/' + texturePaths[0].image_path).catch(
+                error => (this.useTexture = false),
+            );
+            if (this.useTexture) {
+                this.load.image('S', api_endpoint + '/' + texturePaths[0].image_path);
+                this.load.image('Z', api_endpoint + '/' + texturePaths[1].image_path);
+                this.load.image('L', api_endpoint + '/' + texturePaths[2].image_path);
+                this.load.image('J', api_endpoint + '/' + texturePaths[3].image_path);
+                this.load.image('T', api_endpoint + '/' + texturePaths[4].image_path);
+                this.load.image('O', api_endpoint + '/' + texturePaths[5].image_path);
+                this.load.image('I', api_endpoint + '/' + texturePaths[6].image_path);
+            }
         }
     }
 
