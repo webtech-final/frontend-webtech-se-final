@@ -175,7 +175,6 @@ import EnterRoom from '../components/home/EnterRoom.vue';
 import AuthUser from '../store/authUser';
 import PointRate from '../store/pointRate';
 import itemStore from '../store/itemStore';
-import authUser from '../store/authUser';
 
 export default {
     name: 'Home',
@@ -285,7 +284,7 @@ export default {
 
         async fetchUser() {
             if (this.isAuthen()) {
-                await authUser.dispatch('fetchUser');
+                await AuthUser.dispatch('fetchUser');
             }
         },
     },

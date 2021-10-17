@@ -27,7 +27,7 @@ export default {
 
         async fetchUser() {
             if (this.isAuthen()) {
-                await authUser.dispatch('fetchUser');
+                await AuthUser.dispatch('fetchUser');
             }
         },
     },
