@@ -172,7 +172,6 @@ export default {
                         await this.fetchBackgroundShop();
                         this.getUser();
                         this.$swal('Buy Success', `You got ${item.name}`, 'success');
-                        this.$router.go();
                     } else {
                         this.$swal('Buy Failed', 'Not enough points', 'error');
                     }
@@ -218,6 +217,9 @@ h1::after {
 .img {
     padding: 1rem;
     margin: 1rem;
+    width: 450px;
+    height: 200px;
+    object-fit: contain;
     filter: drop-shadow(0 0 0.2em rgb(255, 255, 255));
 }
 .card {

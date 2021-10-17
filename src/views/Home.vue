@@ -12,8 +12,8 @@
 			"
         >
             <div class="mb-3">
-                <a class="text-8xl" id="logo-p1">TERTIS</a>
-                <a class="text-5xl" id="logo-p2">.VS</a>
+                <a class="text-8xl text-border" id="logo-p1">TERTIS</a>
+                <a class="text-5xl text-border" id="logo-p2">.VS</a>
             </div>
         </div>
         <div class="text-gray-300 my-4 relative w-1/4 mx-auto">
@@ -58,7 +58,7 @@
             >
             <div class="grid grid-cols-3 my-4">
                 <div class="my-5 flex justify-center space-x-10">
-                    <label for="1P" class="font-bold">1 PLAYER</label>
+                    <label for="1P" class="font-bold text-border">1 PLAYER</label>
                 </div>
                 <div class="col-span-2">
                     <router-link to="/single">
@@ -80,7 +80,7 @@
                     </router-link>
                 </div>
                 <div class="my-5 flex justify-self-center space-x-10">
-                    <label for="2P" class="font-bold">2 PLAYER</label>
+                    <label for="2P" class="font-bold text-border">2 PLAYER</label>
                 </div>
                 <div>
                     <button
@@ -130,7 +130,7 @@
                     font-bold
                     "
             >
-                <label for="rate">{{ this.rate }} score/point</label>
+                <label class="text-border" for="rate">{{ this.rate }} score/point</label>
             </div>
         </div>
         <div
@@ -296,24 +296,24 @@ export default {
             let flag = true;
             if (
                 this.isAuthen() &&
-                itemStore.getters.back_equipped[0].name == 'Default Background'
+                itemStore.getters.back_equipped[0].name != 'Default Background'
             ) {
                 let image_path = itemStore.getters.back_equipped[0].item_details[0].image_path;
                 let imageUrl = this.getApiEndpoint() + '/' + image_path;
-                let test =
-                    'https://image.freepik.com/free-vector/blue-copy-space-digital-background_23-2148821698.jpg';
+                await fetch(imageUrl).catch(error => {
+                    console.log(error);
+                    flag = false;
+                });
+                if (flag)
+                    document.getElementById('app').style.backgroundImage = `url('${imageUrl}')`;
+            } else {
+                let imageUrl =
+                    this.getApiEndpoint() + '/' + 'storage/default/background-default.jpg';
                 await fetch(imageUrl).catch(error => {
                     flag = false;
                 });
-                if (flag) document.getElementById('app').style.backgroundImage = `url('${test}')`;
-                // } else {
-                //     let imageUrl =
-                //         this.getApiEndpoint() + '/' + 'storage/default/background-default.jpg';
-                //     await fetch(imageUrl).catch(error => {
-                //         flag = false;
-                //     });
-                //     if (flag)
-                //         document.getElementById('app').style.backgroundImage = `url('${imageUrl}')`;
+                if (flag)
+                    document.getElementById('app').style.backgroundImage = `url('${imageUrl}')`;
             }
         },
     },
@@ -341,5 +341,10 @@ export default {
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
     letter-spacing: -2px;
+}
+
+.text-border {
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 </style>
