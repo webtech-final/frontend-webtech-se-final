@@ -174,6 +174,7 @@ import GameStore from '../store/GameStore';
 import EnterRoom from '../components/home/EnterRoom.vue';
 import AuthUser from '../store/authUser';
 import PointRate from '../store/pointRate';
+import itemStore from '../store/itemStore';
 
 export default {
     name: 'Home',
@@ -273,6 +274,13 @@ export default {
         async getLastRate() {
             this.rate = await PointRate.dispatch('getLastRate');
         },
+
+        async getEquiped() {
+            if (this.isAuthen) {
+                await itemStore.dispatch('fetchBlockEquipped');
+                await itemStore.dispatch('fetchBackEquipped');
+            }
+        },
     },
     async mounted() {
         this.reset();
@@ -280,6 +288,7 @@ export default {
         this.setPlayerName();
         this.socketInit();
         this.getLastRate();
+        await this.getEquiped();
     },
 };
 </script>

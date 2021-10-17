@@ -1,8 +1,13 @@
 import Phaser from 'phaser';
+import Vue from 'vue';
 import Constants from '../constants';
 import GameStore from '../../../store/GameStore';
-import Vue from 'vue';
 import router from '../../../router/index';
+import PlayHistory from '../../../store/playHistory';
+import AuthUser from '../../../store/authUser';
+import PointRate from '../../../store/pointRate';
+import PointHistory from '../../../store/pointHistory';
+import itemStore from '../../../store/itemStore';
 
 const BLOCK_HEIGHT = Constants.BLOCK_HEIGHT;
 const BLOCK_WIDTH = Constants.BLOCK_WIDTH;
@@ -10,11 +15,8 @@ const GAME_SCENE_HEIGHT = Constants.GAME_SCENE_HEIGHT;
 const GAME_SCENE_WIDTH = Constants.GAME_SCENE_WIDTH;
 const HUD_WIDTH = Constants.HUD_WIDTH;
 const ABOVE_GAP = Constants.ABOVE_GAP;
+const api_endpoint = process.env.VUE_APP_ENDPOINT || 'http://localhost:8000';
 
-import PlayHistory from '../../../store/playHistory'
-import AuthUser from '../../../store/authUser'
-import PointRate from '../../../store/pointRate'
-import PointHistory from '../../../store/pointHistory'
 export default class Tetris extends Phaser.Scene {
     constructor() {
         super('tetris');
@@ -36,6 +38,12 @@ export default class Tetris extends Phaser.Scene {
         this.drawedNextPiece = [];
 
         this.drawedHoldPiece = [];
+
+        AuthUser.getters.isAuthen &&
+        itemStore.getters.block_equipped[0] !== undefined &&
+        itemStore.getters.block_equipped[0].name !== 'Default Block'
+            ? (this.useTexture = true)
+            : (this.useTexture = false);
 
         this.allPiece = [
             {
@@ -171,8 +179,17 @@ export default class Tetris extends Phaser.Scene {
             player.piece.forEach((row, y) => {
                 row.forEach((col, x) => {
                     if (col !== 0) {
-                        activePiece.push(
-                            this.add
+                        let newPiece;
+                        if (player.color && this.useTexture) {
+                            newPiece = this.add
+                                .image(
+                                    (x + player.pos.x) * BLOCK_WIDTH + BLOCK_WIDTH / 2,
+                                    (y + player.pos.y - 2) * BLOCK_HEIGHT + BLOCK_HEIGHT / 2,
+                                    player.pieceType,
+                                )
+                                .setScale(0.31);
+                        } else {
+                            newPiece = this.add
                                 .rectangle(
                                     (x + player.pos.x) * BLOCK_WIDTH + BLOCK_WIDTH / 2,
                                     (y + player.pos.y - 2) * BLOCK_HEIGHT + BLOCK_HEIGHT / 2,
@@ -180,11 +197,9 @@ export default class Tetris extends Phaser.Scene {
                                     BLOCK_HEIGHT,
                                     player.color,
                                 )
-                                .setStrokeStyle(
-                                    3,
-                                    player.colorBorder ? player.colorBorder : 0xffffff,
-                                ),
-                        );
+                                .setStrokeStyle(3, 0xffffff);
+                        }
+                        activePiece.push(newPiece);
                     }
                 });
             });
@@ -196,8 +211,17 @@ export default class Tetris extends Phaser.Scene {
             player.piece.forEach((row, y) => {
                 row.forEach((col, x) => {
                     if (col !== 0) {
-                        activePiece.push(
-                            this.add
+                        let newPiece;
+                        if (this.useTexture) {
+                            newPiece = this.add
+                                .image(
+                                    x * BLOCK_WIDTH + BLOCK_WIDTH / 2 + player.pos.x,
+                                    y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2 + player.pos.y,
+                                    player.pieceType,
+                                )
+                                .setScale(0.31);
+                        } else {
+                            newPiece = this.add
                                 .rectangle(
                                     x * BLOCK_WIDTH + BLOCK_WIDTH / 2 + player.pos.x,
                                     y * BLOCK_HEIGHT + BLOCK_HEIGHT / 2 + player.pos.y,
@@ -205,11 +229,9 @@ export default class Tetris extends Phaser.Scene {
                                     BLOCK_HEIGHT,
                                     player.color,
                                 )
-                                .setStrokeStyle(
-                                    3,
-                                    player.colorBorder ? player.colorBorder : 0xffffff,
-                                ),
-                        );
+                                .setStrokeStyle(3, 0xffffff);
+                        }
+                        activePiece.push(newPiece);
                     }
                 });
             });
@@ -551,6 +573,7 @@ export default class Tetris extends Phaser.Scene {
     }
 
     preload() {
+        this.load.setCORS('anonymous');
         let graphics = this.add.graphics();
         let line = new Phaser.Geom.Line(GAME_SCENE_WIDTH, 0, GAME_SCENE_WIDTH, GAME_SCENE_HEIGHT);
         graphics.lineStyle(5, 0xffffff);
@@ -567,6 +590,23 @@ export default class Tetris extends Phaser.Scene {
         this.nextText = this.add
             .text(GAME_SCENE_WIDTH + HUD_WIDTH / 2, 240, 'NEXT', { color: '#ffffff', fontSize: 24 })
             .setOrigin(0.5, 0);
+
+        if (this.useTexture) {
+            const texturePaths = itemStore.getters.block_equipped[0].item_details;
+            // can it fetch
+            fetch(api_endpoint + '/' + texturePaths[0].image_path).catch(
+                error => (this.useTexture = false),
+            );
+            if (this.useTexture) {
+                this.load.image('S', api_endpoint + '/' + texturePaths[0].image_path);
+                this.load.image('Z', api_endpoint + '/' + texturePaths[1].image_path);
+                this.load.image('L', api_endpoint + '/' + texturePaths[2].image_path);
+                this.load.image('J', api_endpoint + '/' + texturePaths[3].image_path);
+                this.load.image('T', api_endpoint + '/' + texturePaths[4].image_path);
+                this.load.image('O', api_endpoint + '/' + texturePaths[5].image_path);
+                this.load.image('I', api_endpoint + '/' + texturePaths[6].image_path);
+            }
+        }
     }
 
     create() {
@@ -585,9 +625,9 @@ export default class Tetris extends Phaser.Scene {
                 router.push('/');
             });
             GameStore.commit('setGameScore', this.score);
-            if(AuthUser.getters.isAuthen){
-                this.saveHistory(this.score)
-                this.addPoint(this.score)
+            if (AuthUser.getters.isAuthen) {
+                this.saveHistory(this.score);
+                this.addPoint(this.score);
             }
             this.scene.pause();
         } else if (this.dcount > this.gameTime) {
@@ -610,35 +650,34 @@ export default class Tetris extends Phaser.Scene {
         this.dcount += deltaTime;
         this.countTime += deltaTime;
     }
-    
-    async saveHistory(score){
+
+    async saveHistory(score) {
         let payload = {
             user_id: AuthUser.getters.user.id,
             score: score,
             mode: 'single',
             opponent: '',
-            result: 'WIN'
-        }
-        await PlayHistory.dispatch('addHistory', payload)
+            result: 'WIN',
+        };
+        await PlayHistory.dispatch('addHistory', payload);
     }
 
-    async addPoint(score){
+    async addPoint(score) {
         //คำนวณ point ที่ได้ (score/pointrate) แล้วสร้างประวัติพร้อมเพิ่ม point
-        let rate = await PointRate.dispatch('getLastRate')
-        rate = parseInt(rate)
-        let point = score/rate
-        point = Math.floor(point)
+        let rate = await PointRate.dispatch('getLastRate');
+        rate = parseInt(rate);
+        let point = score / rate;
+        point = Math.floor(point);
         let payload = {
             id: AuthUser.getters.user.id,
-            point: point
-        }
-        await AuthUser.dispatch('getPoint', payload)
+            point: point,
+        };
+        await AuthUser.dispatch('getPoint', payload);
         let payload1 = {
             user_id: AuthUser.getters.user.id,
             point: point,
-            type: "get"
-        }
-        await PointHistory.dispatch('addPoint', payload1)
+            type: 'get',
+        };
+        await PointHistory.dispatch('addPoint', payload1);
     }
-
 }

@@ -1,26 +1,36 @@
 <template>
-    <div id="multi" class="flex justify-center">
-        <div>
-            <div class="pt-10 text-3xl text-white text-center">
-                Your User Name: {{ playerName }}
-            </div>
+    <div>
+        <div class="flex justify-center">
+            <div>
+                <!-- <div class="pt-10 text-3xl text-white text-center">
+                    Your User Name: {{ playerName }}
+                </div> -->
 
-            <div id="wait" class="pt-10 text-3xl text-white text-center" v-if="showWait">
-                <h1 v-if="roomPin">
-                    Waiting for another player
-                    <div class="dot-flashing inline-flex ml-5"></div>
-                </h1>
-                <h1 class="text-2xl pt-5">
-                    {{ roomPin ? 'YOUR ROOM PIN:' : ' '
-                    }}<label class="font-bold">
-                        {{ roomPin ? roomPin : 'Fail to load game pin, Please recreate room' }}
-                    </label>
-                </h1>
+                <div id="wait" class="pt-10 text-3xl text-white text-center" v-if="showWait">
+                    <h1 v-if="roomPin">
+                        Waiting for another player
+                        <div class="dot-flashing inline-flex ml-5"></div>
+                    </h1>
+                    <h1 class="text-2xl pt-5">
+                        {{ roomPin ? 'YOUR ROOM PIN:' : ' '
+                        }}<label class="font-bold">
+                            {{ roomPin ? roomPin : 'Fail to load game pin, Please recreate room' }}
+                        </label>
+                    </h1>
+                </div>
+                <div id="gameScene" ref="gameScene" class="mt-8 flex justify-center items-center">
+                    <game-multi ref="game1" class="mr-5"></game-multi>
+                    <div>
+                        <p class="text-xl text-center text-white mb-5" v-if="!showWait">
+                            Opponent Name : {{ opponentName }}
+                        </p>
+                        <opponnect ref="game2"></opponnect>
+                    </div>
+                </div>
             </div>
-            <div id="gameScene" ref="gameScene" class="mt-8 flex justify-center items-center">
-                <game-multi ref="game1" class="mr-5"></game-multi>
-                <opponnect ref="game2"></opponnect>
-            </div>
+        </div>
+        <div class="flex justify-center">
+            <img class="mt-10 mb-10 border-4 rounded-lg " src="../assets/Keyboard.png" />
         </div>
 
         <!-- <button
@@ -40,6 +50,7 @@ import AuthUser from '../store/authUser';
 import PointRate from '../store/pointRate';
 import PlayHistory from '../store/playHistory';
 import PointHistory from '../store/pointHistory';
+import itemStore from '../store/itemStore';
 
 export default {
     name: 'Multiplayer',
@@ -60,7 +71,7 @@ export default {
 
     methods: {
         async socketInit() {
-            this.socket.once('gameOver',({ loserNumber, loserName, winnerName }) => {
+            this.socket.once('gameOver', ({ loserNumber, loserName, winnerName }) => {
                 let msg = '';
                 let type = '';
 
@@ -144,9 +155,13 @@ export default {
                 : GameStore.getters.getGuestName;
         },
     },
-    created() {
-        this.socketInit();
+    async mounted() {
         this.setPlayerName();
+        this.socketInit();
+        if (AuthUser.getters.isAuthen) {
+            await itemStore.dispatch('fetchBlockEquipped');
+            await itemStore.dispatch('fetchBackEquipped');
+        }
     },
 };
 </script>
