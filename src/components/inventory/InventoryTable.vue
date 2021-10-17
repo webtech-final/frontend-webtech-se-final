@@ -49,7 +49,7 @@
                     mt-1
                     text-3xl
                   "
-                  @click="equipItem(block)"
+                  @click="equipBlock(block)"
                 >
                   Equip
                 </button>
@@ -94,7 +94,7 @@
                     mt-1
                     text-3xl
                   "
-                  @click="equipItem(block)"
+                  @click="equipBlock(block)"
                 >
                   Equip
                 </button>
@@ -144,7 +144,7 @@
                     mt-1
                     text-3xl
                   "
-                  @click="equipItem(block)"
+                  @click="equipBack(background)"
                 >
                   Equip
                 </button>
@@ -189,7 +189,7 @@
                     mt-1
                     text-3xl
                   "
-                  @click="equipItem(background)"
+                  @click="equipBack(background)"
                 >
                   Equip
                 </button>
@@ -248,19 +248,25 @@ export default {
     getUser() {
       this.user = AuthUser.getters.user;
     },
-    async equipItem(item) {
+    async equipBlock(item) {
       let payload = {
         equipped_id: this.equipped_block[0].id,
         equip_id: item.id,
       };
       await ItemStore.dispatch("equipItem", payload);
-      if (item.type == "block") {
-        await this.fetchBlockEquipped();
-        await this.fetchBlockInventory();
-      } else {
-        await this.fetchBackgroundEquipped();
-        await this.fetchBackgroundInventory();
-      }
+
+      await this.fetchBlockEquipped();
+      await this.fetchBlockInventory();
+    },
+    async equipBack(item) {
+      let payload = {
+        equipped_id: this.equipped_back[0].id,
+        equip_id: item.id,
+      };
+      await ItemStore.dispatch("equipItem", payload);
+
+      await this.fetchBackgroundEquipped();
+      await this.fetchBackgroundInventory();
     },
   },
 };

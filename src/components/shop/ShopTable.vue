@@ -163,7 +163,7 @@ export default {
 
             await this.fetchBlockShop();
             await this.fetchBackgroundShop();
-            this.getUserPoints();
+            this.getUser();
             this.$swal("Buy Success", `You got ${item.name}`, "success");
             this.$router.go()
           } else {
