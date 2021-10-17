@@ -175,6 +175,7 @@ import EnterRoom from '../components/home/EnterRoom.vue';
 import AuthUser from '../store/authUser';
 import PointRate from '../store/pointRate';
 import itemStore from '../store/itemStore';
+import authUser from '../store/authUser';
 
 export default {
     name: 'Home',
@@ -276,15 +277,22 @@ export default {
         },
 
         async getEquiped() {
-            if (this.isAuthen) {
+            if (this.isAuthen()) {
                 await itemStore.dispatch('fetchBlockEquipped');
                 await itemStore.dispatch('fetchBackEquipped');
+            }
+        },
+
+        async fetchUser() {
+            if (this.isAuthen()) {
+                await authUser.dispatch('fetchUser');
             }
         },
     },
     async mounted() {
         this.reset();
         this.socket.removeAllListeners();
+        await this.fetchUser();
         this.setPlayerName();
         this.socketInit();
         this.getLastRate();

@@ -40,6 +40,9 @@ export default new Vuex.Store({
         updateName(state, res) {
             state.user.name = res;
         },
+        setUser(state, res) {
+            state.user = res;
+        },
     },
     actions: {
         async login({ commit }, { email, password }) {
@@ -59,8 +62,8 @@ export default new Vuex.Store({
             } catch (e) {
                 if (e.response.status === 401) {
                     return e.response;
-                }else if(e.response.status === 422){
-                    return e.response
+                } else if (e.response.status === 422) {
+                    return e.response;
                 }
             }
         },
@@ -85,8 +88,7 @@ export default new Vuex.Store({
             let res = null;
             try {
                 res = await axios.post(url, null, header);
-            } catch (err) {
-            }
+            } catch (err) {}
             localStorage.removeItem(auth_key);
             commit('logoutSuccess');
             return res;
@@ -138,6 +140,18 @@ export default new Vuex.Store({
                 return 'success';
             } catch (error) {
                 return error.response.data.new_name[0];
+            }
+        },
+        async fetchUser({ commit }) {
+            let url = `${api_endpoint}/api/auth/me`;
+            let header = this.state.header;
+            try {
+                let res = await axios.post(url, null, header);
+                commit('setUser', res.data);
+                return res.data;
+            } catch (error) {
+                this.dispatch('logout');
+                return 'fetch user fail';
             }
         },
     },
