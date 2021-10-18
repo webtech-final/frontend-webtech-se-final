@@ -2,6 +2,7 @@
     <div class="mx-96">
         <div class="bg-gray-500 mx-96 p-2 rounded">
             <div class="pb-2">
+                <div class="text-lg text-white font-mono">CHAT</div>
                 <div class="h-36 w-full bg-gray-200 rounded p-2 overflow-y-scroll pb-8" id="chat">
                     <div v-for="(chat,index) in chats" :key="index">
                         <label for="chat" class="break-all">{{chat}}</label>
