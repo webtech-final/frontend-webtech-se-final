@@ -167,18 +167,19 @@
                 @click="toggleDialog"
             ></button>
         </div>
+        <chat v-if="isAuthen()"></chat>
     </div>
 </template>
 <script>
+import Chat from '../components/chat/Chat.vue'
 import GameStore from '../store/GameStore';
 import EnterRoom from '../components/home/EnterRoom.vue';
 import AuthUser from '../store/authUser';
 import PointRate from '../store/pointRate';
 import itemStore from '../store/itemStore';
-
 export default {
     name: 'Home',
-    components: { EnterRoom },
+    components: { EnterRoom, Chat },
     data() {
         return {
             socket: GameStore.getters.getSocket,
