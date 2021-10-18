@@ -59,6 +59,25 @@
             </div>
             <div class="flex justify-center">
                 <button
+                    v-if="msg !== 'JOIN' && isAuthen()"
+                    class="
+                        mr-3
+						items-center
+						justify-center
+						py-3
+						px-6
+						text-white
+						rounded-lg
+						shadow-lg
+						block
+						md:inline-block
+					"
+                    :class="msg === 'JOIN' ? 'bg-blue-400' : 'bg-red-400'"
+                    @click="handleSendMsg"
+                >
+                    Send Pin to Chat
+                </button>
+                <button
                     class="
 						items-center
 						justify-center
@@ -80,7 +99,9 @@
     </div>
 </template>
 <script>
-import GameStore from '../../store/GameStore'
+import GameStore from '../../store/GameStore';
+import AuthUser from '../../store/authUser';
+import Chat from '../../services/chat';
 
 export default {
     name: 'EnterRoom',
@@ -99,19 +120,26 @@ export default {
             this.$emit('onHome', { event: this.msg, pin: this.roomData.pin });
         },
 
+        handleSendMsg() {
+            let username = AuthUser.getters.user.name;
+            Chat.chat(`${username}: Join my room --> ${this.roomData.pin}`);
+        },
+
+        isAuthen() {
+            return AuthUser.getters.isAuthen;
+        },
+
         socketInit() {
             this.socket.on('gameCode', gameCode => {
                 this.roomData.pin = gameCode;
                 GameStore.commit('setGameCode', gameCode);
                 this.setPin();
             });
-
         },
 
         setPin() {
             this.msg === 'CREATE' ? this.roomData.pin : (this.roomData.pin = '');
         },
-
     },
 
     created() {
