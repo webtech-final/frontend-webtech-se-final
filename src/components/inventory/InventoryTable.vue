@@ -272,25 +272,16 @@ export default {
         },
 
         async setBackgoundImage() {
-            let flag = true;
             if (
                 AuthUser.getters.isAuthen &&
                 ItemStore.getters.back_equipped[0].name != 'Default Background'
             ) {
                 let image_path = ItemStore.getters.back_equipped[0].item_details[0].image_path;
                 let imageUrl = api_endpoint + '/' + image_path;
-                await fetch(imageUrl).catch(error => {
-                    flag = false;
-                });
-                if (flag)
-                    document.getElementById('app').style.backgroundImage = `url('${imageUrl}')`;
+                document.getElementById('app').style.backgroundImage = `url('${imageUrl}')`;
             } else {
                 let imageUrl = api_endpoint + '/' + 'storage/default/background-default.jpg';
-                await fetch(imageUrl).catch(error => {
-                    flag = false;
-                });
-                if (flag)
-                    document.getElementById('app').style.backgroundImage = `url('${imageUrl}')`;
+                document.getElementById('app').style.backgroundImage = `url('${imageUrl}')`;
             }
         },
     },

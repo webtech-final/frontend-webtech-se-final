@@ -103,7 +103,7 @@ export default {
 
             this.socket.once('startGame', ({ playerOneName, playerTwoName }) => {
                 this.playerNumber = GameStore.getters.getClientNumber;
-                this.opponentName = this.playerNumber == 1 ? playerOneName : playerTwoName;
+                this.opponentName = this.playerNumber != 1 ? playerOneName : playerTwoName;
                 this.showWait = false;
             });
         },

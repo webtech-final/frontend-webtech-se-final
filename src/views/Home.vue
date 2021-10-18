@@ -171,7 +171,7 @@
     </div>
 </template>
 <script>
-import Chat from '../components/chat/Chat.vue'
+import Chat from '../components/chat/Chat.vue';
 import GameStore from '../store/GameStore';
 import EnterRoom from '../components/home/EnterRoom.vue';
 import AuthUser from '../store/authUser';
@@ -222,21 +222,26 @@ export default {
 
         handleNewGame() {
             this.handleGuestName();
+
             this.socket.emit('newGame', { roomName: this.pin, playerName: this.playerName });
             this.$router.push('/multi');
         },
 
         handleJoinGame() {
             this.handleGuestName();
+
             this.socket.emit('joinGame', { roomName: this.pin, playerName: this.playerName });
             this.$router.push('/multi');
         },
 
         handleGuestName() {
-            if (this.inputPlayerName == '') {
-                this.inputPlayerName = 'GUEST';
+            if (!this.isAuthen()) {
+                if (this.inputPlayerName == '') {
+                    this.inputPlayerName = 'GUEST';
+                }
+                GameStore.commit('setGuestName', this.inputPlayerName);
+                this.playerName = this.inputPlayerName;
             }
-            GameStore.commit('setGuestName', this.inputPlayerName);
         },
 
         getApiEndpoint() {
@@ -294,27 +299,17 @@ export default {
         },
 
         async setBackgoundImage() {
-            let flag = true;
             if (
                 this.isAuthen() &&
                 itemStore.getters.back_equipped[0].name != 'Default Background'
             ) {
                 let image_path = itemStore.getters.back_equipped[0].item_details[0].image_path;
                 let imageUrl = this.getApiEndpoint() + '/' + image_path;
-                await fetch(imageUrl).catch(error => {
-                    console.log(error);
-                    flag = false;
-                });
-                if (flag)
-                    document.getElementById('app').style.backgroundImage = `url('${imageUrl}')`;
+                document.getElementById('app').style.backgroundImage = `url('${imageUrl}')`;
             } else {
                 let imageUrl =
                     this.getApiEndpoint() + '/' + 'storage/default/background-default.jpg';
-                await fetch(imageUrl).catch(error => {
-                    flag = false;
-                });
-                if (flag)
-                    document.getElementById('app').style.backgroundImage = `url('${imageUrl}')`;
+                document.getElementById('app').style.backgroundImage = `url('${imageUrl}')`;
             }
         },
     },

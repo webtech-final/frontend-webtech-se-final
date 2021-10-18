@@ -18,7 +18,8 @@ export default {
             this.$swal('Restricted Area', 'You must login first', 'warning');
             this.$router.push('/');
         }
-        await this.fetchUser();
+        let res = await this.fetchUser();
+        console.log(res);
     },
     methods: {
         isAuthen() {

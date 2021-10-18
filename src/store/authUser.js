@@ -88,7 +88,9 @@ export default new Vuex.Store({
             let res = null;
             try {
                 res = await axios.post(url, null, header);
-            } catch (err) {}
+            } catch (err) {
+                console.log('logout error');
+            }
             localStorage.removeItem(auth_key);
             commit('logoutSuccess');
             return res;
