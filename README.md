@@ -1,19 +1,28 @@
 # frontend-webtech-final
 
 ## Project setup
-```
+
+### Install dependence
+
+```bash
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### Create .env file
+
+```bash
+cp .env.example .env
 ```
+
+### Edit .env file with text editer
+
+```
+VUE_APP_ENDPOINT={host ip}
+VUE_APP_WEBSOCKET_ENDPOINT={host ip}
+```
+
+### Run FrontEnd server
+
+```bash
 yarn serve
 ```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
