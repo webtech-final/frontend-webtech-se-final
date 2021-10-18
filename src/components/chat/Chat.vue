@@ -1,16 +1,20 @@
 <template>
-    <div>
-        <div class="bg">
-            <div class="chatbox">
-                <div v-for="(chat,index) in chats" :key="index">
-                    <label for="chat">{{chat}}</label>
+    <div class="mx-96">
+        <div class="bg-gray-500 mx-96 p-2 rounded">
+            <div class="pb-2">
+                <div class="h-36 w-full bg-gray-200 rounded p-2 overflow-y-scroll pb-8" id="chat">
+                    <div v-for="(chat,index) in chats" :key="index">
+                        <label for="chat" class="break-all">{{chat}}</label>
+                    </div>
                 </div>
             </div>
+            <div class="bg-yellow-500 rounded">
+                <form class="flex justify-center" @submit.prevent="send">
+                    <input class="w-full rounded p-2" type="text" placeholder="message" v-model="message">
+                    <button class="mx-2" type="submit">SEND</button>
+                </form>
+            </div>
         </div>
-        <form class="bg" @submit.prevent="send">
-            <input type="text" placeholder="message" v-model="message">
-            <button type="submit" style="margin-left: 15px">Send</button>
-        </form>
     </div>
 </template>
 
@@ -47,20 +51,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.chatbox{
-    background-color: black;
-    color: white;
-    width: 300px;
-    height: 150px;
-    margin-bottom: 20px;
-    overflow-y: scroll;
-    text-align: left;
-    padding: 15px;
-}
-.bg{
-    display: flex;
-    justify-content: center;
-    text-align: center;
-}
-</style>
+<style scoped></style>
