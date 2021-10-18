@@ -16,33 +16,45 @@
 				<a class="text-5xl text-border" id="logo-p2">.VS</a>
 			</div>
 		</div>
-		<div class="text-gray-300 my-4 max-w-lg md:1/6 mx-auto">
-			<input
-				class="
-					w-full
-					input
-					border border-gray-400
-					appearance-none
-					rounded
-					px-3
-					py-3
-					pt-5
-					pb-2
-					focus focus:border-indigo-600 focus:outline-none
-					active:outline-none active:border-indigo-600
-					text-gray-600
-				"
-				id=""
-				type="text"
-				autofocus
-				v-model="inputPlayerName"
-				v-if="!isAuthen()"
-			/>
-			<label
-				class="mt-2 -mt-2 label absolute mb-0 pt-4 pl-3 text-gray-300 t"
-				v-if="!isAuthen() && !inputPlayerName"
-				>Username</label
-			>
+		<div class="text-gray-300 my-4 mx-auto">
+			<div class="text-gray-300 my-4 relative max-w-lg md:1/6 mx-auto">
+				<input
+					class="
+						w-full
+						input
+						border border-gray-400
+						appearance-none
+						rounded
+						px-3
+						py-3
+						pt-5
+						pb-2
+						focus focus:border-indigo-600 focus:outline-none
+						active:outline-none active:border-indigo-600
+						text-gray-600
+					"
+					id=""
+					type="text"
+					autofocus
+					v-model="inputPlayerName"
+					v-if="!isAuthen()"
+				/>
+				<label
+					class="
+						mt-2
+						-mt-2
+						label
+						absolute
+						mb-0
+						pt-4
+						pl-3
+						text-gray-300
+						t
+					"
+					v-if="!isAuthen() && !inputPlayerName"
+					>Username</label
+				>
+			</div>
 			<div class="grid grid-cols-1 my-4 place-items-center">
 				<div class="flex space-x-6 mr-36">
 					<div class="my-5 flex justify-center space-x-10">
