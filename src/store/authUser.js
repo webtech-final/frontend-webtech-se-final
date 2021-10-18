@@ -1,19 +1,19 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import axios from 'axios';
+import Vue from "vue";
+import Vuex from "vuex";
+import axios from "axios";
 
 Vue.use(Vuex);
 
-let auth_key = 'auth_user';
+let auth_key = "auth_user";
 let auth = JSON.parse(localStorage.getItem(auth_key));
-let api_endpoint = process.env.VUE_APP_ENDPOINT || 'http://localhost:8000';
+let api_endpoint = process.env.VUE_APP_ENDPOINT || "http://localhost:8000";
 
 export default new Vuex.Store({
     state: {
-        user: auth ? auth.data.user : '',
-        jwt: auth ? auth.data.access_token : '',
+        user: auth ? auth.data.user : "",
+        jwt: auth ? auth.data.access_token : "",
         isAuthen: auth ? true : false,
-        header: auth ? { headers: { Authorization: `Bearer ${auth.data.access_token}` } } : '',
+        header: auth ? { headers: { Authorization: `Bearer ${auth.data.access_token}` } } : "",
     },
     mutations: {
         loginSuccess(state, res) {
@@ -23,10 +23,10 @@ export default new Vuex.Store({
             state.header = { headers: { Authorization: `Bearer ${res.access_token}` } };
         },
         logoutSuccess(state) {
-            state.user = '';
-            state.jwt = '';
+            state.user = "";
+            state.jwt = "";
             state.isAuthen = false;
-            state.header = '';
+            state.header = "";
         },
         getPoint(state, res) {
             state.user.point = res;
@@ -53,10 +53,10 @@ export default new Vuex.Store({
             };
             try {
                 let res = await axios.post(url, body);
-                if (res.data.user.role === 'admin') {
+                if (res.data.user.role === "admin") {
                     return res.data.user.role;
                 }
-                commit('loginSuccess', res.data);
+                commit("loginSuccess", res.data);
                 localStorage.setItem(auth_key, JSON.stringify(res));
                 return res;
             } catch (e) {
@@ -74,7 +74,7 @@ export default new Vuex.Store({
                 let url = `${api_endpoint}/api/auth/register`;
                 let body = payload;
                 let res = await axios.post(url, body);
-                commit('logoutSuccess');
+                commit("logoutSuccess");
                 return res;
             } catch (e) {
                 if (e.response.status === 400) {
@@ -89,10 +89,10 @@ export default new Vuex.Store({
             try {
                 res = await axios.post(url, null, header);
             } catch (err) {
-                console.log('logout error');
+                console.log("logout error");
             }
             localStorage.removeItem(auth_key);
-            commit('logoutSuccess');
+            commit("logoutSuccess");
             return res;
         },
 
@@ -103,7 +103,7 @@ export default new Vuex.Store({
             };
             let header = this.state.header;
             let res = await axios.put(url, body, header);
-            commit('getPoint', res.data);
+            commit("getPoint", res.data);
         },
 
         async usePoint({ commit }, payload) {
@@ -113,20 +113,20 @@ export default new Vuex.Store({
             };
             let header = this.state.header;
             let res = await axios.put(url, body, header);
-            commit('getPoint', res.data);
+            commit("getPoint", res.data);
         },
         async updateProfilePic({ commit }, payload) {
             let url = `${api_endpoint}/api/auth/uploadProfile`;
             let formData = new FormData();
-            formData.append('selectedImage', payload.image);
-            formData.append('id', this.getters.user.id);
+            formData.append("selectedImage", payload.image);
+            formData.append("id", this.getters.user.id);
             let header = this.state.header;
             try {
                 let res = await axios.post(url, formData, header);
-                commit('updateProfilePic', res.data.path);
+                commit("updateProfilePic", res.data.path);
                 return res.data.status;
             } catch (error) {
-                return error.response.data.status;
+                return error.response.data.error[0];
             }
         },
         async updateName({ commit }, payload) {
@@ -138,8 +138,8 @@ export default new Vuex.Store({
             let header = this.state.header;
             try {
                 let res = await axios.put(url, body, header);
-                commit('updateName', res.data);
-                return 'success';
+                commit("updateName", res.data);
+                return "success";
             } catch (error) {
                 return error.response.data.new_name[0];
             }
@@ -149,19 +149,19 @@ export default new Vuex.Store({
             let header = this.state.header;
             try {
                 let res = await axios.post(url, null, header);
-                commit('setUser', res.data);
+                commit("setUser", res.data);
                 return res.data;
             } catch (error) {
-                this.dispatch('logout');
-                return 'fetch user fail';
+                this.dispatch("logout");
+                return "fetch user fail";
             }
         },
     },
     modules: {},
     getters: {
-        user: state => state.user,
-        jwt: state => state.jwt,
-        isAuthen: state => state.isAuthen,
-        header: state => state.header,
+        user: (state) => state.user,
+        jwt: (state) => state.jwt,
+        isAuthen: (state) => state.isAuthen,
+        header: (state) => state.header,
     },
 });
