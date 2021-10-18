@@ -19,6 +19,8 @@ class SocketioService{
     newChat(){
         this.socket.on('new_message', (msg) =>{
             Chat.commit('newMessage',msg)
+            var element = document.getElementById('chat')
+            element.scrollTop = element.scrollHeight
         })
     }
     remove(name){
