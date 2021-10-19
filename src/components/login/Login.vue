@@ -3,12 +3,18 @@
         <div class="bg-gray-900 mx-52 rounded-xl">
             <h1 class="font-mono" style="font-size: 70px">LOGIN</h1>
             <div class="mt-10">
+                <div>
+                    <label for="email">Email</label>
+                </div>
                 <input class="p-3 w-96 rounded-xl" type="text" name="username" placeholder="email" v-model="form.email" style="color:black;">
                 <div>
                     <label for="email error" style="color:red;" v-if="alert.email">{{ alert.email }}</label>
                 </div>
             </div>
             <div class="mt-10">
+                <div>
+                    <label for="password">Password</label>
+                </div>
                 <input class="p-3 w-96 rounded-xl" type="password" name="password" placeholder="password" v-model="form.password" style="color:black;">
                 <div>
                     <label for="password error" style="color:red;" v-if="alert.password">{{ alert.password }}</label>

@@ -3,6 +3,9 @@
         <div class="bg-gray-900 mx-52 rounded-xl">
             <h1 class="font-mono" style="font-size: 70px;">SIGN UP</h1>
             <div style="margin-top: 40px">
+                <div>
+                    <label for="name">Name</label>
+                </div>
                 <input
                     class="p-3 w-96 rounded-xl"
                     type="text"
@@ -18,6 +21,9 @@
                 </div>
             </div>
             <div style="margin-top: 40px">
+                <div>
+                    <label for="email">Email</label>
+                </div>
                 <input
                     class="p-3 w-96 rounded-xl"
                     type="email"
@@ -33,6 +39,9 @@
                 </div>
             </div>
             <div style="margin-top: 40px">
+                <div>
+                    <label for="password">Password</label>
+                </div>
                 <input
                     class="p-3 w-96 rounded-xl"
                     type="password"
@@ -48,6 +57,9 @@
                 </div>
             </div>
             <div style="margin-top: 40px">
+                <div>
+                    <label for="confirm password">Confirm Password</label>
+                </div>
                 <input
                     class="p-3 w-96 rounded-xl"
                     type="password"
