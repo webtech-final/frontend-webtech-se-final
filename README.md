@@ -26,3 +26,6 @@ VUE_APP_WEBSOCKET_ENDPOINT={host ip}
 ```bash
 yarn serve
 ```
+
+### RUN AT PORT 8080
+go to http://localhost:8080/
