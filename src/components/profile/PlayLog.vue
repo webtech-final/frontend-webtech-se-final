@@ -70,7 +70,7 @@ export default {
         };
     },
     async created() {
-        this.fetchSinglePlayHistory();
+        await this.fetchSinglePlayHistory();
     },
     methods: {
         async fetchSinglePlayHistory() {

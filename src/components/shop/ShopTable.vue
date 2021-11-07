@@ -8,7 +8,7 @@
             <div class="table-head">
                 <div class="font-serif font-medium">Block Theme ></div>
                 <div class="grid grid-cols-4 font-mono">
-                    <div v-for="(block, index) in blocks" :key="index">
+                    <div id="block-card" v-for="(block, index) in blocks" :key="index">
                         <div class="card">
                             <div class="card-image">
                                 <img
@@ -59,7 +59,7 @@
 
                 <div class="font-serif font-medium">Background ></div>
                 <div class="grid grid-cols-4 font-mono">
-                    <div v-for="(background, index) in backgrounds" :key="index">
+                    <div id="backshop-card" v-for="(background, index) in backgrounds" :key="index">
                         <div class="card">
                             <div class="card-image">
                                 <img

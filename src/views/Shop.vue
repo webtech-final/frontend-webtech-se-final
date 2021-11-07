@@ -19,7 +19,6 @@ export default {
             this.$router.push('/');
         }
         let res = await this.fetchUser();
-        console.log(res);
     },
     methods: {
         isAuthen() {

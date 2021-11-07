@@ -7,7 +7,7 @@
             >
                 <div class="h1 bg-yellow-50 mx-52 rounded-lg p-3">
                     <div class="font-serif text-3xl text-center">LEADERBOARD</div>
-                    <div class="font-mono text-xl text-center">(SINGLEPLAYER)</div>
+                    <div id="single" class="font-mono text-xl text-center">(SINGLEPLAYER)</div>
                 </div>
             </div>
             <div
@@ -63,7 +63,7 @@
             >
                 <div class="h1 bg-yellow-50 mx-52 rounded-lg p-3">
                     <div class="font-serif text-3xl text-center">LEADERBOARD</div>
-                    <div class="font-mono text-xl text-center">(VERSUS)</div>
+                    <div id="versus" class="font-mono text-xl text-center">(VERSUS)</div>
                 </div>
             </div>
             <div
@@ -128,8 +128,10 @@ export default {
                 'https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png',
         };
     },
-    created() {
-        this.fetchHistories();
+    async created() {
+        await this.fetchHistories();
+        console.dir(this.single);
+        console.dir(this.versus);
     },
     methods: {
         async fetchHistories() {

@@ -17,6 +17,7 @@
             />
             <router-link class="mt-2 w-full flex flex-row" :to="{ name: 'EditProfile' }">
                 <p
+                    id="EditProfile"
                     class="pb-1 w-full text-center bg-gray-900 hover:bg-gray-700 rounded-lg text-xl text-white"
                 >
                     EDIT PROFILE

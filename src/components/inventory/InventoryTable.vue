@@ -7,7 +7,7 @@
         <div class="inventory-table mt-3">
             <div class="table-head">
                 <div class="font-serif font-medium">Block Theme ></div>
-                <div class="grid grid-cols-4 font-mono">
+                <div id="inven-card" class="grid grid-cols-4 font-mono">
                     <div v-for="(block, index) in blocks" :key="index">
                         <div v-if="block.id == 1" class="card">
                             <div class="card-image">
@@ -103,7 +103,7 @@
                 </div>
                 <div class="font-serif font-medium">Background ></div>
                 <div class="grid grid-cols-4 font-mono">
-                    <div v-for="(background, index) in backgrounds" :key="index">
+                    <div id="back-card" v-for="(background, index) in backgrounds" :key="index">
                         <div v-if="background.id == 2" class="card">
                             <div class="card-image">
                                 <img
