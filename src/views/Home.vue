@@ -12,7 +12,7 @@
 			"
         >
             <div class="mb-3">
-                <a class="text-8xl text-border" id="logo-p1">TERTIS</a>
+                <a class="text-8xl text-border" id="logo-p1">TETRIS</a>
                 <a class="text-5xl text-border" id="logo-p2">.VS</a>
             </div>
         </div>
