@@ -207,7 +207,8 @@ describe('HomePage.', () => {
     });
 
     it('display text', () => {
-        expect(wrapper.text()).toContain('TERTIS .VS');
+        expect(wrapper.text()).toContain('TETRIS');
+        expect(wrapper.text()).toContain('.VS');
         expect(wrapper.text()).toContain('PLAY');
         expect(wrapper.text()).toContain('JOIN');
         expect(wrapper.text()).toContain('CREATE');
