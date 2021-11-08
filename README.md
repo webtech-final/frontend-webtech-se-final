@@ -41,3 +41,10 @@ yarn serve
 
 ### RUN AT PORT 8080
 go to http://localhost:8080/
+
+# Testing config
+1. clone this repo
+2. npm install
+3. npm run test
+
+DONE!!
