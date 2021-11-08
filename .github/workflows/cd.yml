@@ -1,0 +1,26 @@
+name: Node CD
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: SSH to serve
+              uses: appleboy/ssh-action@master
+              with:
+                  host: 35.198.217.27
+                  username: nataset
+                  key: ${{ secrets.SSH_KEY_SECRET }}
+                  port: 22
+                  script: |
+                      cd webtech/frontend
+                      git pull origin master
+                      git status
