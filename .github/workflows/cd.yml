@@ -10,10 +10,10 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Checkout
+            - name: checkout
               uses: actions/checkout@v2
 
-            - name: SSH to serve
+            - name: ssh to serve and deploy
               uses: appleboy/ssh-action@master
               with:
                   host: 35.198.217.27
@@ -22,5 +22,8 @@ jobs:
                   port: 22
                   script: |
                       cd webtech/frontend
-                      git pull origin master
-                      git status
+                      git pull origin main
+                      cd ~/webtech
+                      docker-compose down
+                      docker-compose build frontend
+                      docker-compose up
