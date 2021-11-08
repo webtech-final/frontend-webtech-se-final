@@ -14,7 +14,7 @@
             <div class="mb-3">
                 <a class="text-8xl text-border" id="logo-p1">TETRIS</a>
                 <a class="text-5xl text-border" id="logo-p2">.VS️</a>
-                <a class="text-8xl text-border" id="logo-p1">🕹️</a>
+                <!-- <a class="text-8xl text-border" id="logo-p1">🕹️</a> -->
             </div>
         </div>
         <div class="text-gray-300 my-4 mx-auto">
